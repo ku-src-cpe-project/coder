@@ -27,14 +27,22 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+// Timer
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Coder {
 	private String text_value;
 	private JLabel label;
-
-	public void paint(Graphics g) {
-		g.drawRect(10, 10, 10, 10);
-	}
+	private ArrayList<String> parses;
+	private ArrayList<String> tokens;
+	private ArrayList<String> lines;
+	// private Timer myTimer = new Timer();
+	// private int pointer = 0;
+	// private int pointerWhile;
+	// private int loopWhile;
 
 	public Coder() {
 		JFrame frame = new JFrame();
@@ -53,10 +61,9 @@ class Coder {
 		////////////////////////////////////////////////////////////////////////////
 		///////////////////////////// * UI *////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////
-		JTextField text = new JTextField();
-		text.setBounds(50, 50, 200, 50);
+		JTextArea text = new JTextArea();
+		text.setBounds(50, 50, 200, 100);
 		label = new JLabel(text_value);
-
 
 		JButton forward = new JButton("Forward");
 		forward.addActionListener(new ActionListener() {
@@ -87,22 +94,31 @@ class Coder {
 		});
 		up.setBounds(200 + (50 * (0)), 200 + (50 * (-1)), 50, 50);
 
-
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				text_value = text.getText();
-				// text_value = "walk(forward)";
-				ArrayList<Character> parses = complier.textToParses(text_value);
-				label.setText(parses.get(0)+"");
-				ArrayList<String> tokens = complier.parseToTokens(parses);
-				complier.Run(panel, label_response, map, player, tokens);
-
+				// text_value = "walk(forward);while(2){walk(down);}";
+				// text_value = "walk(forward);\nwhile(1){\n
+				// walk(down);\n}walk(forward);walk(forward);";
+				// text_value = "walk(forward);walk(down);walk(forward);";
+				// text_value = "walk(forward);";
+				text_value = text_value.replace(" ", "");
+				text_value = text_value.replace("\n", "");
+				parses = complier.textToParses(text_value);
+				label.setText(parses.get(0) + "");
+				tokens = complier.parseToTokens(parses);
+				lines = complier.tokenToLines(tokens);
+				complier.Run(panel, label_response, map, player, lines);
 			}
 		});
 		submit.setBounds(250, 50, 50, 50);
-		label.setBounds(50, 100, 100, 20);
-		
+		label.setBounds(50, 10, 100, 50);
+
+		////////////////////////////////////////////////////////////////////////////
+		///////////////////////////// * Run *///////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////
+
 		////////////////////////////////////////////////////////////////////////////
 		///////////////////////////// * Configue *//////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////
@@ -130,7 +146,6 @@ class Coder {
 		frame.setVisible(true);
 		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 	}
 
 	public static void main(String[] args) {

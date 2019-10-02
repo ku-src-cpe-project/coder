@@ -21,7 +21,7 @@ class Player {
     private int[] currentPosition = { 0, 0 };
 
     public Player(JPanel panel, JLabel label_response, Map map) {
-        System.out.println("Player Create");
+        // System.out.println("Player Create");
         this.panel = panel;
         this.label_response = label_response;
         this.map = map;
@@ -31,7 +31,7 @@ class Player {
         this.label_player = new JLabel(this.icon_player);
         this.map.setMap(1, 1);
         currentPosition = this.map.getPosition();
-        System.out.println(currentPosition[0] + " " + currentPosition[1]);
+        // System.out.println(currentPosition[0] + " " + currentPosition[1]);
         this.label_player.setBounds(((1 - 1) * this.map.getSpeedX()) + this.map.getStartPositionX(),
                 ((1 - 1) * this.map.getSpeedY()) + this.map.getStartPositionY(), 109, 143);
         panel.add(this.label_player);
@@ -39,7 +39,7 @@ class Player {
     }
 
     public void walk(Player player, String dir) {
-        System.out.println("Player Walk " + dir);
+        // System.out.println("Player Walk " + dir);
         currentPosition = this.map.getPosition();
         // System.out.println(this.map.getMap(currentPosition[0], currentPosition[1] + 1));
         if (dir.equals("forward") && collision("forward")) {
@@ -66,7 +66,7 @@ class Player {
         else {
             System.out.println("*** Sysntax error ***");
         }
-        this.map.echoMap();
+        // this.map.echoMap();
         panel.add(this.label_player);
         panel.add(this.label_response);
     }
