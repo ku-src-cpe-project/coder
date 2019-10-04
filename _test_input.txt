@@ -1,0 +1,18 @@
+walk(down);
+walk(right);
+walk(right);
+walk(right);
+walk(up);
+walk(right);
+walk(right);
+walk(right);
+walk(right);
+
+walk(down);
+while(3){
+  walk(right);
+}
+walk(up);
+while(4){
+  walk(right);
+}

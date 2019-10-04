@@ -9,98 +9,107 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.*;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 class Player {
-    private JPanel panel;
-    private JLabel label_response;
+    private ImageIcon[] images;
+    private int x, y, scale;
+    public boolean toggleen = false;
+    private int[] playerPosition = { 1, 1 };
+    private int[] tmpPosition = { 0, 0 };
     private Map map;
-    private Icon icon_player;
-    private JLabel label_player;
-    private int position_x;// 0
-    private int position_y;// 28
-    private int[] currentPosition = { 0, 0 };
+    private String state;
 
-    public Player(JPanel panel, JLabel label_response, Map map) {
-        // System.out.println("Player Create");
-        this.panel = panel;
-        this.label_response = label_response;
+    public Player(Map map, int scale) {
+        images = new ImageIcon[2];
+        images[0] = new ImageIcon("icon/player.png");
+        images[1] = new ImageIcon("icon/player.png");
         this.map = map;
-        this.position_x=this.map.getStartPositionX();
-        this.position_y=this.map.getStartPositionY();
-        this.icon_player = new ImageIcon("icon/player.png");
-        this.label_player = new JLabel(this.icon_player);
-        this.map.setMap(1, 1);
-        currentPosition = this.map.getPosition();
-        // System.out.println(currentPosition[0] + " " + currentPosition[1]);
-        this.label_player.setBounds(((1 - 1) * this.map.getSpeedX()) + this.map.getStartPositionX(),
-                ((1 - 1) * this.map.getSpeedY()) + this.map.getStartPositionY(), 109, 143);
-        panel.add(this.label_player);
-        panel.add(this.label_response);
+        this.map.setMap(playerPosition[0], playerPosition[1], '9');
+        this.scale = scale;
+        setX(getScale());
+        setY(getScale());
+        setState("alive");
     }
 
-    public void walk(Player player, String dir) {
-        // System.out.println("Player Walk " + dir);
-        currentPosition = this.map.getPosition();
-        // System.out.println(this.map.getMap(currentPosition[0], currentPosition[1] + 1));
-        if (dir.equals("forward") && collision("forward")) {
-            this.label_player.setBounds(this.position_x + this.map.getSpeedX(), this.position_y, 109, 143);
-            this.position_x = this.position_x + this.map.getSpeedX();
-            this.map.set0(currentPosition[0], currentPosition[1]);
-            this.map.setMap(currentPosition[0], currentPosition[1] + 1);
-        } else if (dir.equals("back") && collision("back")) {
-            this.label_player.setBounds(this.position_x - this.map.getSpeedX(), this.position_y, 109, 143);
-            this.position_x = this.position_x - this.map.getSpeedX();
-            this.map.set0(currentPosition[0], currentPosition[1]);
-            this.map.setMap(currentPosition[0], currentPosition[1] - 1);
-        } else if (dir.equals("down") && collision("down")) {
-            this.label_player.setBounds(this.position_x, this.position_y + this.map.getSpeedY(), 109, 143);
-            this.position_y = this.position_y + this.map.getSpeedY();
-            this.map.set0(currentPosition[0], currentPosition[1]);
-            this.map.setMap(currentPosition[0] + 1, currentPosition[1]);
-        } else if (dir.equals("up") && collision("up")) {
-            this.label_player.setBounds(this.position_x, this.position_y - this.map.getSpeedY(), 109, 143);
-            this.position_y = this.position_y - this.map.getSpeedY();
-            this.map.set0(currentPosition[0], currentPosition[1]);
-            this.map.setMap(currentPosition[0] - 1, currentPosition[1]);
-        }
-        else {
+    public void draw(Graphics g) {
+        g.drawImage(images[0].getImage(), getX(), getY(), null);
+    }
+
+    public void walk(String dir) {
+        tmpPosition[0] = playerPosition[0];
+        tmpPosition[1] = playerPosition[1];
+        if (dir.equals("left") && collision(dir)) {
+            playerPosition[1] -= 1;
+            setX(getX()-getScale());
+        } else if (dir.equals("right") && collision(dir)) {
+            playerPosition[1] += 1;
+            setX(getX()+getScale());
+        } else if (dir.equals("up") && collision(dir)) {
+            playerPosition[0] -= 1;
+            setY(getY()-getScale());
+        } else if (dir.equals("down") && collision(dir)) {
+            playerPosition[0] += 1;
+            setY(getY()+getScale());
+        } else {
             System.out.println("*** Sysntax error ***");
+            setState("dead");
         }
-        // this.map.echoMap();
-        panel.add(this.label_player);
-        panel.add(this.label_response);
+        this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
+        this.map.setMap(playerPosition[0], playerPosition[1], '9');
     }
 
     public boolean collision(String dir) {
         boolean bool = true;
-        if (dir == "forward") {
-            if (this.map.getMap(this.currentPosition[0], this.currentPosition[1] + 1) == '0') {
-                bool = true;
-            } else {
+        if (dir.equals("left")) {
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) != '0') {
                 bool = false;
             }
-        }
-        if (dir == "back") {
-            if (this.map.getMap(this.currentPosition[0], this.currentPosition[1] - 1) == '0') {
-                bool = true;
-            } else {
+        } else if (dir.equals("right")) {
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) != '0') {
                 bool = false;
             }
-        }
-        if (dir == "down") {
-            if (this.map.getMap(this.currentPosition[0] + 1, this.currentPosition[1]) == '0') {
-                bool = true;
-            } else {
+        } else if (dir.equals("up")) {
+            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) != '0') {
                 bool = false;
             }
-        }
-        if (dir == "up") {
-            if (this.map.getMap(this.currentPosition[0] - 1, this.currentPosition[1]) == '0') {
-                bool = true;
-            } else {
+        } else if (dir.equals("down")) {
+            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) != '0') {
                 bool = false;
             }
         }
         return bool;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getScale() {
+        return this.scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
