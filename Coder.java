@@ -120,15 +120,22 @@ public class Coder extends JPanel implements Runnable {
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// text_value = input.getText();
-				// text_value = "walk(right);while(2){walk(down);}";
-				// text_value =
-				// "walk(right);\nwhile(2){\nwalk(down);\n}walk(right);walk(right);";
+				// normal
 				// text_value = "walk(right);walk(down);walk(right);";
-				text_value = "walk(right);walk(right);walk(right);walk(right);walk(right);";
+				// text_value = "walk(right);walk(right);walk(right);walk(right);walk(right);";
 				// text_value =
 				// "walk(right);walk(right);walk(right);walk(down);walk(right);walk(right);walk(right);walk(right);";
 				// text_value = "walk(right);check(right);";
 				// text_value = "check(right);walk(right);";
+
+				// while
+				// text_value = "walk(down);while(2){walk(right);walk(right);}";
+				// text_value =
+				// "walk(right);\nwhile(2){\nwalk(down);\n}walk(right);walk(right);";
+				// text_value =
+				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
+				text_value = "while(2){walk(down);while(3){walk(right);}};";
+
 				text_value = text_value.replace(" ", "");
 				text_value = text_value.replace("\n", "");
 				parses = complier.textToParses(text_value);
@@ -158,7 +165,7 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("0002");
+		map = new Map("0003");
 		for (int i = 0; i < map.getRow(); i++) { // debug
 			for (int j = 0; j <= map.getColumn(); j++) {
 				System.out.print(map.getMap()[i][j]);
@@ -178,10 +185,12 @@ public class Coder extends JPanel implements Runnable {
 				System.out.println("==============================");
 				System.out.println("    PROGRAM ALREADY RUNNING");
 				System.out.println("==============================");
+				System.out.println("Lines:");
+				System.out.println(lines);
 			}
-			System.out.println("Line: " + complier.getPointer() + "\t" + lines.get(complier.getPointer()));
-			complier.Runable(player, lines);
-			if (complier.getPointer() < lines.size()) {
+			if (complier.getPointer() < lines.size() - 1) {
+				System.out.println("Line: " + complier.getPointer() + "\t" + lines.get(complier.getPointer()));
+				complier.Runable(player, lines);
 				line++;
 			}
 		} else if (!player.getState().equals("alive")) {

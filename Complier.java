@@ -18,17 +18,20 @@ import java.util.TimerTask;
 
 class Complier {
     private ArrayList<String> parses, tokens, lines;
+    private ArrayList<Integer> loopWhile;
     private int pointer;
     private int pointerWhile;
-    private int loopWhile;
-    private Stack process;
+    private int count;
+    private ArrayList<String> process;
 
     public Complier() {
+        this.process = new ArrayList<String>();
         this.pointer = 0;
     }
 
     public ArrayList<String> tokenToLines(ArrayList<String> tokens) {
         this.lines = new ArrayList<String>();
+        this.loopWhile = new ArrayList<Integer>();
         String tmp = "";
         this.lines.add("START");
         for (int i = 0; i < tokens.size(); i++) {
@@ -104,42 +107,70 @@ class Complier {
     // ========================================================
 
     public void checkMethod(Player player, ArrayList<String> token) {
+        boolean condition = false;
+        System.out.println("\t"+getStack());
         for (int i = 0; i < token.size(); i++) {
             if (token.get(i).equals("walk")) {
                 player.walk(token.get(i + 2));
-                // i += 3;
-            } else if (token.get(i).equals("while")) {
-                setPointerWhile(getPointer());
-                setLoopWhile(Integer.parseInt(token.get(i + 2)));
-                // System.out.println(getLoopWhile());
             } else if (token.get(i).equals("check")) {
                 player.collision(token.get(i + 2));
-                System.out.println(player.collision(token.get(i + 2)));
+            } else if (token.get(i).equals("while")) {
+                // old while
+                // setPointerWhile(getPointer());
+                // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
+                // new while
+                condition = true;
             } else if (token.get(i).equals("}")) {
-                if (getLoopWhile() > 0) {
-                    setPointer(getPointerWhile());
-                    actLoopWhile();
+                // old while
+                // if (getLoopWhile() > 0) {
+                // setPointer(getPointerWhile());
+                // setLoopWhile(getLoopWhile() - 1);
+                // }
+                // new while
+                String Y = getStack().get(getStack().size() - 2);
+                int y = Integer.parseInt(Y.charAt(6) + "");
+                y -= 1;
+                if (y != 0) {
+                    setPointer(getPointer() - (getCount() + 1));
+                    String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
+                    getStack().set(getStack().size() - 2, tmp);
+                } else {
+                    popStack();
                 }
+                setCount(-1);
             } else {
                 // System.out.println("*** Nothing happen ***");
             }
         }
+        if (condition) {
+            setCount(0);
+        } else {
+            popStack();
+            setCount(getCount() + 1);
+        }
     }
 
     public void readLine(Player player, String token) {
-        // System.out.println(token);
         ArrayList<String> parses = textToParses(token);
         ArrayList<String> tokens = parseToTokens(parses);
         checkMethod(player, tokens);
     }
 
-    public void Runable(Player player, ArrayList<String> lines) {
-        readLine(player, lines.get(getPointer()));
-        actPointer();
+    public void readStack(Player player, String process) {
+        ArrayList<String> parses = textToParses(process);
+        ArrayList<String> tokens = parseToTokens(parses);
+        checkMethod(player, tokens);
     }
 
-    public void actPointer() {
-        this.pointer += 1;
+    public void Runable(Player player, ArrayList<String> lines) {
+        // old readable
+        // readLine(player, lines.get(getPointer()));
+        // setPointer(getPointer() + 1);
+        // new readable
+        pushStack(getLines().get(getPointer()));
+        readStack(player, peekStack());
+        setPointer(getPointer() + 1);
+
     }
 
     public int endPointer(int sizeLine) {
@@ -162,15 +193,47 @@ class Complier {
         this.pointerWhile = pointer;
     }
 
-    public int getLoopWhile() {
+    public ArrayList<Integer> getLoopWhile() {
         return this.loopWhile;
     }
 
-    public void setLoopWhile(int loop) {
-        this.loopWhile = loop - 1;
+    public void setLoopWhile(ArrayList<Integer> loop) {
+        this.loopWhile = loop;
     }
 
-    public void actLoopWhile() {
-        this.loopWhile -= 1;
+    public int peekLoopWhile() {
+        return this.loopWhile.get(getLoopWhile().size() - 1);
+    }
+
+    public ArrayList<String> getStack() {
+        return this.process;
+    }
+
+    public void pushStack(String process) {
+        this.process.add(process);
+    }
+
+    public String popStack() {
+        return this.process.remove(getStack().size() - 1);
+    }
+
+    public String peekStack() {
+        return this.process.get(getStack().size() - 1);
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public ArrayList<String> getLines() {
+        return this.lines;
+    }
+
+    public void setLines(ArrayList<String> lines) {
+        this.lines = lines;
     }
 }
