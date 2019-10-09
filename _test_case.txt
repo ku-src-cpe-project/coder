@@ -1,0 +1,31 @@
+	CASE 1
+walk(down);
+walk(right);
+walk(right);
+walk(right);
+walk(up);
+walk(right);
+walk(right);
+walk(right);
+walk(right);
+*walk(down);walk(right);walk(right);walk(right);walk(up);walk(right);walk(right);walk(right);walk(right);
+
+	CASE 2
+walk(down);
+while(3){
+  walk(right);
+}
+walk(up);
+while(4){
+  walk(right);
+}
+*walk(down);while(3){walk(right);}walk(up);while(4){walk(right);}
+
+	CASE 3
+while(2){
+	walk(down);
+	while(3){
+		walk(right);
+	}
+};
+*while(2){walk(down);while(3){walk(right);}};
