@@ -29,3 +29,19 @@ while(2){
 	}
 };
 *while(2){walk(down);while(3){walk(right);}};
+
+
+	CASE 4
+walk(down);
+walk(right);
+while(2){
+     walk(right);
+     walk(right);
+     while(2){
+          walk(left);
+          while(1){
+              walk(right);
+          }
+     }
+}
+*walk(down);walk(right);while(2){walk(right);walk(right);while(2){walk(left);while(1){walk(right);}}}
