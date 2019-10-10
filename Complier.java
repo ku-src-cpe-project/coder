@@ -18,20 +18,25 @@ import java.util.TimerTask;
 
 class Complier {
     private ArrayList<String> parses, tokens, lines;
-    private ArrayList<Integer> loopWhile;
+    private ArrayList<Integer> positionWhile;
     private int pointer;
     private int pointerWhile;
-    private int count;
+    private int count, countState;
     private ArrayList<String> process;
+    private boolean expression, _if;
+    private String state;
 
     public Complier() {
         this.process = new ArrayList<String>();
         this.pointer = 0;
+        this.expression = true;
+        this._if = false;
+        this.state = "null";
     }
 
     public ArrayList<String> tokenToLines(ArrayList<String> tokens) {
         this.lines = new ArrayList<String>();
-        this.loopWhile = new ArrayList<Integer>();
+        this.positionWhile = new ArrayList<Integer>();
         String tmp = "";
         this.lines.add("START");
         for (int i = 0; i < tokens.size(); i++) {
@@ -39,14 +44,26 @@ class Complier {
                 this.lines.add(tmp);
                 tmp = "";
             } else if (tokens.get(i).equals("while")) {
-                tmp = tmp.concat(tokens.get(i) + "");
-                tmp = tmp.concat(tokens.get(i + 1) + "");
-                tmp = tmp.concat(tokens.get(i + 2) + "");
-                tmp = tmp.concat(tokens.get(i + 3) + "");
-                tmp = tmp.concat(tokens.get(i + 4) + "");
+                tmp = tmp.concat(tokens.get(i) + ""); // while
+                tmp = tmp.concat(tokens.get(i + 1) + ""); // (
+                tmp = tmp.concat(tokens.get(i + 2) + ""); // number
+                tmp = tmp.concat(tokens.get(i + 3) + ""); // )
+                tmp = tmp.concat(tokens.get(i + 4) + ""); // {
                 this.lines.add(tmp);
                 tmp = "";
                 i += 4;
+            } else if (tokens.get(i).equals("if")) {
+                tmp = tmp.concat(tokens.get(i) + ""); // if
+                tmp = tmp.concat(tokens.get(i + 1) + ""); // (
+                tmp = tmp.concat(tokens.get(i + 2) + ""); // check
+                tmp = tmp.concat(tokens.get(i + 3) + ""); // (
+                tmp = tmp.concat(tokens.get(i + 4) + ""); // right
+                tmp = tmp.concat(tokens.get(i + 5) + ""); // )
+                tmp = tmp.concat(tokens.get(i + 6) + ""); // )
+                tmp = tmp.concat(tokens.get(i + 7) + ""); // {
+                this.lines.add(tmp);
+                tmp = "";
+                i += 7;
             } else if (tokens.get(i).equals("}")) {
                 this.lines.add("}");
             } else if (!parses.get(i).equals("\n")) {
@@ -78,13 +95,15 @@ class Complier {
                     this.tokens.add("}");
                 } else {
                     // System.out.println(parses.get(i) + " is Operater");
-                    this.tokens.add(tmp);
+                    if (tmp != "") {
+                        this.tokens.add(tmp);
+                    }
                     tmp = "";
                     this.tokens.add(parses.get(i) + "");
                 }
             } else if (checkOperater(parses.get(i)) && parses.get(i).equals(";")) {
                 this.tokens.add(";");
-            } else if (!parses.get(i).equals("\n")) {
+            } else {
                 // System.out.println(parses.get(i) + " is Not Operater");
                 tmp = tmp.concat(parses.get(i) + "");
                 // System.out.println(tmp);
@@ -108,18 +127,25 @@ class Complier {
 
     public void checkMethod(Player player, ArrayList<String> token) {
         boolean condition = false;
-        System.out.println("\t"+getStack());
         for (int i = 0; i < token.size(); i++) {
-            if (token.get(i).equals("walk")) {
+            if (token.get(i).equals("walk") && getExp()) {
                 player.walk(token.get(i + 2));
-            } else if (token.get(i).equals("check")) {
-                player.collision(token.get(i + 2));
-            } else if (token.get(i).equals("while")) {
+            } else if (token.get(i).equals("check") && getExp()) {
+                if (player.collision(token.get(i + 2))) {
+                    setExp(true);
+                    setIf(false);
+                } else {
+                    setExp(false);
+                }
+            } else if (token.get(i).equals("while") && getExp()) {
                 // old while
                 // setPointerWhile(getPointer());
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
                 // new while
                 condition = true;
+                getPosWhile().add(getPointer());
+            } else if (token.get(i).equals("{")) {
+                setCountState(getCountState() + 1);
             } else if (token.get(i).equals("}")) {
                 // old while
                 // if (getLoopWhile() > 0) {
@@ -127,18 +153,38 @@ class Complier {
                 // setLoopWhile(getLoopWhile() - 1);
                 // }
                 // new while
-                String Y = getStack().get(getStack().size() - 2);
-                int y = Integer.parseInt(Y.charAt(6) + "");
-                y -= 1;
-                if (y != 0) {
-                    setPointer(getPointer() - (getCount() + 1));
-                    String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
-                    getStack().set(getStack().size() - 2, tmp);
-                } else {
-                    popStack();
-                }
+                // if (getIf() && !getState().equals("while")) {
+                //     setCountState(getCountState() - 1);
+                //     if (getCountState() == 0) {
+                //         setExp(true);
+                //     }
+                // } else {
+                    String Y = "";
+                    int y = 0;
+                    // if (getStack().size() > 1) {
+                        Y = getStack().get(getStack().size() - 2);
+                        y = Integer.parseInt(Y.charAt(6) + "");
+                        y -= 1;
+                    // }
+                    if (y != 0) {
+                        setPointer(getPosWhile().get(getPosWhile().size() - 1));
+                        // setPointer(getPointer() - (getCount() + 1));
+                        String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
+                        getStack().set(getStack().size() - 2, tmp);
+                        setState("while");
+                    } else {
+                        popPosWhile();
+                        popStack();
+                        setIf(true);
+                        setState("null");
+                    }
+                // }
                 setCount(-1);
-            } else {
+            } 
+            // else if (token.get(i).equals("if")) {
+            //     setIf(true);
+            // }
+             else {
                 // System.out.println("*** Nothing happen ***");
             }
         }
@@ -193,16 +239,18 @@ class Complier {
         this.pointerWhile = pointer;
     }
 
-    public ArrayList<Integer> getLoopWhile() {
-        return this.loopWhile;
+    public ArrayList<Integer> getPosWhile() {
+        return this.positionWhile;
     }
 
-    public void setLoopWhile(ArrayList<Integer> loop) {
-        this.loopWhile = loop;
+    public void popPosWhile() {
+        if (this.positionWhile.size() > 0) {
+            this.positionWhile.remove(getPosWhile().size() - 1);
+        }
     }
 
-    public int peekLoopWhile() {
-        return this.loopWhile.get(getLoopWhile().size() - 1);
+    public int peekPosWhile() {
+        return this.positionWhile.get(getPosWhile().size() - 1);
     }
 
     public ArrayList<String> getStack() {
@@ -213,8 +261,10 @@ class Complier {
         this.process.add(process);
     }
 
-    public String popStack() {
-        return this.process.remove(getStack().size() - 1);
+    public void popStack() {
+        if (this.process.size() > 0) {
+            this.process.remove(getStack().size() - 1);
+        }
     }
 
     public String peekStack() {
@@ -235,5 +285,37 @@ class Complier {
 
     public void setLines(ArrayList<String> lines) {
         this.lines = lines;
+    }
+
+    public boolean getExp() {
+        return this.expression;
+    }
+
+    public void setExp(boolean exp) {
+        this.expression = exp;
+    }
+
+    public int getCountState() {
+        return this.countState;
+    }
+
+    public void setCountState(int a) {
+        this.countState = a;
+    }
+
+    public boolean getIf() {
+        return this._if;
+    }
+
+    public void setIf(boolean a) {
+        this._if = a;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String a) {
+        this.state = a;
     }
 }

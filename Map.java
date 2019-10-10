@@ -17,24 +17,24 @@ class Map {
 
     public Map(String level) {
         System.out.println("> Map Create");
-        if (level.equals("0001")) {
+        if (level.equals("0000")) {
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1002000001".toCharArray();
-            this.map[2] = "1000002001".toCharArray();
-            this.map[3] = "1000020001".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1000000001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
 
-        } else if (level.equals("0002")) {
+        } else if (level.equals("0001")) {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1002000201".toCharArray();
             this.map[2] = "1002020201".toCharArray();
             this.map[3] = "1000020001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
-        } else if (level.equals("0003")) {
+        } else if (level.equals("0002")) {
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000000001".toCharArray();
+            this.map[1] = "1002000001".toCharArray();
+            this.map[2] = "1000002001".toCharArray();
+            this.map[3] = "1000020001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         }
     }

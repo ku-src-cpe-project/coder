@@ -119,7 +119,12 @@ public class Coder extends JPanel implements Runnable {
 		submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				// text_value = input.getText();
+				// Restart
+				complier.setPointer(0);
+				runable = false;
+				line = complier.getPointer();
+				text_value = input.getText();
+
 				// normal
 				// text_value = "walk(right);walk(down);walk(right);";
 				// text_value = "walk(right);walk(right);walk(right);walk(right);walk(right);";
@@ -136,8 +141,13 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				text_value = "while(2){walk(down);while(3){walk(right);}};";
 
+				// if
+				// text_value = "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
+				// text_value = "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
+
 				text_value = text_value.replace(" ", "");
 				text_value = text_value.replace("\n", "");
+				text_value = text_value.replace("\t", "");
 				parses = complier.textToParses(text_value);
 				tokens = complier.parseToTokens(parses);
 				lines = complier.tokenToLines(tokens);
@@ -149,6 +159,9 @@ public class Coder extends JPanel implements Runnable {
 			public void actionPerformed(ActionEvent ae) {
 				newGame();
 				complier.setPointer(0);
+				complier.setExp(true);
+				complier.setIf(false);
+				complier.setState("null");
 				runable = false;
 				line = complier.getPointer();
 			}
@@ -165,7 +178,7 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("0003");
+		map = new Map("0000");
 		for (int i = 0; i < map.getRow(); i++) { // debug
 			for (int j = 0; j <= map.getColumn(); j++) {
 				System.out.print(map.getMap()[i][j]);
@@ -185,11 +198,16 @@ public class Coder extends JPanel implements Runnable {
 				System.out.println("==============================");
 				System.out.println("    PROGRAM ALREADY RUNNING");
 				System.out.println("==============================");
-				System.out.println("Lines:");
-				System.out.println(lines);
+				// System.out.println("Parse:");
+				// System.out.println("\t" + parses);
+				// System.out.println("\nTokens:");
+				// System.out.println("\t" + tokens);
+				// System.out.println("\nLines:");
+				// System.out.println("\t" + lines);
+				// System.out.println();
 			}
-			if (complier.getPointer() < lines.size() - 1) {
-				System.out.println("Line: " + complier.getPointer() + "\t" + lines.get(complier.getPointer()));
+			if (complier.getPointer() < lines.size()) { // lines.size()-1
+				System.out.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 				complier.Runable(player, lines);
 				line++;
 			}
