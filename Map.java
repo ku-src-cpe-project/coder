@@ -23,7 +23,6 @@ class Map {
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1000000001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
-
         } else if (level.equals("0001")) {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1002000201".toCharArray();
@@ -36,6 +35,26 @@ class Map {
             this.map[2] = "1000002001".toCharArray();
             this.map[3] = "1000020001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
+        } else if (level.equals("0003")) {
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1002000001".toCharArray();
+            this.map[2] = "1000002001".toCharArray();
+            this.map[3] = "1000020001".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+        } else if (level.equals("0004")) {
+            setRow(6);
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1002002201".toCharArray();
+            this.map[2] = "1000002001".toCharArray();
+            this.map[3] = "1220220001".toCharArray();
+            this.map[4] = "1220000001".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
+        } else {
+            this.map[0] = "1111001111".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1000000001".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
         }
     }
 
@@ -43,8 +62,16 @@ class Map {
         return this.row;
     }
 
+    public void setRow(int a) {
+        this.row = a;
+    }
+
     public int getColumn() {
         return this.column;
+    }
+
+    public void setColumn(int a) {
+        this.column = a;
     }
 
     public char cheMap(int x, int y) {

@@ -74,7 +74,7 @@ public class Coder extends JPanel implements Runnable {
 	private int blockX = 100;
 	private int blockY = 100;
 	private Map map;
-	private int scale = 105;
+	private int scale = 120; // 105
 	private Random random;
 	private Player player;
 	private JTextArea input;
@@ -100,8 +100,8 @@ public class Coder extends JPanel implements Runnable {
 	// init
 	// ========================================================
 	public void init() {
-		screenx = 10 * scale;
-		screeny = 5 * scale;
+		screenx = 11 * scale; // 10
+		screeny = 6 * scale; // 5
 		setPreferredSize(new Dimension(screenx, screeny));
 		running = true;
 		bg = new ImageIcon("icon/background.pngl");
@@ -142,8 +142,10 @@ public class Coder extends JPanel implements Runnable {
 				text_value = "while(2){walk(down);while(3){walk(right);}};";
 
 				// if
-				// text_value = "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
-				// text_value = "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
+				// text_value =
+				// "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
+				// text_value =
+				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
 
 				text_value = text_value.replace(" ", "");
 				text_value = text_value.replace("\n", "");
@@ -178,7 +180,9 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("0000");
+		map = new Map("0004");
+		screenx = (map.getColumn()+1) * scale;
+		screeny = (map.getRow()+1) * scale;
 		for (int i = 0; i < map.getRow(); i++) { // debug
 			for (int j = 0; j <= map.getColumn(); j++) {
 				System.out.print(map.getMap()[i][j]);
@@ -242,10 +246,10 @@ public class Coder extends JPanel implements Runnable {
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);
 					// gr.fillRect(j * scale, i * scale, blockX, blockY);
+					player.draw(gr);
 				}
 			}
 		}
-		player.draw(gr);
 		update();
 		g.drawImage(screen, 0, 0, null);
 	}
