@@ -42,16 +42,16 @@ class Player {
         tmpPosition[1] = playerPosition[1];
         if (dir.equals("left") && collision(dir)) {
             playerPosition[1] -= 1;
-            setX(getX()-getScale());
+            setX(getX() - getScale());
         } else if (dir.equals("right") && collision(dir)) {
             playerPosition[1] += 1;
-            setX(getX()+getScale());
+            setX(getX() + getScale());
         } else if (dir.equals("up") && collision(dir)) {
             playerPosition[0] -= 1;
-            setY(getY()-getScale());
+            setY(getY() - getScale());
         } else if (dir.equals("down") && collision(dir)) {
             playerPosition[0] += 1;
-            setY(getY()+getScale());
+            setY(getY() + getScale());
         } else {
             System.out.println("*** Sysntax error ***");
             setState("dead");
@@ -105,6 +105,7 @@ class Player {
     public void setScale(int scale) {
         this.scale = scale;
     }
+
     public String getState() {
         return this.state;
     }
