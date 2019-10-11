@@ -92,6 +92,8 @@ public class Coder extends JPanel implements Runnable {
 	private int line;
 	private boolean runable;
 	private Bomb bomb;
+	private int buttonLocationX = 150, buttonLocationY = 50;
+	private int buttonSizeX = 100, buttonSizeY = 50;
 
 	// ========================================================
 	// Debug
@@ -193,7 +195,7 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);\nwhile(2){\nwalk(down);\n}walk(right);walk(right);";
 				// text_value =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
-				text_value = "while(2){walk(down);while(3){walk(right);}};";
+				// text_value = "while(2){walk(down);while(3){walk(right);}};";
 
 				// if
 				// text_value =
@@ -211,6 +213,7 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 		add(submit);
+		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
 		restart = new JButton("Restart");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -224,6 +227,7 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 		add(restart);
+		restart.setBounds(buttonLocationX, buttonLocationY + buttonSizeY, buttonSizeX, buttonSizeY);
 		newGame();
 	}
 
@@ -271,7 +275,7 @@ public class Coder extends JPanel implements Runnable {
 				line++;
 			}
 		} else if (!player.getState().equals("alive")) {
-			player.setY(600);
+			player.setY(-200);
 		}
 	}
 
@@ -301,13 +305,14 @@ public class Coder extends JPanel implements Runnable {
 					bomb.draw(gr);
 				}
 				if (map.getMap()[i][j] == '9') {
-					gr.setColor(Color.PINK);
-					gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
-							blockY);
+					// gr.setColor(Color.PINK);
+					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+					// (padY * i), blockX,
+					// blockY);
 				}
 			}
 		}
-		// player.draw(gr);
+		player.draw(gr, locationX, locationY, padX, padY);
 		update();
 		g.drawImage(screen, 0, 0, null);
 	}
@@ -324,7 +329,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(200);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

@@ -33,8 +33,10 @@ class Player {
         setState("alive");
     }
 
-    public void draw(Graphics g) {
-        g.drawImage(images[0].getImage(), getX(), getY(), null);
+    public void draw(Graphics g, int locationX, int locationY, int padX, int padY) {
+        g.drawImage(images[0].getImage(), (playerPosition[1] * getScale()) + locationX + (padX * playerPosition[0]),
+                (playerPosition[0] * getScale()) + locationY - (padY * playerPosition[0]), null);
+        // g.drawImage(images[0].getImage(), getX(), getY(), null);
     }
 
     public void walk(String dir) {
@@ -55,9 +57,21 @@ class Player {
         } else {
             System.out.println("*** Sysntax error ***");
             setState("dead");
+            playerPosition[0]=-50;
         }
-        this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
-        this.map.setMap(playerPosition[0], playerPosition[1], '9');
+
+        if (!getState().equals("dead")) {
+            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
+            this.map.setMap(playerPosition[0], playerPosition[1], '9');
+        } else {
+            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
+        }
+        for (int i = 0; i < map.getRow(); i++) { // debug
+            for (int j = 0; j <= map.getColumn(); j++) {
+                System.out.print(map.getMap()[i][j]);
+            }
+            System.out.print("\n");
+        }
     }
 
     public boolean collision(String dir) {
