@@ -90,7 +90,8 @@ class Player {
         checkStep(dir);
         return bool;
     }
-    public void checkStep(String dir){
+
+    public void checkStep(String dir) {
         if (checkNextStep(dir, '8')) {
             setState("next");
         }
@@ -101,6 +102,7 @@ class Player {
             this.map.setMap(playerPosition[0], playerPosition[1], '9');
         }
     }
+
     public boolean checkNextStep(String dir, char a) {
         boolean bool = false;
         if (dir.equals("left")) {

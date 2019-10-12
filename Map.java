@@ -21,7 +21,7 @@ class Map {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1000000001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000007081".toCharArray();
+            this.map[3] = "1000000001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         } else if (level.equals("0001")) {
             this.map[0] = "1111111111".toCharArray();
@@ -69,11 +69,21 @@ class Map {
             this.map[5] = "1000002801".toCharArray();
             this.map[6] = "1000200001".toCharArray();
             this.map[7] = "1111111111".toCharArray();
+        } else if (level.equals("0006")) {
+            setRow(8);
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1000802201".toCharArray();
+            this.map[2] = "1000702001".toCharArray();
+            this.map[3] = "1200220001".toCharArray();
+            this.map[4] = "1220000201".toCharArray();
+            this.map[5] = "1000002801".toCharArray();
+            this.map[6] = "1006000001".toCharArray();
+            this.map[7] = "1111111111".toCharArray();
         } else {
-            this.map[0] = "1111001111".toCharArray();
-            this.map[1] = "1008000801".toCharArray();
-            this.map[2] = "1207000001".toCharArray();
-            this.map[3] = "1000000601".toCharArray();
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1000800001".toCharArray();
+            this.map[2] = "1000700001".toCharArray();
+            this.map[3] = "1200000601".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         }
     }
