@@ -83,8 +83,8 @@ public class Coder extends JPanel implements Runnable {
 	private Player player;
 	private JTextArea input;
 	private String text_value;
-	private JButton submit;
-	private JButton restart;
+	private JButton submit, restart;
+	private JButton next;
 	private Complier complier;
 	private ArrayList<String> parses;
 	private ArrayList<String> tokens;
@@ -92,9 +92,12 @@ public class Coder extends JPanel implements Runnable {
 	private int line;
 	private boolean runable;
 	private Bomb bomb;
-	private int buttonLocationX = 150, buttonLocationY = 50;
+	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
+	private String currentMap;
+	private int mapNumber = 0;
+	private JLabel mapNmberJ;
 
 	// ========================================================
 	// Debug
@@ -126,11 +129,15 @@ public class Coder extends JPanel implements Runnable {
 		complier = new Complier();
 		runable = false;
 		line = 0;
-		input = new JTextArea();
-		input.setText("Coding here...");
+		input = new JTextArea("Coding here...");
 		input.setBackground(Color.green);
-		add(input);
 		input.setBounds(0, 0, 150, screeny - 300);
+		add(input);
+		mapNmberJ = new JLabel(mapNumber + "");
+		mapNmberJ.setBounds(screenx - 150, 0, 150, 75);
+		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
+		mapNmberJ.setForeground(Color.RED);
+		add(mapNmberJ);
 
 		// ========================================================
 		// Debug
@@ -218,6 +225,7 @@ public class Coder extends JPanel implements Runnable {
 		restart = new JButton("Restart");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
+				map = new Map(currentMap);
 				newGame();
 				complier.setPointer(0);
 				complier.setExp(true);
@@ -229,6 +237,24 @@ public class Coder extends JPanel implements Runnable {
 		});
 		add(restart);
 		restart.setBounds(buttonLocationX, buttonLocationY + buttonSizeY, buttonSizeX, buttonSizeY);
+		next = new JButton("Next");
+		next.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				map = new Map(randMap());
+				mapNumber++;
+				mapNmberJ.setText(mapNumber + "");
+				newGame();
+				complier.setPointer(0);
+				complier.setExp(true);
+				complier.setIf(false);
+				complier.setState("null");
+				runable = false;
+				line = complier.getPointer();
+			}
+		});
+		add(next);
+		next.setBounds(buttonLocationX, buttonLocationY + buttonSizeY * 2, buttonSizeX, buttonSizeY);
+		map = new Map(randMap());
 		newGame();
 	}
 
@@ -240,7 +266,6 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("           New Game");
 		System.out.println("==============================");
 		// map = new Map("0005");
-		map = new Map(randMap());
 		screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
@@ -260,10 +285,11 @@ public class Coder extends JPanel implements Runnable {
 		String mapName = "";
 		String tmp = "0000";
 		random = new Random();
-		int randNumberI = random.nextInt(6-1)+1;
+		int randNumberI = random.nextInt(6 - 1) + 1; // random 1-5
 		String randNumberS = randNumberI + "";
 		tmp = tmp.concat(randNumberS);
-		mapName = tmp.substring(tmp.length()-4, tmp.length());
+		mapName = tmp.substring(tmp.length() - 4, tmp.length());
+		currentMap = mapName;
 		return mapName;
 	}
 
