@@ -16,7 +16,7 @@ class Player {
     private ImageIcon[] images;
     private int x, y, scale;
     public boolean toggleen = false;
-    private int[] playerPosition = { 1, 1 };
+    public int[] playerPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
     private Map map;
     private String state;
@@ -35,7 +35,7 @@ class Player {
 
     public void draw(Graphics g, int locationX, int locationY, int padX, int padY) {
         g.drawImage(images[0].getImage(), (playerPosition[1] * getScale()) + locationX + (padX * playerPosition[0]),
-                (playerPosition[0] * getScale()) + locationY - (padY * playerPosition[0]), null);
+                (playerPosition[0] * getScale()) + locationY - (padY * playerPosition[0]) - 143 + 50, null);
         // g.drawImage(images[0].getImage(), getX(), getY(), null);
     }
 
@@ -57,7 +57,7 @@ class Player {
         } else {
             System.out.println("*** Sysntax error ***");
             setState("dead");
-            playerPosition[0]=-50;
+            playerPosition[0] = -50;
         }
 
         if (!getState().equals("dead")) {
@@ -65,12 +65,6 @@ class Player {
             this.map.setMap(playerPosition[0], playerPosition[1], '9');
         } else {
             this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
-        }
-        for (int i = 0; i < map.getRow(); i++) { // debug
-            for (int j = 0; j <= map.getColumn(); j++) {
-                System.out.print(map.getMap()[i][j]);
-            }
-            System.out.print("\n");
         }
     }
 

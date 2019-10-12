@@ -75,7 +75,7 @@ public class Coder extends JPanel implements Runnable {
 	private int locationX = 150;
 	private int locationY = 200;
 	private int blockX = 50;
-	private int blockY = 50;
+	public int blockY = 50;
 	private int padX = 20;
 	private int padY = 50;
 	private Map map;
@@ -94,6 +94,7 @@ public class Coder extends JPanel implements Runnable {
 	private Bomb bomb;
 	private int buttonLocationX = 150, buttonLocationY = 50;
 	private int buttonSizeX = 100, buttonSizeY = 50;
+	private int dir = 0;
 
 	// ========================================================
 	// Debug
@@ -238,7 +239,7 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("");
+		map = new Map("0001");
 		screenx = (map.getColumn() + 2) * scale + locationX - scale;
 		screeny = (map.getRow()) * scale;
 		setPreferredSize(new Dimension(screenx, screeny));
@@ -275,7 +276,13 @@ public class Coder extends JPanel implements Runnable {
 				line++;
 			}
 		} else if (!player.getState().equals("alive")) {
-			player.setY(-200);
+			// player.playerPosition[0] = -200;
+		}
+		if (dir >= 1) {
+			dir = 0;
+		}
+		else{
+			dir++;
 		}
 	}
 
@@ -301,8 +308,9 @@ public class Coder extends JPanel implements Runnable {
 				if (map.getMap()[i][j] == '2') {
 					// gr.setColor(Color.GREEN);
 					// gr.fillRect(j * scale, i * scale, blockX, blockY);
-					bomb = new Bomb((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), scale);
-					bomb.draw(gr);
+					bomb = new Bomb((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					bomb.draw(gr, dir);
 				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);
