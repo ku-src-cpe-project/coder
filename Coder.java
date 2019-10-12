@@ -280,8 +280,7 @@ public class Coder extends JPanel implements Runnable {
 		}
 		if (dir >= 1) {
 			dir = 0;
-		}
-		else{
+		} else {
 			dir++;
 		}
 	}
@@ -320,7 +319,7 @@ public class Coder extends JPanel implements Runnable {
 				}
 			}
 		}
-		player.draw(gr, locationX, locationY, padX, padY);
+		player.draw(gr, dir, locationX, locationY, padX, padY);
 		update();
 		g.drawImage(screen, 0, 0, null);
 	}

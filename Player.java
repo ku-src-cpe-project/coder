@@ -24,7 +24,7 @@ class Player {
     public Player(Map map, int scale) {
         images = new ImageIcon[2];
         images[0] = new ImageIcon("icon/player.png");
-        images[1] = new ImageIcon("icon/player.png");
+        images[1] = new ImageIcon("icon/player_2.png");
         this.map = map;
         this.map.setMap(playerPosition[0], playerPosition[1], '9');
         this.scale = scale;
@@ -33,8 +33,8 @@ class Player {
         setState("alive");
     }
 
-    public void draw(Graphics g, int locationX, int locationY, int padX, int padY) {
-        g.drawImage(images[0].getImage(), (playerPosition[1] * getScale()) + locationX + (padX * playerPosition[0]),
+    public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
+        g.drawImage(images[dir].getImage(), (playerPosition[1] * getScale()) + locationX + (padX * playerPosition[0]),
                 (playerPosition[0] * getScale()) + locationY - (padY * playerPosition[0]) - 143 + 50, null);
         // g.drawImage(images[0].getImage(), getX(), getY(), null);
     }
