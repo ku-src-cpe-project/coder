@@ -112,7 +112,7 @@ public class Coder extends JPanel implements Runnable {
 	// init
 	// ========================================================
 	public void init() {
-		screenx = 11 * scale ; // 10
+		screenx = 11 * scale; // 10
 		screeny = 6 * scale; // 5
 		setPreferredSize(new Dimension(screenx, screeny));
 		running = true;
@@ -239,8 +239,9 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("0005");
-		screenx = (map.getColumn() + 2) * scale + locationX - scale+50;
+		// map = new Map("0005");
+		map = new Map(randMap());
+		screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
 		for (int i = 0; i < map.getRow(); i++) { // debug
@@ -250,6 +251,20 @@ public class Coder extends JPanel implements Runnable {
 			System.out.print("\n");
 		}
 		player = new Player(map, scale);
+	}
+
+	// ========================================================
+	// Random Map
+	// ========================================================
+	public String randMap() {
+		String mapName = "";
+		String tmp = "0000";
+		random = new Random();
+		int randNumberI = random.nextInt(6-1)+1;
+		String randNumberS = randNumberI + "";
+		tmp = tmp.concat(randNumberS);
+		mapName = tmp.substring(tmp.length()-4, tmp.length());
+		return mapName;
 	}
 
 	// ========================================================
