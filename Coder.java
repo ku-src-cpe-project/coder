@@ -266,7 +266,7 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		// map = new Map("0005");
+		map = new Map("000");
 		screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
@@ -329,7 +329,8 @@ public class Coder extends JPanel implements Runnable {
 			runable = false;
 			line = complier.getPointer();
 			player.setState("alive");
-			System.out.println(player.getState());
+		} else if (player.getState().equals("dead")) {
+			player.playerPosition[0] = -99;
 		}
 		if (dir >= 1) {
 			dir = 0;
@@ -368,6 +369,16 @@ public class Coder extends JPanel implements Runnable {
 					portal = new Portal((j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
 					portal.draw(gr, dir);
+				}
+				if (map.getMap()[i][j] == '7') {
+					portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					portal.draw(gr, dir + 2);
+				}
+				if (map.getMap()[i][j] == '6') {
+					portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					portal.draw(gr, dir + 4);
 				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);

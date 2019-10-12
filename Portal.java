@@ -9,9 +9,13 @@ public class Portal {
         this.x = x;
         this.y = y;
         this.scale = scale;
-        images = new ImageIcon[2];
+        images = new ImageIcon[6];
         images[0] = new ImageIcon("icon/portal.png");
         images[1] = new ImageIcon("icon/portal_2.png");
+        images[2] = new ImageIcon("icon/portal_3.png");
+        images[3] = new ImageIcon("icon/portal_4.png");
+        images[4] = new ImageIcon("icon/portal_5.png");
+        images[5] = new ImageIcon("icon/portal_6.png");
     }
 
     public void draw(Graphics g, int dir) {

@@ -56,10 +56,10 @@ class Player {
             setY(getY() + getScale());
         } else {
             System.out.println("*** Sysntax error ***");
-            setState("dead");
-            playerPosition[0] = -50;
+            if (checkNextStep(dir, '2')) {
+                setState("dead");
+            }
         }
-
         if (!getState().equals("dead")) {
             this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
             this.map.setMap(playerPosition[0], playerPosition[1], '9');
@@ -74,33 +74,50 @@ class Player {
             if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) != '0') {
                 bool = false;
             }
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) == '8') {
-                bool = true;
-                setState("next");
-            }
         } else if (dir.equals("right")) {
             if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) != '0') {
                 bool = false;
-            }
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) == '8') {
-                bool = true;
-                setState("next");
             }
         } else if (dir.equals("up")) {
             if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) != '0') {
                 bool = false;
             }
-            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) == '8') {
-                bool = true;
-                setState("next");
-            }
         } else if (dir.equals("down")) {
             if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) != '0') {
                 bool = false;
             }
-            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) == '8') {
+        }
+        checkStep(dir);
+        return bool;
+    }
+    public void checkStep(String dir){
+        if (checkNextStep(dir, '8')) {
+            setState("next");
+        }
+        if (checkNextStep(dir, '7')) {
+            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
+            playerPosition[0] = map.findMap('6')[0];
+            playerPosition[1] = map.findMap('6')[1];
+            this.map.setMap(playerPosition[0], playerPosition[1], '9');
+        }
+    }
+    public boolean checkNextStep(String dir, char a) {
+        boolean bool = false;
+        if (dir.equals("left")) {
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) == a) {
                 bool = true;
-                setState("next");
+            }
+        } else if (dir.equals("right")) {
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) == a) {
+                bool = true;
+            }
+        } else if (dir.equals("up")) {
+            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) == a) {
+                bool = true;
+            }
+        } else if (dir.equals("down")) {
+            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) == a) {
+                bool = true;
             }
         }
         return bool;

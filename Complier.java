@@ -120,24 +120,24 @@ class Complier {
             return false;
         }
     }
-
+    
     // ========================================================
     // Runable
     // ========================================================
 
-    public void checkMethod(Player player, ArrayList<String> token) {
+    public void checkMethod(Player player, ArrayList<String> token) { // WALK, (, RIGHT, )
         boolean condition = false;
         for (int i = 0; i < token.size(); i++) {
-            if (token.get(i).equals("walk") && getExp()) {
+            if (token.get(i).equals("walk")) {
                 player.walk(token.get(i + 2));
-            } else if (token.get(i).equals("check") && getExp()) {
+            } else if (token.get(i).equals("check")) {
                 if (player.collision(token.get(i + 2))) {
                     setExp(true);
                     setIf(false);
                 } else {
                     setExp(false);
                 }
-            } else if (token.get(i).equals("while") && getExp()) {
+            } else if (token.get(i).equals("while")) {
                 // old while
                 // setPointerWhile(getPointer());
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
