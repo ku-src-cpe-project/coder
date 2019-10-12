@@ -1,17 +1,17 @@
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
-public class Bomb {
+public class Portal {
     private ImageIcon[] images;
     private int x, y, scale;
 
-    public Bomb(int x, int y, int scale) {
+    public Portal(int x, int y, int scale) {
         this.x = x;
         this.y = y;
         this.scale = scale;
         images = new ImageIcon[2];
-        images[0] = new ImageIcon("icon/bomb.png");
-        images[1] = new ImageIcon("icon/bomb_2.png");
+        images[0] = new ImageIcon("icon/portal.png");
+        images[1] = new ImageIcon("icon/portal_2.png");
     }
 
     public void draw(Graphics g, int dir) {

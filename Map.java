@@ -21,30 +21,30 @@ class Map {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1000000001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000000001".toCharArray();
+            this.map[3] = "1000000081".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         } else if (level.equals("0001")) {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1002000201".toCharArray();
-            this.map[2] = "1002020201".toCharArray();
+            this.map[2] = "1002020281".toCharArray();
             this.map[3] = "1000020001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         } else if (level.equals("0002")) {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1002000001".toCharArray();
             this.map[2] = "1000002001".toCharArray();
-            this.map[3] = "1000020001".toCharArray();
+            this.map[3] = "1000020081".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         } else if (level.equals("0003")) {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1002000001".toCharArray();
             this.map[2] = "1000002001".toCharArray();
-            this.map[3] = "1000020001".toCharArray();
+            this.map[3] = "1000028001".toCharArray();
             this.map[4] = "1111111111".toCharArray();
         } else if (level.equals("0004")) {
             setRow(6);
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1002002201".toCharArray();
+            this.map[1] = "1002002281".toCharArray();
             this.map[2] = "1000002001".toCharArray();
             this.map[3] = "1220220001".toCharArray();
             this.map[4] = "1220000001".toCharArray();
@@ -57,7 +57,7 @@ class Map {
             this.map[3] = "1220220001".toCharArray();
             this.map[4] = "1220000201".toCharArray();
             this.map[5] = "1000002001".toCharArray();
-            this.map[6] = "1000200001".toCharArray();
+            this.map[6] = "1800200001".toCharArray();
             this.map[7] = "1111111111".toCharArray();
         } else if (level.equals("0006")) {
             setRow(8);
@@ -66,7 +66,7 @@ class Map {
             this.map[2] = "1000002001".toCharArray();
             this.map[3] = "1220220001".toCharArray();
             this.map[4] = "1220000201".toCharArray();
-            this.map[5] = "1000002001".toCharArray();
+            this.map[5] = "1000002801".toCharArray();
             this.map[6] = "1000200001".toCharArray();
             this.map[7] = "1111111111".toCharArray();
         } else {

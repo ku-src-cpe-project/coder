@@ -92,6 +92,7 @@ public class Coder extends JPanel implements Runnable {
 	private int line;
 	private boolean runable;
 	private Bomb bomb;
+	private Portal portal;
 	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
@@ -316,8 +317,19 @@ public class Coder extends JPanel implements Runnable {
 				complier.Runable(player, lines);
 				line++;
 			}
-		} else if (!player.getState().equals("alive")) {
-			// player.playerPosition[0] = -200;
+		} else if (player.getState().equals("next")) {
+			map = new Map(randMap());
+			mapNumber++;
+			mapNmberJ.setText(mapNumber + "");
+			newGame();
+			complier.setPointer(0);
+			complier.setExp(true);
+			complier.setIf(false);
+			complier.setState("null");
+			runable = false;
+			line = complier.getPointer();
+			player.setState("alive");
+			System.out.println(player.getState());
 		}
 		if (dir >= 1) {
 			dir = 0;
@@ -351,6 +363,11 @@ public class Coder extends JPanel implements Runnable {
 					bomb = new Bomb((j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
 					bomb.draw(gr, dir);
+				}
+				if (map.getMap()[i][j] == '8') {
+					portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					portal.draw(gr, dir);
 				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);

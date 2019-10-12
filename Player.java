@@ -74,17 +74,33 @@ class Player {
             if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) != '0') {
                 bool = false;
             }
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) == '8') {
+                bool = true;
+                setState("next");
+            }
         } else if (dir.equals("right")) {
             if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) != '0') {
                 bool = false;
+            }
+            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) == '8') {
+                bool = true;
+                setState("next");
             }
         } else if (dir.equals("up")) {
             if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) != '0') {
                 bool = false;
             }
+            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) == '8') {
+                bool = true;
+                setState("next");
+            }
         } else if (dir.equals("down")) {
             if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) != '0') {
                 bool = false;
+            }
+            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) == '8') {
+                bool = true;
+                setState("next");
             }
         }
         return bool;
