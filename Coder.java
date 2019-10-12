@@ -72,7 +72,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	// Variable
 	// ========================================================
-	private int locationX = 150;
+	private int locationX = 80;
 	private int locationY = 200;
 	private int blockX = 50;
 	public int blockY = 50;
@@ -112,11 +112,11 @@ public class Coder extends JPanel implements Runnable {
 	// init
 	// ========================================================
 	public void init() {
-		screenx = 11 * scale; // 10
+		screenx = 11 * scale ; // 10
 		screeny = 6 * scale; // 5
 		setPreferredSize(new Dimension(screenx, screeny));
 		running = true;
-		bg = new ImageIcon("icon/background.pngl");
+		bg = new ImageIcon("icon/background.png");
 		thread = new Thread(this);
 		thread.setPriority(Thread.MIN_PRIORITY + 1);
 		thread.start();
@@ -239,9 +239,9 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("0001");
-		screenx = (map.getColumn() + 2) * scale + locationX - scale;
-		screeny = (map.getRow()) * scale;
+		map = new Map("0005");
+		screenx = (map.getColumn() + 2) * scale + locationX - scale+50;
+		screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
 		for (int i = 0; i < map.getRow(); i++) { // debug
 			for (int j = 0; j <= map.getColumn(); j++) {
