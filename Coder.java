@@ -96,20 +96,22 @@ public class Coder extends JPanel implements Runnable {
 	private Mushroom mushroom;
 	private Enemy enemy;
 	private ArrayList<Enemy> enemys;
+	private FireBall fireball;
 	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
 	private String currentMap;
 	private int mapNumber = 0;
 	private JLabel mapNmberJ;
-	private int delay = 0;
+	private int delay = 0, delay_2 = 0;
 	private int countEnemy;
 	private boolean first;
+	private boolean attacking;
 
 	// ========================================================
 	// Debug
 	// ========================================================
-	private JButton up, down, left, right;
+	private JButton up, down, left, right, fire;
 
 	// ========================================================
 	// Constructure
@@ -183,6 +185,14 @@ public class Coder extends JPanel implements Runnable {
 		});
 		add(right);
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
+		fire = new JButton("F");
+		fire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.attack();
+			}
+		});
+		add(fire);
+		fire.setBounds(coreX, coreY, sizeX, sizeY);
 
 		// ========================================================
 		//
@@ -286,6 +296,7 @@ public class Coder extends JPanel implements Runnable {
 		enemys = new ArrayList<Enemy>();
 		countEnemy = 0;
 		first = true;
+		attacking = false;
 	}
 
 	// ========================================================
@@ -326,6 +337,31 @@ public class Coder extends JPanel implements Runnable {
 				complier.Runable(player, lines);
 				line++;
 			}
+			// ========================================================
+			// Enemy Delay
+			// ========================================================
+			if (delay > 1) {
+				for (int i = 0; i < enemys.size(); i++) {
+					enemys.get(i).walk();
+				}
+				// if (attacking) {
+				// 	fireball.walk();
+				// }
+				delay = 0;
+			} else {
+				delay++;
+			}
+			if (delay_2 > 2) {
+				if (attacking) {
+					fireball.walk();
+				}
+				delay_2 = 0;
+			} else {
+				delay_2++;
+			}
+			// ========================================================
+			//
+			// ========================================================
 		} else if (player.getState().equals("next")) {
 			map = new Map(randMap());
 			mapNumber++;
@@ -402,33 +438,25 @@ public class Coder extends JPanel implements Runnable {
 							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
 					mushroom.draw(gr, dir);
 				}
+				if (map.getMap()[i][j] == '4') {
+					fireball = new FireBall(map, scale, (j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					fireball.draw(gr, dir);
+					attacking = true;
+				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);
 					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
 					// (padY * i), blockX,
 					// blockY);
+					if (player.getMush().equals("ken")) {
+						player.draw(gr, dir + 2, locationX, locationY, padX, padY);
+					} else {
+						player.draw(gr, dir, locationX, locationY, padX, padY);
+					}
 				}
 			}
 		}
-		if (player.getMush().equals("ken")) {
-			player.draw(gr, dir + 2, locationX, locationY, padX, padY);
-		} else {
-			player.draw(gr, dir, locationX, locationY, padX, padY);
-		}
-		// ========================================================
-		// Enemy Delay
-		// ========================================================
-		if (delay > 1) {
-			for (int i = 0; i < enemys.size(); i++) {
-				enemys.get(i).walk();
-			}
-			delay = 0;
-		} else {
-			delay++;
-		}
-		// ========================================================
-		//
-		// ========================================================
 		first = false;
 		update();
 		g.drawImage(screen, 0, 0, null);

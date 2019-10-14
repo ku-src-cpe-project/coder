@@ -2,7 +2,7 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import java.util.Random;
 
-class Enemy {
+class FireBall {
     private ImageIcon[] images;
     private int x, y, scale;
     private Random random;
@@ -11,15 +11,15 @@ class Enemy {
     private Map map;
     private String state;
 
-    public Enemy(Map map, int scale, int x, int y, int mapX, int mapY) {
+    public FireBall(Map map, int scale, int x, int y, int mapX, int mapY) {
         this.images = new ImageIcon[2];
-        this.images[0] = new ImageIcon("icon/enemy.png");
-        this.images[1] = new ImageIcon("icon/enemy_2.png");
+        this.images[0] = new ImageIcon("icon/fire_ball.png");
+        this.images[1] = new ImageIcon("icon/fire_ball_2.png");
         this.random = new Random();
         this.playerPosition[0] = mapX;
         this.playerPosition[1] = mapY;
         this.map = map;
-        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
+        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '4');
         this.scale = scale;
         this.x = x;
         this.y = y;
@@ -31,27 +31,19 @@ class Enemy {
     }
 
     public void walk() {
-        int dir = random.nextInt(5 - 1) + 1; // random 1-4
+        int dir = 2;
         this.tmpPosition[0] = this.playerPosition[0];
         this.tmpPosition[1] = this.playerPosition[1];
-        if (dir == 1 && collision(dir)) {
-            this.playerPosition[1] -= 1;
-            this.x = this.x - this.scale;
-        } else if (dir == 2 && collision(dir)) {
+        if (dir == 2 && collision(dir)) {
             this.playerPosition[1] += 1;
             this.x = this.x + this.scale;
-        } else if (dir == 3 && collision(dir)) {
-            this.playerPosition[0] -= 1;
-            this.y = this.y - this.scale;
-        } else if (dir == 4 && collision(dir)) {
-            this.playerPosition[0] += 1;
-            this.y = this.y + this.scale;
         } else {
             // System.out.println("*** Sysntax error ***");
+            this.state = "dead";
         }
         if (!this.state.equals("dead")) {
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-            this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
+            this.map.setMap(this.playerPosition[0], this.playerPosition[1], '4');
         } else {
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
         }
@@ -59,20 +51,8 @@ class Enemy {
 
     public boolean collision(int dir) {
         boolean bool = true;
-        if (dir == 1) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) != '0') {
-                bool = false;
-            }
-        } else if (dir == 2) {
+        if (dir == 2) {
             if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
-                bool = false;
-            }
-        } else if (dir == 3) {
-            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) != '0') {
-                bool = false;
-            }
-        } else if (dir == 4) {
-            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) != '0') {
                 bool = false;
             }
         }
@@ -81,27 +61,15 @@ class Enemy {
     }
 
     public void checkStep(int dir) {
-        if (checkNextStep(dir, '9')) {
-            System.out.println("Found Player");
+        if (checkNextStep(dir, '2')) {
+            System.out.println("Found Enemy");
         }
     }
 
     public boolean checkNextStep(int dir, char a) {
         boolean bool = false;
-        if (dir == 1) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) == a) {
-                bool = true;
-            }
-        } else if (dir == 2) {
+        if (dir == 2) {
             if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
-                bool = true;
-            }
-        } else if (dir == 3) {
-            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) == a) {
-                bool = true;
-            }
-        } else if (dir == 4) {
-            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) == a) {
                 bool = true;
             }
         }

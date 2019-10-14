@@ -15,6 +15,18 @@ class Map {
     private int column = 9;
     private char map[][] = new char[column][row];
 
+    /*
+    1 = wall
+    2 = enemy
+    3 = bomb
+    4 = fire ball
+    5 = mushroom
+    6 = des. portal
+    7 = src. protal
+    8 = finish portal
+    9 = player
+    */
+
     public Map(String level) {
         System.out.println("> Map Create");
         if (level.equals("0000")) {
@@ -82,8 +94,8 @@ class Map {
         } else {
             setRow(7);
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000870501".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
+            this.map[1] = "1000870001".toCharArray();
+            this.map[2] = "1500000001".toCharArray();
             this.map[3] = "1300002001".toCharArray();
             this.map[4] = "1002000001".toCharArray();
             this.map[5] = "1000000061".toCharArray();

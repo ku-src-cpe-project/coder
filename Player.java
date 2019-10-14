@@ -20,6 +20,7 @@ class Player {
     private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state, mushroom;
+    private FireBall fireball;
 
     public Player(Map map, int scale) {
         this.images = new ImageIcon[4];
@@ -62,7 +63,7 @@ class Player {
             this.y = this.y + this.scale;
         } else {
             System.out.println("*** Sysntax error ***");
-            if (checkNextStep(dir, '2')) {
+            if (checkNextStep(dir, '3')) {
                 if (getMush().equals("ken")) {
                     this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
                 } else {
@@ -142,6 +143,16 @@ class Player {
             }
         }
         return bool;
+    }
+
+    public void attack() {
+        if (this.mushroom.equals("ken")) {
+            System.out.println("Hadoken!");
+            this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0], this.playerPosition[1]);
+        }
+        else{
+            System.out.println("You are not Ken");
+        }
     }
 
     public int getX() {
