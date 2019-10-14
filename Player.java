@@ -15,77 +15,91 @@ import javax.swing.ImageIcon;
 class Player {
     private ImageIcon[] images;
     private int x, y, scale;
-    public boolean toggleen = false;
     public int[] playerPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
+    private int[] nextPosition = { 0, 0 };
     private Map map;
-    private String state;
+    private String state, mushroom;
 
     public Player(Map map, int scale) {
-        images = new ImageIcon[2];
-        images[0] = new ImageIcon("icon/player.png");
-        images[1] = new ImageIcon("icon/player_2.png");
+        this.images = new ImageIcon[4];
+        this.images[0] = new ImageIcon("icon/player.png");
+        this.images[1] = new ImageIcon("icon/player_2.png");
+        this.images[2] = new ImageIcon("icon/player_3.png");
+        this.images[3] = new ImageIcon("icon/player_4.png");
         this.map = map;
-        this.map.setMap(playerPosition[0], playerPosition[1], '9');
+        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
         this.scale = scale;
-        setX(getScale());
-        setY(getScale());
-        setState("alive");
+        this.x = this.scale;
+        this.y = this.scale;
+        this.state = "alive";
+        this.mushroom = "ryu";
     }
 
     public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
-        g.drawImage(images[dir].getImage(), (playerPosition[1] * getScale()) + locationX + (padX * playerPosition[0]),
-                (playerPosition[0] * getScale()) + locationY - (padY * playerPosition[0]) - 143 + 50, null);
-        // g.drawImage(images[0].getImage(), getX(), getY(), null);
+        g.drawImage(this.images[dir].getImage(),
+                (this.playerPosition[1] * this.scale) + locationX + (padX * this.playerPosition[0]),
+                (this.playerPosition[0] * this.scale) + locationY - (padY * this.playerPosition[0]) - 143 + 50, null);
+        // g.drawImage(this.images[0].getImage(), getX(), getY(), null);
     }
 
     public void walk(String dir) {
-        tmpPosition[0] = playerPosition[0];
-        tmpPosition[1] = playerPosition[1];
+        this.tmpPosition[0] = this.playerPosition[0];
+        this.tmpPosition[1] = this.playerPosition[1];
+        this.nextPosition[0] = tmpPosition[0];
+        this.nextPosition[1] = tmpPosition[1];
         if (dir.equals("left") && collision(dir)) {
-            playerPosition[1] -= 1;
-            setX(getX() - getScale());
+            this.playerPosition[1] -= 1;
+            this.x = this.x - this.scale;
         } else if (dir.equals("right") && collision(dir)) {
-            playerPosition[1] += 1;
-            setX(getX() + getScale());
+            this.playerPosition[1] += 1;
+            this.x = this.x + this.scale;
         } else if (dir.equals("up") && collision(dir)) {
-            playerPosition[0] -= 1;
-            setY(getY() - getScale());
+            this.playerPosition[0] -= 1;
+            this.y = this.y - this.scale;
         } else if (dir.equals("down") && collision(dir)) {
-            playerPosition[0] += 1;
-            setY(getY() + getScale());
+            this.playerPosition[0] += 1;
+            this.y = this.y + this.scale;
         } else {
             System.out.println("*** Sysntax error ***");
             if (checkNextStep(dir, '2')) {
-                setState("dead");
+                if (getMush().equals("ken")) {
+                    this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+                } else {
+                    this.state = "dead";
+                }
             }
         }
-        if (!getState().equals("dead")) {
-            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
-            this.map.setMap(playerPosition[0], playerPosition[1], '9');
+        if (!this.state.equals("dead")) {
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
         } else {
-            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
         }
     }
 
     public boolean collision(String dir) {
         boolean bool = true;
         if (dir.equals("left")) {
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) != '0') {
+            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) != '0') {
                 bool = false;
             }
+            this.nextPosition[1] -= 1;
         } else if (dir.equals("right")) {
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) != '0') {
+            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
                 bool = false;
             }
+            this.nextPosition[1] += 1;
         } else if (dir.equals("up")) {
-            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) != '0') {
+            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) != '0') {
                 bool = false;
             }
+            this.nextPosition[0] -= 1;
         } else if (dir.equals("down")) {
-            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) != '0') {
+            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) != '0') {
                 bool = false;
             }
+            this.nextPosition[0] += 1;
         }
         checkStep(dir);
         return bool;
@@ -93,32 +107,37 @@ class Player {
 
     public void checkStep(String dir) {
         if (checkNextStep(dir, '8')) {
-            setState("next");
+            this.state = "next";
         }
         if (checkNextStep(dir, '7')) {
-            this.map.setMap(tmpPosition[0], tmpPosition[1], '0');
-            playerPosition[0] = map.findMap('6')[0];
-            playerPosition[1] = map.findMap('6')[1];
-            this.map.setMap(playerPosition[0], playerPosition[1], '9');
+            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+            this.playerPosition[0] = this.map.findMap('6')[0];
+            this.playerPosition[1] = this.map.findMap('6')[1];
+        }
+        if (checkNextStep(dir, '5')) {
+            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+            this.playerPosition[0] = this.nextPosition[0];
+            this.playerPosition[1] = this.nextPosition[1];
+            this.mushroom = "ken";
         }
     }
 
     public boolean checkNextStep(String dir, char a) {
         boolean bool = false;
         if (dir.equals("left")) {
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] - 1) == a) {
+            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) == a) {
                 bool = true;
             }
         } else if (dir.equals("right")) {
-            if (this.map.cheMap(playerPosition[0], playerPosition[1] + 1) == a) {
+            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
                 bool = true;
             }
         } else if (dir.equals("up")) {
-            if (this.map.cheMap(playerPosition[0] - 1, playerPosition[1]) == a) {
+            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) == a) {
                 bool = true;
             }
         } else if (dir.equals("down")) {
-            if (this.map.cheMap(playerPosition[0] + 1, playerPosition[1]) == a) {
+            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) == a) {
                 bool = true;
             }
         }
@@ -155,5 +174,9 @@ class Player {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getMush() {
+        return this.mushroom;
     }
 }

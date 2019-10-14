@@ -120,7 +120,7 @@ class Complier {
             return false;
         }
     }
-    
+
     // ========================================================
     // Runable
     // ========================================================
@@ -132,67 +132,67 @@ class Complier {
                 player.walk(token.get(i + 2));
             } else if (token.get(i).equals("check")) {
                 if (player.collision(token.get(i + 2))) {
-                    setExp(true);
-                    setIf(false);
+                    this.expression = true;
+                    this._if = false;
                 } else {
-                    setExp(false);
+                    this.expression = false;
                 }
             } else if (token.get(i).equals("while")) {
                 // old while
-                // setPointerWhile(getPointer());
+                // setPointerWhile(this.pointer);
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
                 // new while
                 condition = true;
-                getPosWhile().add(getPointer());
+                this.positionWhile.add(this.pointer);
             } else if (token.get(i).equals("{")) {
-                setCountState(getCountState() + 1);
+                this.countState++;
             } else if (token.get(i).equals("}")) {
                 // old while
                 // if (getLoopWhile() > 0) {
-                // setPointer(getPointerWhile());
+                // this.pointer = getPointerWhile();
                 // setLoopWhile(getLoopWhile() - 1);
                 // }
                 // new while
                 // if (getIf() && !getState().equals("while")) {
-                //     setCountState(getCountState() - 1);
-                //     if (getCountState() == 0) {
-                //         setExp(true);
-                //     }
-                // } else {
-                    String Y = "";
-                    int y = 0;
-                    // if (getStack().size() > 1) {
-                        Y = getStack().get(getStack().size() - 2);
-                        y = Integer.parseInt(Y.charAt(6) + "");
-                        y -= 1;
-                    // }
-                    if (y != 0) {
-                        setPointer(getPosWhile().get(getPosWhile().size() - 1));
-                        // setPointer(getPointer() - (getCount() + 1));
-                        String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
-                        getStack().set(getStack().size() - 2, tmp);
-                        setState("while");
-                    } else {
-                        popPosWhile();
-                        popStack();
-                        setIf(true);
-                        setState("null");
-                    }
+                // setCountState(getCountState() - 1);
+                // if (getCountState() == 0) {
+                // setExp(true);
                 // }
-                setCount(-1);
-            } 
+                // } else {
+                String Y = "";
+                int y = 0;
+                // if (this.process.size() > 1) {
+                Y = this.process.get(this.process.size() - 2);
+                y = Integer.parseInt(Y.charAt(6) + "");
+                y -= 1;
+                // }
+                if (y != 0) {
+                    this.pointer = this.positionWhile.get(this.positionWhile.size() - 1);
+                    // this.pointer = this.pointer - (getCount() + 1);
+                    String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
+                    this.process.set(this.process.size() - 2, tmp);
+                    this.state = "while";
+                } else {
+                    popPosWhile();
+                    popStack();
+                    this._if = true;
+                    this.state = "null";
+                }
+                // }
+                this.count = -1;
+            }
             // else if (token.get(i).equals("if")) {
-            //     setIf(true);
+            // setIf(true);
             // }
-             else {
+            else {
                 // System.out.println("*** Nothing happen ***");
             }
         }
         if (condition) {
-            setCount(0);
+            this.count = 0;
         } else {
             popStack();
-            setCount(getCount() + 1);
+            this.count++;
         }
     }
 
@@ -210,12 +210,12 @@ class Complier {
 
     public void Runable(Player player, ArrayList<String> lines) {
         // old readable
-        // readLine(player, lines.get(getPointer()));
-        // setPointer(getPointer() + 1);
+        // readLine(player, lines.get(this.pointer));
+        // this.pointer = this.pointer + 1;
         // new readable
-        pushStack(getLines().get(getPointer()));
+        pushStack(getLines().get(this.pointer));
         readStack(player, peekStack());
-        setPointer(getPointer() + 1);
+        this.pointer = this.pointer + 1;
 
     }
 
@@ -245,12 +245,12 @@ class Complier {
 
     public void popPosWhile() {
         if (this.positionWhile.size() > 0) {
-            this.positionWhile.remove(getPosWhile().size() - 1);
+            this.positionWhile.remove(this.positionWhile.size() - 1);
         }
     }
 
     public int peekPosWhile() {
-        return this.positionWhile.get(getPosWhile().size() - 1);
+        return this.positionWhile.get(this.positionWhile.size() - 1);
     }
 
     public ArrayList<String> getStack() {
@@ -263,12 +263,12 @@ class Complier {
 
     public void popStack() {
         if (this.process.size() > 0) {
-            this.process.remove(getStack().size() - 1);
+            this.process.remove(this.process.size() - 1);
         }
     }
 
     public String peekStack() {
-        return this.process.get(getStack().size() - 1);
+        return this.process.get(this.process.size() - 1);
     }
 
     public int getCount() {

@@ -93,12 +93,15 @@ public class Coder extends JPanel implements Runnable {
 	private boolean runable;
 	private Bomb bomb;
 	private Portal portal;
+	private Mushroom mushroom;
+	private Enemy enemy;
 	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
 	private String currentMap;
 	private int mapNumber = 0;
 	private JLabel mapNmberJ;
+	private int delay = 0;
 
 	// ========================================================
 	// Debug
@@ -359,6 +362,11 @@ public class Coder extends JPanel implements Runnable {
 							blockY);
 				}
 				if (map.getMap()[i][j] == '2') {
+					enemy = new Enemy(map, scale, (j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					enemy.draw(gr, dir);
+				}
+				if (map.getMap()[i][j] == '3') {
 					// gr.setColor(Color.GREEN);
 					// gr.fillRect(j * scale, i * scale, blockX, blockY);
 					bomb = new Bomb((j * scale) + locationX + (padX * i),
@@ -380,6 +388,11 @@ public class Coder extends JPanel implements Runnable {
 							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
 					portal.draw(gr, dir + 4);
 				}
+				if (map.getMap()[i][j] == '5') {
+					mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					mushroom.draw(gr, dir);
+				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);
 					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
@@ -388,7 +401,20 @@ public class Coder extends JPanel implements Runnable {
 				}
 			}
 		}
-		player.draw(gr, dir, locationX, locationY, padX, padY);
+		if (player.getMush().equals("ken")) {
+			player.draw(gr, dir + 2, locationX, locationY, padX, padY);
+		} else {
+			player.draw(gr, dir, locationX, locationY, padX, padY);
+		}
+		// ========================================================
+		// Enemy Delay
+		// ========================================================
+		if (delay > 10) {
+			enemy.walk();
+			delay = 0;
+		} else {
+			delay++;
+		}
 		update();
 		g.drawImage(screen, 0, 0, null);
 	}
