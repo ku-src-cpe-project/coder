@@ -95,6 +95,7 @@ public class Coder extends JPanel implements Runnable {
 	private Portal portal;
 	private Mushroom mushroom;
 	private Enemy enemy;
+	private ArrayList<Enemy> enemys;
 	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
@@ -102,6 +103,8 @@ public class Coder extends JPanel implements Runnable {
 	private int mapNumber = 0;
 	private JLabel mapNmberJ;
 	private int delay = 0;
+	private int countEnemy;
+	private boolean first;
 
 	// ========================================================
 	// Debug
@@ -280,6 +283,9 @@ public class Coder extends JPanel implements Runnable {
 			System.out.print("\n");
 		}
 		player = new Player(map, scale);
+		enemys = new ArrayList<Enemy>();
+		countEnemy = 0;
+		first = true;
 	}
 
 	// ========================================================
@@ -365,6 +371,9 @@ public class Coder extends JPanel implements Runnable {
 					enemy = new Enemy(map, scale, (j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
 					enemy.draw(gr, dir);
+					if (first) {
+						enemys.add(enemy);
+					}
 				}
 				if (map.getMap()[i][j] == '3') {
 					// gr.setColor(Color.GREEN);
@@ -409,12 +418,18 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Enemy Delay
 		// ========================================================
-		if (delay > 10) {
-			enemy.walk();
+		if (delay > 1) {
+			for (int i = 0; i < enemys.size(); i++) {
+				enemys.get(i).walk();
+			}
 			delay = 0;
 		} else {
 			delay++;
 		}
+		// ========================================================
+		//
+		// ========================================================
+		first = false;
 		update();
 		g.drawImage(screen, 0, 0, null);
 	}

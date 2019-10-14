@@ -80,11 +80,14 @@ class Map {
             this.map[6] = "1006000061".toCharArray();
             this.map[7] = "1111111111".toCharArray();
         } else {
+            setRow(7);
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000800501".toCharArray();
-            this.map[2] = "1000700001".toCharArray();
-            this.map[3] = "1320000601".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
+            this.map[1] = "1000870501".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1300002001".toCharArray();
+            this.map[4] = "1002000001".toCharArray();
+            this.map[5] = "1000000061".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
         }
     }
 
