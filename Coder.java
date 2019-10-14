@@ -345,7 +345,7 @@ public class Coder extends JPanel implements Runnable {
 					enemys.get(i).walk();
 				}
 				// if (attacking) {
-				// 	fireball.walk();
+				// fireball.walk();
 				// }
 				delay = 0;
 			} else {
@@ -354,6 +354,16 @@ public class Coder extends JPanel implements Runnable {
 			if (delay_2 > 2) {
 				if (attacking) {
 					fireball.walk();
+					if (fireball.checkNextStep(2, '2')) {
+						fireball = null;
+						attacking = false;
+						for (int i = 0; i < enemys.size(); i++) {
+							if (enemys.get(i).checkNextStep(1, '4')) {
+								enemys.remove(i);
+								enemys.get(i).disable();
+							}
+						}
+					}
 				}
 				delay_2 = 0;
 			} else {

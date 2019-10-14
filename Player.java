@@ -45,37 +45,42 @@ class Player {
     }
 
     public void walk(String dir) {
-        this.tmpPosition[0] = this.playerPosition[0];
-        this.tmpPosition[1] = this.playerPosition[1];
-        this.nextPosition[0] = tmpPosition[0];
-        this.nextPosition[1] = tmpPosition[1];
-        if (dir.equals("left") && collision(dir)) {
-            this.playerPosition[1] -= 1;
-            this.x = this.x - this.scale;
-        } else if (dir.equals("right") && collision(dir)) {
-            this.playerPosition[1] += 1;
-            this.x = this.x + this.scale;
-        } else if (dir.equals("up") && collision(dir)) {
-            this.playerPosition[0] -= 1;
-            this.y = this.y - this.scale;
-        } else if (dir.equals("down") && collision(dir)) {
-            this.playerPosition[0] += 1;
-            this.y = this.y + this.scale;
-        } else {
-            System.out.println("*** Sysntax error ***");
-            if (checkNextStep(dir, '3')) {
-                if (getMush().equals("ken")) {
-                    this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
-                } else {
-                    this.state = "dead";
+        if(!this.state.equals("dead")){
+            this.tmpPosition[0] = this.playerPosition[0];
+            this.tmpPosition[1] = this.playerPosition[1];
+            this.nextPosition[0] = tmpPosition[0];
+            this.nextPosition[1] = tmpPosition[1];
+            if (dir.equals("left") && collision(dir)) {
+                this.playerPosition[1] -= 1;
+                this.x = this.x - this.scale;
+            } else if (dir.equals("right") && collision(dir)) {
+                this.playerPosition[1] += 1;
+                this.x = this.x + this.scale;
+            } else if (dir.equals("up") && collision(dir)) {
+                this.playerPosition[0] -= 1;
+                this.y = this.y - this.scale;
+            } else if (dir.equals("down") && collision(dir)) {
+                this.playerPosition[0] += 1;
+                this.y = this.y + this.scale;
+            } else {
+                System.out.println("*** Sysntax error ***");
+                if (checkNextStep(dir, '3')) {
+                    if (this.mushroom.equals("ken")) {
+                        this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+                    } else {
+                        this.state = "dead";
+                    }
                 }
             }
+            if (!this.state.equals("dead")) {
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
+            } else {
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            }
         }
-        if (!this.state.equals("dead")) {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-            this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
-        } else {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+        else{
+            System.out.println("You are dead");
         }
     }
 
@@ -148,9 +153,9 @@ class Player {
     public void attack() {
         if (this.mushroom.equals("ken")) {
             System.out.println("Hadoken!");
-            this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0], this.playerPosition[1]);
-        }
-        else{
+            this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0],
+                    this.playerPosition[1]);
+        } else {
             System.out.println("You are not Ken");
         }
     }

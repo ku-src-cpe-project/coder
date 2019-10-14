@@ -31,29 +31,34 @@ class Enemy {
     }
 
     public void walk() {
-        int dir = random.nextInt(5 - 1) + 1; // random 1-4
-        this.tmpPosition[0] = this.playerPosition[0];
-        this.tmpPosition[1] = this.playerPosition[1];
-        if (dir == 1 && collision(dir)) {
-            this.playerPosition[1] -= 1;
-            this.x = this.x - this.scale;
-        } else if (dir == 2 && collision(dir)) {
-            this.playerPosition[1] += 1;
-            this.x = this.x + this.scale;
-        } else if (dir == 3 && collision(dir)) {
-            this.playerPosition[0] -= 1;
-            this.y = this.y - this.scale;
-        } else if (dir == 4 && collision(dir)) {
-            this.playerPosition[0] += 1;
-            this.y = this.y + this.scale;
-        } else {
-            // System.out.println("*** Sysntax error ***");
-        }
         if (!this.state.equals("dead")) {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-            this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
+            int dir = random.nextInt(5 - 1) + 1; // random 1-4
+            dir = 0;
+            this.tmpPosition[0] = this.playerPosition[0];
+            this.tmpPosition[1] = this.playerPosition[1];
+            if (dir == 1 && collision(dir)) {
+                this.playerPosition[1] -= 1;
+                this.x = this.x - this.scale;
+            } else if (dir == 2 && collision(dir)) {
+                this.playerPosition[1] += 1;
+                this.x = this.x + this.scale;
+            } else if (dir == 3 && collision(dir)) {
+                this.playerPosition[0] -= 1;
+                this.y = this.y - this.scale;
+            } else if (dir == 4 && collision(dir)) {
+                this.playerPosition[0] += 1;
+                this.y = this.y + this.scale;
+            } else {
+                // System.out.println("*** Sysntax error ***");
+            }
+            if (!this.state.equals("dead")) {
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
+            } else {
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            }
         } else {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            System.err.println("Enemy are dead");
         }
     }
 
@@ -84,6 +89,9 @@ class Enemy {
         if (checkNextStep(dir, '9')) {
             System.out.println("Found Player");
         }
+        if (checkNextStep(1, '9')) {
+            System.out.println("Hit");
+        }
     }
 
     public boolean checkNextStep(int dir, char a) {
@@ -106,6 +114,12 @@ class Enemy {
             }
         }
         return bool;
+    }
+
+    public void disable() {
+        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '0');
+        this.playerPosition[0] = -99;
+        this.state = "dead";
     }
 
     public int getX() {

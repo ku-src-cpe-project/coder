@@ -8,6 +8,7 @@ class FireBall {
     private Random random;
     public int[] playerPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
+    private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state;
 
@@ -34,6 +35,8 @@ class FireBall {
         int dir = 2;
         this.tmpPosition[0] = this.playerPosition[0];
         this.tmpPosition[1] = this.playerPosition[1];
+        this.nextPosition[0] = tmpPosition[0];
+        this.nextPosition[1] = tmpPosition[1];
         if (dir == 2 && collision(dir)) {
             this.playerPosition[1] += 1;
             this.x = this.x + this.scale;
@@ -55,6 +58,7 @@ class FireBall {
             if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
                 bool = false;
             }
+            this.nextPosition[1] += 1;
         }
         checkStep(dir);
         return bool;
