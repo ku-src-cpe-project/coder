@@ -96,6 +96,7 @@ class PlaySound {
       // Set Volume
       FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
       gainControl.setValue(6.0f); // max 6.0f
+      gainControl.setValue(-10.0f);
       // Set Volume End
       clip.start();
     } catch (Exception ex) {

@@ -79,6 +79,7 @@ class Player {
                 this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
             } else {
                 this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                Coder.pl.playSound_S("sound/dead.wav");
             }
         } else {
             System.out.println("You are dead");
@@ -115,6 +116,7 @@ class Player {
     public void checkStep(String dir) {
         if (checkNextStep(dir, '8')) {
             this.state = "next";
+            Coder.pl.playSound_S("sound/next.wav");
         }
         if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
@@ -162,8 +164,7 @@ class Player {
 
     public void attack() {
         if (this.mushroom.equals("ken")) {
-            Coder.pl.playSound_S("sound/fire.wav");
-            System.out.println("Hadoken!");
+            System.out.println("Hadouken!");
             if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '2') {
                 this.map.setMap(this.playerPosition[0], this.playerPosition[1] + 1, '0');
                 for (int i = 0; i < Coder.enemys.size(); i++) {
@@ -172,9 +173,20 @@ class Player {
                         Coder.enemys.remove(i);
                     }
                 }
+                Coder.pl.playSound_S("sound/fire.wav");
+                Coder.pl.playSound_S("sound/hit.wav");
+            } else if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '1'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '3'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '5'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '6'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '7'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '8'
+                    || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '9') {
+                System.out.println("Have something front.");
             } else {
                 this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0],
                         this.playerPosition[1] + 1);
+                Coder.pl.playSound_S("sound/fire.wav");
             }
         } else {
             System.out.println("You are not Ken");

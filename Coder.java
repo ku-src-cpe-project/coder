@@ -86,6 +86,11 @@ public class Coder extends JPanel implements Runnable {
 
 	public static PlaySound pl = new PlaySound();
 
+	private ImageIcon[] images;
+	private int anima;
+	private boolean hit;
+	private int tmpX, tmpY;
+
 	// ========================================================
 	// Debug
 	// ========================================================
@@ -126,6 +131,14 @@ public class Coder extends JPanel implements Runnable {
 		mapNmberJ.setForeground(Color.RED);
 		add(mapNmberJ);
 		pl.playSound_L("sound/bgm.wav", 999);
+
+		images = new ImageIcon[5];
+		// images[0] = new ImageIcon("icon/kaboom.gif");
+		images[0] = new ImageIcon("icon/anima/kaboom_1.png");
+		images[1] = new ImageIcon("icon/anima/kaboom_2.png");
+		images[2] = new ImageIcon("icon/anima/kaboom_3.png");
+		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
+		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
 
 		// ========================================================
 		// Debug
@@ -236,7 +249,8 @@ public class Coder extends JPanel implements Runnable {
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				map = new Map(randMap());
+				// map = new Map(randMap());
+				map = new Map(convMap(mapNumber));
 				mapNumber++;
 				mapNmberJ.setText(mapNumber + "");
 				newGame();
@@ -293,6 +307,20 @@ public class Coder extends JPanel implements Runnable {
 	}
 
 	// ========================================================
+	// Convert Map Integer to String
+	// ========================================================
+	public String convMap(int a) {
+		String mapName = "";
+		String tmp = "0000";
+		random = new Random();
+		String randNumberS = a + "";
+		tmp = tmp.concat(randNumberS);
+		mapName = tmp.substring(tmp.length() - 4, tmp.length());
+		currentMap = mapName;
+		return mapName;
+	}
+
+	// ========================================================
 	// Update
 	// ========================================================
 	public void update() {
@@ -332,15 +360,21 @@ public class Coder extends JPanel implements Runnable {
 			if (delay_2 > 1) {
 				if (attacking) {
 					if (fireball != null) {
-						if (fireball.checkNextStep(2, '2')) {
+						if (!fireball.checkNextStep(2, '0')) {
 							for (int i = 0; i < enemys.size(); i++) {
 								if (enemys.get(i).checkNextStep(1, '4')) {
 									enemys.get(i).disable();
 									enemys.remove(i);
 								}
 							}
+							tmpX = fireball.getX();
+							tmpY = fireball.getY();
 							fireball.disable();
+							fireball = null;
 							attacking = false;
+							pl.playSound_S("sound/hit.wav");
+							hit = true;
+							anima = 0;
 						}
 					}
 					if (attacking) {
@@ -373,6 +407,11 @@ public class Coder extends JPanel implements Runnable {
 		} else {
 			dir++;
 		}
+		if (anima >= 4) {
+			anima = 0;
+		} else {
+			anima++;
+		}
 	}
 
 	// ========================================================
@@ -381,8 +420,9 @@ public class Coder extends JPanel implements Runnable {
 	private void makeFrameToScreen(Graphics g) {
 		screen = createImage(screenx, screeny);
 		gr = screen.getGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, screenx, screeny);
 		gr.drawImage(bg.getImage(), 0, 0, null);
-		// System.out.println("DEBUG >\n");
 		// for (int i = 0; i < map.getRow(); i++) {
 		// for (int j = 0; j <= map.getColumn(); j++) {
 		// System.out.print(map.cheMap(i, j));
@@ -456,15 +496,22 @@ public class Coder extends JPanel implements Runnable {
 						player.draw(gr, dir + 4, locationX, locationY, padX, padY);
 					} else if (player.getMush().equals("ken")) {
 						player.draw(gr, dir + 2, locationX, locationY, padX, padY);
-					}else {
+					} else {
 						player.draw(gr, dir, locationX, locationY, padX, padY);
 					}
 				}
 			}
 		}
+		if (hit) {
+			gr.drawImage(images[anima].getImage(), tmpX - 118, tmpY - 74, null); // (456, 294) /2 = (228, 147) /2 = (118, 74)
+			if (anima >= 4) {
+				hit = false;
+			}
+		}
 		first = false;
 		update();
 		g.drawImage(screen, 0, 0, null);
+		// g.drawImage(images[0].getImage(), 100, 100, null); // insert picture .gif
 	}
 
 	// ========================================================
