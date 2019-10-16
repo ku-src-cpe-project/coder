@@ -9,24 +9,17 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import java.io.*;
 import javax.sound.sampled.*;
 import java.awt.Color;
 import java.util.Collections;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 // =============================================================================
 // Timer Import
 // =============================================================================
@@ -37,26 +30,10 @@ import java.util.TimerTask;
 // =============================================================================
 // 
 // =============================================================================
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.io.*;
-import javax.sound.sampled.*;
-import java.awt.Color;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-//
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-//ww  w  .  j av a2s  . com
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+// =============================================================================
+// 
+// =============================================================================
 
 //
 public class Coder extends JPanel implements Runnable {
@@ -95,7 +72,7 @@ public class Coder extends JPanel implements Runnable {
 	private Portal portal;
 	private Mushroom mushroom;
 	private Enemy enemy;
-	private ArrayList<Enemy> enemys;
+	public static ArrayList<Enemy> enemys;
 	private FireBall fireball;
 	private int buttonLocationX = 150, buttonLocationY = 0;
 	private int buttonSizeX = 100, buttonSizeY = 50;
@@ -104,9 +81,10 @@ public class Coder extends JPanel implements Runnable {
 	private int mapNumber = 0;
 	private JLabel mapNmberJ;
 	private int delay = 0, delay_2 = 0;
-	private int countEnemy;
 	private boolean first;
 	private boolean attacking;
+
+	public static PlaySound pl = new PlaySound();
 
 	// ========================================================
 	// Debug
@@ -147,6 +125,7 @@ public class Coder extends JPanel implements Runnable {
 		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
 		mapNmberJ.setForeground(Color.RED);
 		add(mapNmberJ);
+		pl.playSound_L("sound/bgm.wav", 999);
 
 		// ========================================================
 		// Debug
@@ -294,7 +273,6 @@ public class Coder extends JPanel implements Runnable {
 		}
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
-		countEnemy = 0;
 		first = true;
 		attacking = false;
 	}
@@ -340,7 +318,7 @@ public class Coder extends JPanel implements Runnable {
 			// ========================================================
 			// Enemy Delay
 			// ========================================================
-			if (delay > 1) {
+			if (delay > 20) {
 				for (int i = 0; i < enemys.size(); i++) {
 					enemys.get(i).walk();
 				}
@@ -351,18 +329,22 @@ public class Coder extends JPanel implements Runnable {
 			} else {
 				delay++;
 			}
-			if (delay_2 > 2) {
+			if (delay_2 > 1) {
 				if (attacking) {
-					fireball.walk();
-					if (fireball.checkNextStep(2, '2')) {
-						fireball = null;
-						attacking = false;
-						for (int i = 0; i < enemys.size(); i++) {
-							if (enemys.get(i).checkNextStep(1, '4')) {
-								enemys.remove(i);
-								enemys.get(i).disable();
+					if (fireball != null) {
+						if (fireball.checkNextStep(2, '2')) {
+							for (int i = 0; i < enemys.size(); i++) {
+								if (enemys.get(i).checkNextStep(1, '4')) {
+									enemys.get(i).disable();
+									enemys.remove(i);
+								}
 							}
+							fireball.disable();
+							attacking = false;
 						}
+					}
+					if (attacking) {
+						fireball.walk();
 					}
 				}
 				delay_2 = 0;
@@ -373,10 +355,9 @@ public class Coder extends JPanel implements Runnable {
 			//
 			// ========================================================
 		} else if (player.getState().equals("next")) {
-			map = new Map(randMap());
+			newGame();
 			mapNumber++;
 			mapNmberJ.setText(mapNumber + "");
-			newGame();
 			complier.setPointer(0);
 			complier.setExp(true);
 			complier.setIf(false);
@@ -401,6 +382,13 @@ public class Coder extends JPanel implements Runnable {
 		screen = createImage(screenx, screeny);
 		gr = screen.getGraphics();
 		gr.drawImage(bg.getImage(), 0, 0, null);
+		// System.out.println("DEBUG >\n");
+		// for (int i = 0; i < map.getRow(); i++) {
+		// for (int j = 0; j <= map.getColumn(); j++) {
+		// System.out.print(map.cheMap(i, j));
+		// }
+		// System.out.println();
+		// }
 		for (int i = 0; i < map.getRow(); i++) {
 			for (int j = 0; j <= map.getColumn(); j++) {
 				if (map.getMap()[i][j] == '0') {
@@ -448,6 +436,11 @@ public class Coder extends JPanel implements Runnable {
 							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
 					mushroom.draw(gr, dir);
 				}
+				if (map.getMap()[i][j] == 'A') {
+					mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+					mushroom.draw(gr, dir + 2);
+				}
 				if (map.getMap()[i][j] == '4') {
 					fireball = new FireBall(map, scale, (j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
@@ -459,9 +452,11 @@ public class Coder extends JPanel implements Runnable {
 					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
 					// (padY * i), blockX,
 					// blockY);
-					if (player.getMush().equals("ken")) {
+					if (player.getMush().equals("chun-li")) {
+						player.draw(gr, dir + 4, locationX, locationY, padX, padY);
+					} else if (player.getMush().equals("ken")) {
 						player.draw(gr, dir + 2, locationX, locationY, padX, padY);
-					} else {
+					}else {
 						player.draw(gr, dir, locationX, locationY, padX, padY);
 					}
 				}
@@ -484,7 +479,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

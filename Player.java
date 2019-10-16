@@ -23,11 +23,13 @@ class Player {
     private FireBall fireball;
 
     public Player(Map map, int scale) {
-        this.images = new ImageIcon[4];
+        this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("icon/player.png");
         this.images[1] = new ImageIcon("icon/player_2.png");
         this.images[2] = new ImageIcon("icon/player_3.png");
         this.images[3] = new ImageIcon("icon/player_4.png");
+        this.images[4] = new ImageIcon("icon/player_5.png");
+        this.images[5] = new ImageIcon("icon/player_6.png");
         this.map = map;
         this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
         this.scale = scale;
@@ -45,7 +47,7 @@ class Player {
     }
 
     public void walk(String dir) {
-        if(!this.state.equals("dead")){
+        if (!this.state.equals("dead")) {
             this.tmpPosition[0] = this.playerPosition[0];
             this.tmpPosition[1] = this.playerPosition[1];
             this.nextPosition[0] = tmpPosition[0];
@@ -65,7 +67,7 @@ class Player {
             } else {
                 System.out.println("*** Sysntax error ***");
                 if (checkNextStep(dir, '3')) {
-                    if (this.mushroom.equals("ken")) {
+                    if (this.mushroom.equals("chun-li")) {
                         this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
                     } else {
                         this.state = "dead";
@@ -78,8 +80,7 @@ class Player {
             } else {
                 this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             }
-        }
-        else{
+        } else {
             System.out.println("You are dead");
         }
     }
@@ -119,12 +120,21 @@ class Player {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.playerPosition[0] = this.map.findMap('6')[0];
             this.playerPosition[1] = this.map.findMap('6')[1];
+            Coder.pl.playSound_S("sound/portal.wav");
         }
         if (checkNextStep(dir, '5')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.playerPosition[0] = this.nextPosition[0];
             this.playerPosition[1] = this.nextPosition[1];
+            Coder.pl.playSound_S("sound/mushroom.wav");
             this.mushroom = "ken";
+        }
+        if (checkNextStep(dir, 'A')) {
+            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+            this.playerPosition[0] = this.nextPosition[0];
+            this.playerPosition[1] = this.nextPosition[1];
+            Coder.pl.playSound_S("sound/mushroom.wav");
+            this.mushroom = "chun-li";
         }
     }
 
@@ -152,9 +162,20 @@ class Player {
 
     public void attack() {
         if (this.mushroom.equals("ken")) {
+            Coder.pl.playSound_S("sound/fire.wav");
             System.out.println("Hadoken!");
-            this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0],
-                    this.playerPosition[1]);
+            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '2') {
+                this.map.setMap(this.playerPosition[0], this.playerPosition[1] + 1, '0');
+                for (int i = 0; i < Coder.enemys.size(); i++) {
+                    if (Coder.enemys.get(i).checkNextStep(1, '9')) {
+                        Coder.enemys.get(i).disable();
+                        Coder.enemys.remove(i);
+                    }
+                }
+            } else {
+                this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0],
+                        this.playerPosition[1] + 1);
+            }
         } else {
             System.out.println("You are not Ken");
         }

@@ -80,6 +80,12 @@ class FireBall {
         return bool;
     }
 
+    public void disable() {
+        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '0');
+        this.playerPosition[0] = -99;
+        this.state = "dead";
+    }
+
     public int getX() {
         return this.x;
     }

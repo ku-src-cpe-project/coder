@@ -33,7 +33,7 @@ class Enemy {
     public void walk() {
         if (!this.state.equals("dead")) {
             int dir = random.nextInt(5 - 1) + 1; // random 1-4
-            dir = 0;
+            // dir = 4;
             this.tmpPosition[0] = this.playerPosition[0];
             this.tmpPosition[1] = this.playerPosition[1];
             if (dir == 1 && collision(dir)) {
@@ -88,9 +88,6 @@ class Enemy {
     public void checkStep(int dir) {
         if (checkNextStep(dir, '9')) {
             System.out.println("Found Player");
-        }
-        if (checkNextStep(1, '9')) {
-            System.out.println("Hit");
         }
     }
 
