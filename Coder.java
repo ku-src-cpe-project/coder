@@ -78,7 +78,7 @@ public class Coder extends JPanel implements Runnable {
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
 	private String currentMap;
-	private int mapNumber = 0;
+	private int mapNumber = 1;
 	private JLabel mapNmberJ;
 	private int delay = 0, delay_2 = 0;
 	private boolean first;
@@ -275,7 +275,7 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		map = new Map("000");
+		// map = new Map("000");
 		screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
@@ -389,8 +389,9 @@ public class Coder extends JPanel implements Runnable {
 			//
 			// ========================================================
 		} else if (player.getState().equals("next")) {
-			newGame();
 			mapNumber++;
+			map = new Map(convMap(mapNumber));
+			newGame();
 			mapNmberJ.setText(mapNumber + "");
 			complier.setPointer(0);
 			complier.setExp(true);
@@ -432,14 +433,14 @@ public class Coder extends JPanel implements Runnable {
 		for (int i = 0; i < map.getRow(); i++) {
 			for (int j = 0; j <= map.getColumn(); j++) {
 				if (map.getMap()[i][j] == '0') {
-					gr.setColor(Color.WHITE);
-					gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
-							blockY);
+					//gr.setColor(Color.WHITE);
+					//gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
+					//		blockY);
 				}
 				if (map.getMap()[i][j] == '1') {
-					gr.setColor(Color.RED);
-					gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
-							blockY);
+					//gr.setColor(Color.RED);
+					//gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
+					//		blockY);
 				}
 				if (map.getMap()[i][j] == '2') {
 					enemy = new Enemy(map, scale, (j * scale) + locationX + (padX * i),
