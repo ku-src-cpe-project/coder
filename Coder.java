@@ -42,19 +42,19 @@ public class Coder extends JPanel implements Runnable {
 	private boolean pause = false;
 	private Graphics gr;
 	private int scale = 100; // 105 *From variable*
-	private int screenx = 10 * scale; // 1115
-	private int screeny = 6 * scale; // 638
+	private int screenx = 1280; // 1115
+	private int screeny = 500; // 638
 	private Image screen;
 	private ImageIcon bg;
 	// ========================================================
 	// Variable
 	// ========================================================
-	private int locationX = 80;
-	private int locationY = 200;
+	private int locationX = 110;
+	private int locationY = 230;
 	private int blockX = 50;
 	public int blockY = 50;
-	private int padX = 20;
-	private int padY = 50;
+	private int padX = 15;
+	private int padY = 45;
 	private Map map;
 	private Random random;
 	private Player player;
@@ -74,12 +74,12 @@ public class Coder extends JPanel implements Runnable {
 	private Enemy enemy;
 	public static ArrayList<Enemy> enemys;
 	private FireBall fireball;
-	private int buttonLocationX = 150, buttonLocationY = 0;
+	private int buttonLocationX = 325, buttonLocationY = 25;
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
 	private String currentMap;
 	private int mapNumber = 1;
-	private JLabel mapNmberJ;
+	private JLabel mapNmberJ, hintJ, UhintJ;
 	private int delay = 0, delay_2 = 0;
 	private boolean first;
 	private boolean attacking;
@@ -107,8 +107,8 @@ public class Coder extends JPanel implements Runnable {
 	// init
 	// ========================================================
 	public void init() {
-		screenx = 11 * scale; // 10
-		screeny = 6 * scale; // 5
+		screenx = 1065; // 11 * scale; // 10;
+		screeny = 600; // 6 * scale; // 5;
 		setPreferredSize(new Dimension(screenx, screeny));
 		running = true;
 		bg = new ImageIcon("icon/background.png");
@@ -121,15 +121,27 @@ public class Coder extends JPanel implements Runnable {
 		complier = new Complier();
 		runable = false;
 		line = 0;
-		input = new JTextArea("Coding here...");
-		input.setBackground(Color.green);
-		input.setBounds(0, 0, 150, screeny - 300);
+		Font f1 = new Font("SansSerif", Font.BOLD, 20);
+		input = new JTextArea("");
+		input.setBackground(new Color(70, 220, 90));
+		input.setBounds(11, 10, 195, 332);
+		input.setFont(f1);
 		add(input);
 		mapNmberJ = new JLabel(mapNumber + "");
-		mapNmberJ.setBounds(screenx - 150, 0, 150, 75);
+		mapNmberJ.setBounds(1010, 10, 150, 75);
 		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
-		mapNmberJ.setForeground(Color.RED);
+		mapNmberJ.setForeground(Color.BLACK);
 		add(mapNmberJ);
+		UhintJ = new JLabel("Hint: ");
+		UhintJ.setBounds(250, 95, 70, 75);
+		UhintJ.setBackground(new Color(70, 220, 90));
+		UhintJ.setFont(f1);
+		add(UhintJ);
+		hintJ = new JLabel("");
+		hintJ.setBounds(300, 95, 770, 75);
+		hintJ.setBackground(new Color(70, 220, 90));
+		hintJ.setFont(f1);
+		add(hintJ);
 		pl.playSound_L("sound/bgm.wav", 999);
 
 		images = new ImageIcon[5];
@@ -143,7 +155,7 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Debug
 		// ========================================================
-		int coreX = 450, coreY = 80;
+		int coreX = 70, coreY = 450;
 		int sizeX = 50, sizeY = 50;
 		up = new JButton("^");
 		up.addActionListener(new ActionListener() {
@@ -151,7 +163,6 @@ public class Coder extends JPanel implements Runnable {
 				player.walk("up");
 			}
 		});
-		add(up);
 		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
 		down = new JButton("V");
 		down.addActionListener(new ActionListener() {
@@ -159,7 +170,6 @@ public class Coder extends JPanel implements Runnable {
 				player.walk("down");
 			}
 		});
-		add(down);
 		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
 		left = new JButton("<");
 		left.addActionListener(new ActionListener() {
@@ -167,7 +177,6 @@ public class Coder extends JPanel implements Runnable {
 				player.walk("left");
 			}
 		});
-		add(left);
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		right = new JButton(">");
 		right.addActionListener(new ActionListener() {
@@ -175,7 +184,6 @@ public class Coder extends JPanel implements Runnable {
 				player.walk("right");
 			}
 		});
-		add(right);
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
 		fire = new JButton("F");
 		fire.addActionListener(new ActionListener() {
@@ -183,6 +191,10 @@ public class Coder extends JPanel implements Runnable {
 				player.attack();
 			}
 		});
+		add(up);
+		add(down);
+		add(left);
+		add(right);
 		add(fire);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 
@@ -234,37 +246,39 @@ public class Coder extends JPanel implements Runnable {
 		restart = new JButton("Restart");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				map = new Map(currentMap);
+				map = new Map(hintJ, currentMap);
 				newGame();
 				complier.setPointer(0);
-				complier.setExp(true);
-				complier.setIf(false);
-				complier.setState("null");
+				// complier.setExp(true);
+				// complier.setIf(false);
+				// complier.setState("null");
 				runable = false;
 				line = complier.getPointer();
 			}
 		});
 		add(restart);
-		restart.setBounds(buttonLocationX, buttonLocationY + buttonSizeY, buttonSizeX, buttonSizeY);
+		restart.setBounds(buttonLocationX + 250, buttonLocationY, buttonSizeX, buttonSizeY);
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// map = new Map(randMap());
-				map = new Map(convMap(mapNumber));
+				map = new Map(hintJ, convMap(mapNumber));
 				mapNumber++;
 				mapNmberJ.setText(mapNumber + "");
 				newGame();
 				complier.setPointer(0);
-				complier.setExp(true);
-				complier.setIf(false);
-				complier.setState("null");
+				// complier.setExp(true);
+				// complier.setIf(false);
+				// complier.setState("null");
 				runable = false;
 				line = complier.getPointer();
 			}
 		});
 		add(next);
-		next.setBounds(buttonLocationX, buttonLocationY + buttonSizeY * 2, buttonSizeX, buttonSizeY);
-		map = new Map(randMap());
+		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
+		// map = new Map(randMap());
+		map = new Map(hintJ, "0000");
+		currentMap = "0000";
 		newGame();
 	}
 
@@ -275,9 +289,9 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
-		// map = new Map("000");
-		screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
-		screeny = (map.getRow()) * blockY + locationY;
+		// map = new Map("0009");
+		// screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
+		// screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
 		for (int i = 0; i < map.getRow(); i++) { // debug
 			for (int j = 0; j <= map.getColumn(); j++) {
@@ -390,7 +404,7 @@ public class Coder extends JPanel implements Runnable {
 			// ========================================================
 		} else if (player.getState().equals("next")) {
 			mapNumber++;
-			map = new Map(convMap(mapNumber));
+			map = new Map(hintJ, convMap(mapNumber));
 			newGame();
 			mapNmberJ.setText(mapNumber + "");
 			complier.setPointer(0);
@@ -433,14 +447,16 @@ public class Coder extends JPanel implements Runnable {
 		for (int i = 0; i < map.getRow(); i++) {
 			for (int j = 0; j <= map.getColumn(); j++) {
 				if (map.getMap()[i][j] == '0') {
-					//gr.setColor(Color.WHITE);
-					//gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
-					//		blockY);
+					// gr.setColor(Color.WHITE);
+					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+					// (padY * i), blockX,
+					// blockY);
 				}
 				if (map.getMap()[i][j] == '1') {
-					//gr.setColor(Color.RED);
-					//gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i), blockX,
-					//		blockY);
+					// gr.setColor(Color.RED);
+					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+					// (padY * i), blockX,
+					// blockY);
 				}
 				if (map.getMap()[i][j] == '2') {
 					enemy = new Enemy(map, scale, (j * scale) + locationX + (padX * i),
@@ -504,7 +520,8 @@ public class Coder extends JPanel implements Runnable {
 			}
 		}
 		if (hit) {
-			gr.drawImage(images[anima].getImage(), tmpX - 118, tmpY - 74, null); // (456, 294) /2 = (228, 147) /2 = (118, 74)
+			gr.drawImage(images[anima].getImage(), tmpX - 118, tmpY - 74, null); // (456, 294) /2 = (228, 147) /2 =
+																					// (118, 74)
 			if (anima >= 4) {
 				hit = false;
 			}
@@ -527,7 +544,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(300);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

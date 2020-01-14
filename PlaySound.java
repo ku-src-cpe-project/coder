@@ -58,8 +58,8 @@ class PlaySound {
         clip.open(stream);
         // Set Volume
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        // gainControl.setValue(-14.0f);
-        gainControl.setValue(-4.0f);
+        gainControl.setValue(-30.0f);
+        // gainControl.setValue(-4.0f);
         // Set Volume End
         clip.loop(loop - 1);
         clip.start();

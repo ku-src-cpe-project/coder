@@ -43,7 +43,7 @@ class Complier {
             if (tokens.get(i).equals(";")) {
                 this.lines.add(tmp);
                 tmp = "";
-            } else if (tokens.get(i).equals("while")) {
+            } else if (tokens.get(i).equals("while")) { // while(number){
                 tmp = tmp.concat(tokens.get(i) + ""); // while
                 tmp = tmp.concat(tokens.get(i + 1) + ""); // (
                 tmp = tmp.concat(tokens.get(i + 2) + ""); // number
@@ -52,7 +52,7 @@ class Complier {
                 this.lines.add(tmp);
                 tmp = "";
                 i += 4;
-            } else if (tokens.get(i).equals("if")) {
+            } else if (tokens.get(i).equals("if")) { // if(check(right)){
                 tmp = tmp.concat(tokens.get(i) + ""); // if
                 tmp = tmp.concat(tokens.get(i + 1) + ""); // (
                 tmp = tmp.concat(tokens.get(i + 2) + ""); // check
@@ -64,6 +64,12 @@ class Complier {
                 this.lines.add(tmp);
                 tmp = "";
                 i += 7;
+            } else if (tokens.get(i).equals("else")) { // else(){
+                tmp = tmp.concat(tokens.get(i) + ""); // else
+                tmp = tmp.concat(tokens.get(i + 1) + ""); // {
+                this.lines.add(tmp);
+                tmp = "";
+                i += 1;
             } else if (tokens.get(i).equals("}")) {
                 this.lines.add("}");
             } else if (!parses.get(i).equals("\n")) {
@@ -71,7 +77,7 @@ class Complier {
             }
         }
         this.lines.add("END");
-        // System.out.println(this.lines);
+        System.out.println(this.lines);
         return this.lines;
     }
 
@@ -80,7 +86,7 @@ class Complier {
         for (int i = 0; i < text.length(); i++) {
             this.parses.add(text.charAt(i) + "");
         }
-        // System.out.println("" + this.parses);
+        System.out.println("" + this.parses);
         return this.parses;
     }
 
@@ -109,7 +115,7 @@ class Complier {
                 // System.out.println(tmp);
             }
         }
-        // System.out.println("" + this.tokens);
+        System.out.println("" + this.tokens);
         return this.tokens;
     }
 
@@ -144,8 +150,16 @@ class Complier {
                 // new while
                 condition = true;
                 this.positionWhile.add(this.pointer);
+            } else if (token.get(i).equals("else")) {
+                System.out.println("\nELSE");
+                this.state = "else";
             } else if (token.get(i).equals("{")) {
-                this.countState++;
+                if(this.state.equals("else")){
+                    System.out.println("\nELSE");
+                }
+                else{
+                    this.countState++;
+                }
             } else if (token.get(i).equals("}")) {
                 // old while
                 // if (getLoopWhile() > 0) {
@@ -159,27 +173,31 @@ class Complier {
                 // setExp(true);
                 // }
                 // } else {
-                String Y = "";
-                int y = 0;
-                // if (this.process.size() > 1) {
-                Y = this.process.get(this.process.size() - 2);
-                y = Integer.parseInt(Y.charAt(6) + "");
-                y -= 1;
-                // }
-                if (y != 0) {
-                    this.pointer = this.positionWhile.get(this.positionWhile.size() - 1);
-                    // this.pointer = this.pointer - (getCount() + 1);
-                    String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
-                    this.process.set(this.process.size() - 2, tmp);
-                    this.state = "while";
+                if (this.state.equals("else")) {
+                    System.out.println("END '}'");
                 } else {
-                    popPosWhile();
-                    popStack();
-                    this._if = true;
-                    this.state = "null";
+                    String Y = "";
+                    int y = 0;
+                    // if (this.process.size() > 1) {
+                    Y = this.process.get(this.process.size() - 2);
+                    y = Integer.parseInt(Y.charAt(6) + "");
+                    y -= 1;
+                    // }
+                    if (y != 0) {
+                        this.pointer = this.positionWhile.get(this.positionWhile.size() - 1);
+                        // this.pointer = this.pointer - (getCount() + 1);
+                        String tmp = Y.substring(0, 6) + (y + "") + Y.substring(7, 9);
+                        this.process.set(this.process.size() - 2, tmp);
+                        this.state = "while";
+                    } else {
+                        popPosWhile();
+                        popStack();
+                        this._if = true;
+                        this.state = "null";
+                    }
+                    // }
+                    this.count = -1;
                 }
-                // }
-                this.count = -1;
             }
             // else if (token.get(i).equals("if")) {
             // setIf(true);
@@ -213,6 +231,7 @@ class Complier {
         // readLine(player, lines.get(this.pointer));
         // this.pointer = this.pointer + 1;
         // new readable
+        System.out.println(getLines().get(this.pointer));
         pushStack(getLines().get(this.pointer));
         readStack(player, peekStack());
         this.pointer = this.pointer + 1;
