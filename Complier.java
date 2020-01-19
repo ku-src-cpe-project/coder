@@ -111,12 +111,18 @@ class Complier {
                 this.tokens.add(";");
             } else {
                 // System.out.println(parses.get(i) + " is Not Operater");
-                tmp = tmp.concat(parses.get(i) + "");
+                if (parses.get(i).equals("e")) {
+                    i += 3;
+                    this.tokens.add("else");
+                } else {
+                    tmp = tmp.concat(parses.get(i) + "");
+                }
                 // System.out.println(tmp);
             }
         }
         System.out.println("" + this.tokens);
         return this.tokens;
+
     }
 
     public boolean checkOperater(String parse) {
@@ -151,13 +157,12 @@ class Complier {
                 condition = true;
                 this.positionWhile.add(this.pointer);
             } else if (token.get(i).equals("else")) {
-                System.out.println("\nELSE");
+                // System.out.println("\nELSE");
                 this.state = "else";
             } else if (token.get(i).equals("{")) {
-                if(this.state.equals("else")){
-                    System.out.println("\nELSE");
-                }
-                else{
+                if (this.state.equals("else")) {
+                    // System.out.println("\nELSE");
+                } else {
                     this.countState++;
                 }
             } else if (token.get(i).equals("}")) {

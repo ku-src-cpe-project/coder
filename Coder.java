@@ -232,6 +232,9 @@ public class Coder extends JPanel implements Runnable {
 				// text_value =
 				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
 
+				// else
+				text_value = "else{walk(down);}";
+
 				text_value = text_value.replace(" ", "");
 				text_value = text_value.replace("\n", "");
 				text_value = text_value.replace("\t", "");
