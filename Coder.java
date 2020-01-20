@@ -78,13 +78,15 @@ public class Coder extends JPanel implements Runnable {
 	private int buttonSizeX = 100, buttonSizeY = 50;
 	private int dir = 0;
 	private String currentMap;
-	private int mapNumber = 1;
+	private int mapNumber;
 	private JLabel mapNmberJ, hintJ, UhintJ;
 	private int delay = 0, delay_2 = 0;
 	private boolean first;
 	private boolean attacking;
 
 	public static PlaySound pl = new PlaySound();
+	public static ReadFile rf;
+	public static String mapNumberS;
 
 	private ImageIcon[] images;
 	private int anima;
@@ -127,7 +129,7 @@ public class Coder extends JPanel implements Runnable {
 		input.setBounds(11, 10, 195, 332);
 		input.setFont(f1);
 		add(input);
-		mapNmberJ = new JLabel(mapNumber + "");
+		mapNmberJ = new JLabel(mapNumberS);
 		mapNmberJ.setBounds(1010, 10, 150, 75);
 		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
 		mapNmberJ.setForeground(Color.BLACK);
@@ -151,6 +153,16 @@ public class Coder extends JPanel implements Runnable {
 		images[2] = new ImageIcon("icon/anima/kaboom_3.png");
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
+
+		// ========================================================
+		// Save file
+		// ========================================================
+		rf = new ReadFile();
+		rf.OpenFile_read();
+		rf.ReadFile();
+		rf.CloseFile_read();
+		mapNumber = Integer.parseInt(mapNumberS);
+		mapNmberJ.setText(mapNumberS);
 
 		// ========================================================
 		// Debug
@@ -264,24 +276,14 @@ public class Coder extends JPanel implements Runnable {
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				// map = new Map(randMap());
-				map = new Map(hintJ, convMap(mapNumber));
-				mapNumber++;
-				mapNmberJ.setText(mapNumber + "");
-				newGame();
-				complier.setPointer(0);
-				// complier.setExp(true);
-				// complier.setIf(false);
-				// complier.setState("null");
-				runable = false;
-				line = complier.getPointer();
+				player.setState("next");
 			}
 		});
 		add(next);
 		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
 		// map = new Map(randMap());
-		map = new Map(hintJ, "0000");
-		currentMap = "0000";
+		map = new Map(hintJ, convMap(mapNumber));
+		currentMap = convMap(mapNumber);
 		newGame();
 	}
 
@@ -417,6 +419,15 @@ public class Coder extends JPanel implements Runnable {
 			runable = false;
 			line = complier.getPointer();
 			player.setState("alive");
+
+			// ========================================================
+			// Save file
+			// ========================================================
+			mapNumberS = mapNumber + "";
+			mapNmberJ.setText(mapNumberS);
+			rf.OpenFile_write();
+			rf.AddRecord(mapNumberS);
+			rf.CloseFile_write();
 		} else if (player.getState().equals("dead")) {
 			player.playerPosition[0] = -99;
 		}
