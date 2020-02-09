@@ -58,8 +58,8 @@ class PlaySound {
         clip.open(stream);
         // Set Volume
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        // gainControl.setValue(-30.0f);
-        gainControl.setValue(-4.0f);
+        gainControl.setValue(-60.0f);
+        // gainControl.setValue(-4.0f);
         // Set Volume End
         clip.loop(loop - 1);
         clip.start();
@@ -95,8 +95,8 @@ class PlaySound {
       clip.open(stream);
       // Set Volume
       FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-      gainControl.setValue(6.0f); // max 6.0f
-      //gainControl.setValue(-10.0f);
+      // gainControl.setValue(6.0f); // max 6.0f
+      gainControl.setValue(-60.0f);
       // Set Volume End
       clip.start();
     } catch (Exception ex) {

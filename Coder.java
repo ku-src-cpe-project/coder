@@ -60,7 +60,7 @@ public class Coder extends JPanel implements Runnable {
 	private Player player;
 	private JTextArea input;
 	private String text_value;
-	private JButton submit, restart;
+	private JButton submit, clear, restart;
 	private JButton next;
 	private Complier complier;
 	private ArrayList<String> parses;
@@ -258,8 +258,9 @@ public class Coder extends JPanel implements Runnable {
 		});
 		add(submit);
 		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
-		restart = new JButton("Restart");
-		restart.addActionListener(new ActionListener() {
+
+		clear = new JButton("Clear");
+		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				map = new Map(hintJ, currentMap);
 				newGame();
@@ -271,8 +272,9 @@ public class Coder extends JPanel implements Runnable {
 				line = complier.getPointer();
 			}
 		});
-		add(restart);
-		restart.setBounds(buttonLocationX + 250, buttonLocationY, buttonSizeX, buttonSizeY);
+		add(clear);
+		clear.setBounds(buttonLocationX + 200, buttonLocationY, buttonSizeX, buttonSizeY);
+
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -281,6 +283,28 @@ public class Coder extends JPanel implements Runnable {
 		});
 		add(next);
 		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
+
+		restart = new JButton("Restart");
+		restart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				rf.OpenFile_write();
+				rf.AddRecord("0");
+				rf.CloseFile_write();
+				mapNumber = 0;
+				mapNumberS = "0";
+				map = new Map(hintJ, convMap(mapNumber));
+				mapNmberJ.setText(mapNumberS);
+				newGame();
+				complier.setPointer(0);
+				// complier.setExp(true);
+				// complier.setIf(false);
+				// complier.setState("null");
+				runable = false;
+				line = complier.getPointer();
+			}
+		});
+		add(restart);
+		restart.setBounds(buttonLocationX + 320, buttonLocationY, buttonSizeX, buttonSizeY);
 		// map = new Map(randMap());
 		map = new Map(hintJ, convMap(mapNumber));
 		currentMap = convMap(mapNumber);
