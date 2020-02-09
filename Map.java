@@ -14,17 +14,18 @@ class Map {
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
+    private boolean smoke = false;
 
     // 1=wall 2=enemy 3=bomb
-    // 4=fire ball 
+    // 4=fire ball
     // 6=des.portal 7=src.protal
-    // 8=finish portal 
+    // 8=finish portal
     // 9=player
     // A=mush.Chun 5=mush.Ken
 
     public Map(JLabel hint, String level) {
         System.out.println("> Map Create");
-        if (level.equals("0000")) {
+        if (level.equals("0000")) { // walk(dire)
             setRow(7);
             hint.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
@@ -34,17 +35,7 @@ class Map {
             this.map[4] = "1000003001".toCharArray();
             this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0001")) {
-            setRow(7);
-            hint.setText("Go to portal blue.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1003000381".toCharArray();
-            this.map[2] = "1003030301".toCharArray();
-            this.map[3] = "1003030301".toCharArray();
-            this.map[4] = "1003030301".toCharArray();
-            this.map[5] = "1000030001".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0002")) {
+        } else if (level.equals("0001")) { // test walk(dir)
             setRow(7);
             hint.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
@@ -54,7 +45,18 @@ class Map {
             this.map[4] = "1330303331".toCharArray();
             this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0003")) {
+        } else if (level.equals("0002")) { // attack(dir)
+            setRow(7);
+            hint.setText("Escape from maze.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1030003001".toCharArray();
+            this.map[2] = "1030303031".toCharArray();
+            this.map[3] = "1000300031".toCharArray();
+            this.map[4] = "1330303331".toCharArray();
+            this.map[5] = "1000300081".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setSmoke(true);
+        } else if (level.equals("0003")) { // while(cou) fix line
             setRow(7);
             hint.setText("Find the portal");
             this.map[0] = "1111111111".toCharArray();
@@ -64,7 +66,7 @@ class Map {
             this.map[4] = "1333333331".toCharArray();
             this.map[5] = "1600000081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0004")) {
+        } else if (level.equals("0004")) { // test while(cou) fix line
             setRow(7);
             hint.setText("How many you enter portal");
             this.map[0] = "1111111111".toCharArray();
@@ -74,7 +76,7 @@ class Map {
             this.map[4] = "1333363601".toCharArray();
             this.map[5] = "1700003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0005")) {
+        } else if (level.equals("0005")) { // check(dir)
             setRow(7);
             hint.setText("Jail break.");
             this.map[0] = "1111111111".toCharArray();
@@ -84,7 +86,7 @@ class Map {
             this.map[4] = "1033333001".toCharArray();
             this.map[5] = "10000A3001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0006")) {
+        } else if (level.equals("0006")) { // if
             setRow(7);
             hint.setText("Destroy all bomb. then you will see goal.");
             this.map[0] = "1111111111".toCharArray();
@@ -94,7 +96,7 @@ class Map {
             this.map[4] = "1000000001".toCharArray();
             this.map[5] = "13000000A1".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0007")) {
+        } else if (level.equals("0007")) { // if else
             setRow(7);
             hint.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
@@ -104,7 +106,7 @@ class Map {
             this.map[4] = "1006300331".toCharArray();
             this.map[5] = "1A00300381".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0008")) {
+        } else if (level.equals("0008")) { // test if else
             setRow(7);
             hint.setText("Where the enemy.");
             this.map[0] = "1111111111".toCharArray();
@@ -114,7 +116,7 @@ class Map {
             this.map[4] = "1000000201".toCharArray();
             this.map[5] = "1000000081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0009")) {
+        } else if (level.equals("0009")) { // mushroom attack
             setRow(7);
             hint.setText("More the enemy.");
             this.map[0] = "1111111111".toCharArray();
@@ -124,7 +126,7 @@ class Map {
             this.map[4] = "1002000001".toCharArray();
             this.map[5] = "1000000081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (level.equals("0010")) {
+        } else if (level.equals("0010")) { // enemy
             setRow(7);
             hint.setText("Room of death.");
             this.map[0] = "1111111111".toCharArray();
@@ -134,6 +136,9 @@ class Map {
             this.map[4] = "1000000001".toCharArray();
             this.map[5] = "10000000A1".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // ========================================================
+            // World 1
+            // ========================================================
         } else if (level.equals("0011")) {
             setRow(7);
             hint.setText("Go to portal blue.");
@@ -201,6 +206,14 @@ class Map {
 
     public void setColumn(int a) {
         this.column = a;
+    }
+
+    public boolean getSmoke() {
+        return this.smoke;
+    }
+
+    public void setSmoke(boolean a) {
+        this.smoke = a;
     }
 
     public char cheMap(int x, int y) {

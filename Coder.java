@@ -89,6 +89,7 @@ public class Coder extends JPanel implements Runnable {
 	public static String mapNumberS;
 
 	private ImageIcon[] images;
+	private ImageIcon[] smoke;
 	private int anima;
 	private boolean hit;
 	private int tmpX, tmpY;
@@ -153,6 +154,8 @@ public class Coder extends JPanel implements Runnable {
 		images[2] = new ImageIcon("icon/anima/kaboom_3.png");
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
+		smoke = new ImageIcon[1];
+		smoke[0] = new ImageIcon("icon/background_2.png");
 
 		// ========================================================
 		// Save file
@@ -563,6 +566,10 @@ public class Coder extends JPanel implements Runnable {
 			if (anima >= 4) {
 				hit = false;
 			}
+		}
+		if (map.getSmoke()) {
+			gr.drawImage(smoke[0].getImage(), 0, 0, null);
+			System.out.println("SMOKE ~~~");
 		}
 		first = false;
 		update();

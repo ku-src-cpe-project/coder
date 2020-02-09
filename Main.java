@@ -12,9 +12,9 @@ public class Main extends JFrame {
     setTitle("Game: Tetris");
     // setLocation(15, 5);
     // setLocation(400, 100);
-    // setLocation(2040, 180);
+    setLocation(1700, 300);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLocationRelativeTo(null);
+    // setLocationRelativeTo(null);
   }
   public static void main(String[] args) {
     EventQueue.invokeLater(() -> {
