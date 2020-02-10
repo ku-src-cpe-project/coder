@@ -57,22 +57,23 @@ class Map {
             this.map[1] = "1000000001".toCharArray();
             this.map[2] = "15000000D1".toCharArray();
             this.map[3] = "1000000001".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
+            this.map[4] = "10000000D1".toCharArray();
             this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setSmoke(true);
             setPuzzle(true);
-            setDummy(1);
+            setDummy(2);
         } else if (level.equals("0003")) { // while(cou) fix line
             setRow(7);
             hint.setText("Find the portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000033301".toCharArray();
-            this.map[2] = "1033000001".toCharArray();
-            this.map[3] = "1000030371".toCharArray();
-            this.map[4] = "1333333331".toCharArray();
-            this.map[5] = "1600000081".toCharArray();
+            this.map[1] = "1000030001".toCharArray();
+            this.map[2] = "1000030801".toCharArray();
+            this.map[3] = "1000030001".toCharArray();
+            this.map[4] = "1000030001".toCharArray();
+            this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
         } else if (level.equals("0004")) { // test while(cou) fix line
             setRow(7);
             hint.setText("How many you enter portal");
@@ -202,7 +203,16 @@ class Map {
     public void update() {
         if (level.equals("0002")) { // attack(dir)
             if (!getPuzzle()) {
-                this.map[5][6] = '8';
+                this.map[5][2] = '8';
+            }
+        }
+        if (level.equals("0003")) { // while(cou) fix line
+            if (Coder.runable) {
+                System.out.println(Coder.lines.size());
+                if (getPuzzle() && ((Coder.lines.size() - 2) > 1)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
             }
         }
     }

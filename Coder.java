@@ -65,9 +65,9 @@ public class Coder extends JPanel implements Runnable {
 	private Complier complier;
 	private ArrayList<String> parses;
 	private ArrayList<String> tokens;
-	private ArrayList<String> lines;
+	public static ArrayList<String> lines;
 	private int line;
-	private boolean runable;
+	public static boolean runable;
 	private Bomb bomb;
 	private Portal portal;
 	private Mushroom mushroom;
@@ -392,6 +392,9 @@ public class Coder extends JPanel implements Runnable {
 				System.out.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 				complier.Runable(player, lines);
 				line++;
+				if (line == (lines.size())) {
+					runable = false;
+				}
 			}
 			// ========================================================
 			// Enemy Delay
@@ -422,7 +425,9 @@ public class Coder extends JPanel implements Runnable {
 									// dummys.get(i).disable();
 									// dummys.remove(i);
 									map.setDummy(map.getDummy() - 1);
-									map.setPuzzle(false);
+									if (map.getDummy() == 0) {
+										map.setPuzzle(false);
+									}
 								}
 							}
 							tmpX = fireball.getX();
