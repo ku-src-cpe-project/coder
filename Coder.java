@@ -72,7 +72,9 @@ public class Coder extends JPanel implements Runnable {
 	private Portal portal;
 	private Mushroom mushroom;
 	private Enemy enemy;
+	private Dummy dummy;
 	public static ArrayList<Enemy> enemys;
+	public static ArrayList<Dummy> dummys;
 	private FireBall fireball;
 	private int buttonLocationX = 325, buttonLocationY = 25;
 	private int buttonSizeX = 100, buttonSizeY = 50;
@@ -155,7 +157,7 @@ public class Coder extends JPanel implements Runnable {
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
 		smoke = new ImageIcon[1];
-		smoke[0] = new ImageIcon("icon/background_2.png");
+		smoke[0] = new ImageIcon("icon/smoke.png");
 
 		// ========================================================
 		// Save file
@@ -248,8 +250,9 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
 
 				// else
-				text_value = "else{walk(down);}";
+				// text_value = "else{walk(down);}";
 
+				map.setSmoke(false);
 				text_value = text_value.replace(" ", "");
 				text_value = text_value.replace("\n", "");
 				text_value = text_value.replace("\t", "");
@@ -333,6 +336,7 @@ public class Coder extends JPanel implements Runnable {
 		}
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
+		dummys = new ArrayList<Dummy>();
 		first = true;
 		attacking = false;
 	}
@@ -413,6 +417,14 @@ public class Coder extends JPanel implements Runnable {
 									enemys.remove(i);
 								}
 							}
+							for (int i = 0; i < dummys.size(); i++) {
+								if (dummys.get(i).checkNextStep(1, '4')) {
+									// dummys.get(i).disable();
+									// dummys.remove(i);
+									map.setDummy(map.getDummy() - 1);
+									map.setPuzzle(false);
+								}
+							}
 							tmpX = fireball.getX();
 							tmpY = fireball.getY();
 							fireball.disable();
@@ -468,6 +480,7 @@ public class Coder extends JPanel implements Runnable {
 		} else {
 			anima++;
 		}
+		map.update();
 	}
 
 	// ========================================================
@@ -545,6 +558,14 @@ public class Coder extends JPanel implements Runnable {
 					fireball.draw(gr, dir);
 					attacking = true;
 				}
+				if (map.getMap()[i][j] == 'D') {
+					dummy = new Dummy(map, scale, (j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					dummy.draw(gr, dir);
+					if (first) {
+						dummys.add(dummy);
+					}
+				}
 				if (map.getMap()[i][j] == '9') {
 					// gr.setColor(Color.PINK);
 					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
@@ -568,8 +589,7 @@ public class Coder extends JPanel implements Runnable {
 			}
 		}
 		if (map.getSmoke()) {
-			gr.drawImage(smoke[0].getImage(), 0, 0, null);
-			System.out.println("SMOKE ~~~");
+			gr.drawImage(smoke[0].getImage(), 230, 150, null);
 		}
 		first = false;
 		update();
@@ -589,7 +609,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(100);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

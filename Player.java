@@ -228,4 +228,8 @@ class Player {
     public String getMush() {
         return this.mushroom;
     }
+
+    public String setMush(String a) {
+        return this.mushroom = a;
+    }
 }

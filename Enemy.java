@@ -19,7 +19,7 @@ class Enemy {
         this.playerPosition[0] = mapX;
         this.playerPosition[1] = mapY;
         this.map = map;
-        this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
+        // this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
         this.scale = scale;
         this.x = x;
         this.y = y;

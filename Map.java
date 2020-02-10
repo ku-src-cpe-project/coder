@@ -14,7 +14,10 @@ class Map {
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
-    private boolean smoke = false;
+    private boolean smoke = false, puzzle = false;
+
+    private int dummy;
+    private String level;
 
     // 1=wall 2=enemy 3=bomb
     // 4=fire ball
@@ -22,8 +25,10 @@ class Map {
     // 8=finish portal
     // 9=player
     // A=mush.Chun 5=mush.Ken
+    // D=dummy
 
     public Map(JLabel hint, String level) {
+        this.level = level;
         System.out.println("> Map Create");
         if (level.equals("0000")) { // walk(dire)
             setRow(7);
@@ -49,13 +54,15 @@ class Map {
             setRow(7);
             hint.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1030003001".toCharArray();
-            this.map[2] = "1030303031".toCharArray();
-            this.map[3] = "1000300031".toCharArray();
-            this.map[4] = "1330303331".toCharArray();
-            this.map[5] = "1000300081".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "15000000D1".toCharArray();
+            this.map[3] = "1000000001".toCharArray();
+            this.map[4] = "1000000001".toCharArray();
+            this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setSmoke(true);
+            setPuzzle(true);
+            setDummy(1);
         } else if (level.equals("0003")) { // while(cou) fix line
             setRow(7);
             hint.setText("Find the portal");
@@ -192,6 +199,14 @@ class Map {
         }
     }
 
+    public void update() {
+        if (level.equals("0002")) { // attack(dir)
+            if (!getPuzzle()) {
+                this.map[5][6] = '8';
+            }
+        }
+    }
+
     public int getRow() {
         return this.row;
     }
@@ -214,6 +229,22 @@ class Map {
 
     public void setSmoke(boolean a) {
         this.smoke = a;
+    }
+
+    public int getDummy() {
+        return this.dummy;
+    }
+
+    public void setDummy(int a) {
+        this.dummy = a;
+    }
+
+    public boolean getPuzzle() {
+        return this.puzzle;
+    }
+
+    public void setPuzzle(boolean a) {
+        this.puzzle = a;
     }
 
     public char cheMap(int x, int y) {
