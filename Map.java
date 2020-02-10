@@ -40,6 +40,18 @@ class Map {
             this.map[4] = "1000003001".toCharArray();
             this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // R
+            // R
+            // R
+            // R
+            // R
+            // R
+            // R
+            // R
+            // D
+            // D
+            // D
+            // D
         } else if (level.equals("0001")) { // test walk(dir)
             setRow(7);
             hint.setText("Escape from maze.");
@@ -50,6 +62,21 @@ class Map {
             this.map[4] = "1330303331".toCharArray();
             this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // D
+            // D
+            // R
+            // R
+            // U
+            // U
+            // R
+            // R
+            // D
+            // D
+            // D
+            // D
+            // R
+            // R
+            // R
         } else if (level.equals("0002")) { // attack(dir)
             setRow(7);
             hint.setText("Escape from maze.");
@@ -63,57 +90,104 @@ class Map {
             setSmoke(true);
             setPuzzle(true);
             setDummy(2);
+            // D
+            // A
+            // A
+            // D
+            // R
+            // R
+            // R
+            // R
+            // R
+            // R
+            // R
         } else if (level.equals("0003")) { // while(cou) fix line
             setRow(7);
             hint.setText("Find the portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000030001".toCharArray();
-            this.map[2] = "1000030801".toCharArray();
-            this.map[3] = "1000030001".toCharArray();
-            this.map[4] = "1000030001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1000000081".toCharArray();
+            this.map[2] = "1000000801".toCharArray();
+            this.map[3] = "1000000001".toCharArray();
+            this.map[4] = "1000080001".toCharArray();
+            this.map[5] = "1800000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
+            // W(4){
+            //     D
+            // }
         } else if (level.equals("0004")) { // test while(cou) fix line
             setRow(7);
             hint.setText("How many you enter portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1037363071".toCharArray();
-            this.map[2] = "1030300031".toCharArray();
-            this.map[3] = "1000333331".toCharArray();
-            this.map[4] = "1333363601".toCharArray();
-            this.map[5] = "1700003081".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1333333001".toCharArray();
+            this.map[3] = "1000003001".toCharArray();
+            this.map[4] = "1000003001".toCharArray();
+            this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            // W(7){
+            //     R
+            // }
+            // W(4){
+            //     D
+            // }
         } else if (level.equals("0005")) { // check(dir)
             setRow(7);
             hint.setText("Jail break.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000300001".toCharArray();
-            this.map[2] = "1003000001".toCharArray();
-            this.map[3] = "1003000081".toCharArray();
-            this.map[4] = "1033333001".toCharArray();
-            this.map[5] = "10000A3001".toCharArray();
+            this.map[1] = "1003333331".toCharArray();
+            this.map[2] = "1003333331".toCharArray();
+            this.map[3] = "1008003031".toCharArray();
+            this.map[4] = "1333333331".toCharArray();
+            this.map[5] = "1333333331".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // D
+            // D
+            // IF(C(D)){
+            //     R
+            //     R
+            // }
         } else if (level.equals("0006")) { // if
             setRow(7);
             hint.setText("Destroy all bomb. then you will see goal.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000031".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000030001".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "13000000A1".toCharArray();
+            this.map[1] = "1000333331".toCharArray();
+            this.map[2] = "1330033331".toCharArray();
+            this.map[3] = "1333003331".toCharArray();
+            this.map[4] = "1333300331".toCharArray();
+            this.map[5] = "1333330081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // W(11){
+            //     IF(C(R)){
+            //         D
+            //     }
+            //     IF(C(D)){
+            //         R
+            //     }
+            // }
         } else if (level.equals("0007")) { // if else
             setRow(7);
             hint.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000071".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1333300001".toCharArray();
-            this.map[4] = "1006300331".toCharArray();
-            this.map[5] = "1A00300381".toCharArray();
+            this.map[1] = "1033333081".toCharArray();
+            this.map[2] = "1033330031".toCharArray();
+            this.map[3] = "1033300031".toCharArray();
+            this.map[4] = "1033000331".toCharArray();
+            this.map[5] = "1000003331".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // D
+            // D
+            // D
+            // D
+            // W(11){
+            //     IF(C(R)){
+            //         U
+            //     }
+            //     EL{
+            //         R
+            //     }
+            // }
         } else if (level.equals("0008")) { // test if else
             setRow(7);
             hint.setText("Where the enemy.");
@@ -209,7 +283,16 @@ class Map {
         if (level.equals("0003")) { // while(cou) fix line
             if (Coder.runable) {
                 System.out.println(Coder.lines.size());
-                if (getPuzzle() && ((Coder.lines.size() - 2) > 1)) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > 3)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
+            }
+        }
+        if (level.equals("0004")) { // test while(cou) fix line
+            if (Coder.runable) {
+                System.out.println(Coder.lines.size());
+                if (getPuzzle() && ((Coder.lines.size() - 2) > 6)) {
                     Coder.runable = false;
                     setPuzzle(false);
                 }
