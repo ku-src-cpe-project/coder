@@ -11,10 +11,12 @@ import java.util.StringTokenizer;
 import java.io.*;
 
 class Map {
+    private ImageIcon[] images;
+    private ImageIcon hint_pic;
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
-    private boolean smoke = false, puzzle = false;
+    private boolean smoke = false, puzzle = false, hint = false;
 
     private int dummy;
     private String level;
@@ -27,7 +29,12 @@ class Map {
     // A=mush.Chun 5=mush.Ken
     // D=dummy
 
-    public Map(JLabel hint, String level) {
+    public Map(JLabel hint, JLabel hint_pic, String level) {
+		this.images = new ImageIcon[3];
+		this.images[0] = new ImageIcon("icon/player.png");
+		this.images[1] = new ImageIcon("icon/player_3.png");
+        this.images[2] = new ImageIcon("icon/player_5.png");
+        this.hint_pic = new ImageIcon("icon/player.png");
         this.level = level;
         System.out.println("> Map Create");
         if (level.equals("0000")) { // walk(dire)
@@ -40,6 +47,8 @@ class Map {
             this.map[4] = "1000003001".toCharArray();
             this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setHint(true);
+            setHint_pic(this.images[0]);
             // R
             // R
             // R
@@ -62,6 +71,7 @@ class Map {
             this.map[4] = "1330303331".toCharArray();
             this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setHint(true);
             // D
             // D
             // R
@@ -113,7 +123,7 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             // W(4){
-            //     D
+            // D
             // }
         } else if (level.equals("0004")) { // test while(cou) fix line
             setRow(7);
@@ -127,10 +137,10 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             // W(7){
-            //     R
+            // R
             // }
             // W(4){
-            //     D
+            // D
             // }
         } else if (level.equals("0005")) { // check(dir)
             setRow(7);
@@ -145,8 +155,8 @@ class Map {
             // D
             // D
             // IF(C(D)){
-            //     R
-            //     R
+            // R
+            // R
             // }
         } else if (level.equals("0006")) { // if
             setRow(7);
@@ -159,12 +169,12 @@ class Map {
             this.map[5] = "1333330081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             // W(11){
-            //     IF(C(R)){
-            //         D
-            //     }
-            //     IF(C(D)){
-            //         R
-            //     }
+            // IF(C(R)){
+            // D
+            // }
+            // IF(C(D)){
+            // R
+            // }
             // }
         } else if (level.equals("0007")) { // if else
             setRow(7);
@@ -181,12 +191,12 @@ class Map {
             // D
             // D
             // W(11){
-            //     IF(C(R)){
-            //         U
-            //     }
-            //     EL{
-            //         R
-            //     }
+            // IF(C(R)){
+            // U
+            // }
+            // EL{
+            // R
+            // }
             // }
         } else if (level.equals("0008")) { // test if else
             setRow(7);
@@ -322,6 +332,22 @@ class Map {
 
     public void setSmoke(boolean a) {
         this.smoke = a;
+    }
+
+    public boolean getHint() {
+        return this.hint;
+    }
+
+    public void setHint(boolean a) {
+        this.hint = a;
+    }
+
+    public ImageIcon getHint_pic() {
+        return this.hint_pic;
+    }
+
+    public void setHint_pic(ImageIcon a) {
+        this.hint_pic = a;
     }
 
     public int getDummy() {

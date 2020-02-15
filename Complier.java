@@ -155,7 +155,7 @@ class Complier {
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
                 // new while
                 condition = true;
-                this.positionWhile.add(this.pointer);
+                this.positionWhile.add(this.pointer); // [1]
             } else if (token.get(i).equals("else")) {
                 // System.out.println("\nELSE");
                 this.state = "else";

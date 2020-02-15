@@ -91,10 +91,17 @@ public class Coder extends JPanel implements Runnable {
 	public static String mapNumberS;
 
 	private ImageIcon[] images;
-	private ImageIcon[] smoke;
+	private ImageIcon[] smokes;
+	private ImageIcon stars;
 	private int anima;
 	private boolean hit;
 	private int tmpX, tmpY;
+
+	private int timing;
+	private JLabel hintJ_pic;
+	private boolean end_map = false;
+	private int end_map_time;
+	private boolean end_map_first = true;
 
 	// ========================================================
 	// Debug
@@ -127,26 +134,22 @@ public class Coder extends JPanel implements Runnable {
 		runable = false;
 		line = 0;
 		Font f1 = new Font("SansSerif", Font.BOLD, 20);
+
 		input = new JTextArea("");
 		input.setBackground(new Color(70, 220, 90));
-		input.setBounds(11, 10, 195, 332);
 		input.setFont(f1);
-		add(input);
+
 		mapNmberJ = new JLabel(mapNumberS);
-		mapNmberJ.setBounds(1010, 10, 150, 75);
 		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
 		mapNmberJ.setForeground(Color.BLACK);
-		add(mapNmberJ);
+
 		UhintJ = new JLabel("Hint: ");
-		UhintJ.setBounds(250, 95, 70, 75);
 		UhintJ.setBackground(new Color(70, 220, 90));
 		UhintJ.setFont(f1);
-		add(UhintJ);
+
 		hintJ = new JLabel("");
-		hintJ.setBounds(300, 95, 770, 75);
 		hintJ.setBackground(new Color(70, 220, 90));
 		hintJ.setFont(f1);
-		add(hintJ);
 		pl.playSound_L("sound/bgm.wav", 999);
 
 		images = new ImageIcon[5];
@@ -156,8 +159,9 @@ public class Coder extends JPanel implements Runnable {
 		images[2] = new ImageIcon("icon/anima/kaboom_3.png");
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
-		smoke = new ImageIcon[1];
-		smoke[0] = new ImageIcon("icon/smoke.png");
+		smokes = new ImageIcon[1];
+		smokes[0] = new ImageIcon("icon/smoke.png");
+		hintJ_pic = new JLabel(new ImageIcon("icon/player.png"));
 
 		// ========================================================
 		// Save file
@@ -208,11 +212,11 @@ public class Coder extends JPanel implements Runnable {
 				player.attack();
 			}
 		});
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 
 		// ========================================================
@@ -262,13 +266,10 @@ public class Coder extends JPanel implements Runnable {
 				runable = true;
 			}
 		});
-		add(submit);
-		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
-
 		clear = new JButton("Clear");
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				map = new Map(hintJ, currentMap);
+				map = new Map(hintJ, hintJ_pic, currentMap);
 				newGame();
 				complier.setPointer(0);
 				// complier.setExp(true);
@@ -278,18 +279,12 @@ public class Coder extends JPanel implements Runnable {
 				line = complier.getPointer();
 			}
 		});
-		add(clear);
-		clear.setBounds(buttonLocationX + 200, buttonLocationY, buttonSizeX, buttonSizeY);
-
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.setState("next");
 			}
 		});
-		add(next);
-		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
-
 		restart = new JButton("Restart");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -298,7 +293,7 @@ public class Coder extends JPanel implements Runnable {
 				rf.CloseFile_write();
 				mapNumber = 0;
 				mapNumberS = "0";
-				map = new Map(hintJ, convMap(mapNumber));
+				map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
 				mapNmberJ.setText(mapNumberS);
 				newGame();
 				complier.setPointer(0);
@@ -309,10 +304,38 @@ public class Coder extends JPanel implements Runnable {
 				line = complier.getPointer();
 			}
 		});
-		add(restart);
+		hintJ_pic.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				hintJ_pic.setVisible(false);
+				map.setHint(false);
+			}
+		});
+
 		restart.setBounds(buttonLocationX + 320, buttonLocationY, buttonSizeX, buttonSizeY);
+		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
+		clear.setBounds(buttonLocationX + 200, buttonLocationY, buttonSizeX, buttonSizeY);
+		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
+
+		hintJ_pic.setBounds(50, 50, 300, 300);
+		input.setBounds(11, 10, 195, 332);
+		mapNmberJ.setBounds(1010, 10, 150, 75);
+		UhintJ.setBounds(250, 95, 70, 75);
+		hintJ.setBounds(300, 95, 770, 75);
+
+		add(hintJ_pic);
+
+		add(input);
+		add(mapNmberJ);
+		add(UhintJ);
+		add(hintJ);
+
+		add(restart);
+		add(next);
+		add(clear);
+		add(submit);
+
 		// map = new Map(randMap());
-		map = new Map(hintJ, convMap(mapNumber));
+		map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
 		currentMap = convMap(mapNumber);
 		newGame();
 	}
@@ -375,117 +398,152 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	public void update() {
 		// System.out.println("> Update");
-		if (runable && player.getState().equals("alive")) {
-			if (complier.getPointer() == 0) {
-				System.out.println("==============================");
-				System.out.println("    PROGRAM ALREADY RUNNING");
-				System.out.println("==============================");
-				// System.out.println("Parse:");
-				// System.out.println("\t" + parses);
-				// System.out.println("\nTokens:");
-				// System.out.println("\t" + tokens);
-				// System.out.println("\nLines:");
-				// System.out.println("\t" + lines);
-				// System.out.println();
-			}
-			if (complier.getPointer() < lines.size()) { // lines.size()-1
-				System.out.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
-				complier.Runable(player, lines);
-				line++;
-				if (line == (lines.size())) {
-					runable = false;
-				}
-			}
-			// ========================================================
-			// Enemy Delay
-			// ========================================================
-			if (delay > 20) {
-				for (int i = 0; i < enemys.size(); i++) {
-					enemys.get(i).walk();
-				}
-				// if (attacking) {
-				// fireball.walk();
-				// }
-				delay = 0;
+		if (end_map) {
+			if (end_map_time >= 20) {
+				end_map_time = 0;
+				end_map = false;
+				end_map_first = false;
 			} else {
-				delay++;
+				end_map_time++;
 			}
-			if (delay_2 > 1) {
-				if (attacking) {
-					if (fireball != null) {
-						if (!fireball.checkNextStep(2, '0')) {
-							for (int i = 0; i < enemys.size(); i++) {
-								if (enemys.get(i).checkNextStep(1, '4')) {
-									enemys.get(i).disable();
-									enemys.remove(i);
-								}
-							}
-							for (int i = 0; i < dummys.size(); i++) {
-								if (dummys.get(i).checkNextStep(1, '4')) {
-									// dummys.get(i).disable();
-									// dummys.remove(i);
-									map.setDummy(map.getDummy() - 1);
-									if (map.getDummy() == 0) {
-										map.setPuzzle(false);
+		} else {
+			if (runable && player.getState().equals("alive")) {
+				if (complier.getPointer() == 0) {
+					System.out.println("==============================");
+					System.out.println("    PROGRAM ALREADY RUNNING");
+					System.out.println("==============================");
+					// System.out.println("Parse:");
+					// System.out.println("\t" + parses);
+					// System.out.println("\nTokens:");
+					// System.out.println("\t" + tokens);
+					// System.out.println("\nLines:");
+					// System.out.println("\t" + lines);
+					// System.out.println();
+				}
+				if (complier.getPointer() < lines.size()) { // lines.size()-1
+					System.out.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
+					complier.Runable(player, lines);
+					line++;
+					if (line == (lines.size())) {
+						runable = false;
+					}
+				}
+				// ========================================================
+				// Enemy Delay
+				// ========================================================
+				if (delay > 20) {
+					for (int i = 0; i < enemys.size(); i++) {
+						enemys.get(i).walk();
+					}
+					// if (attacking) {
+					// fireball.walk();
+					// }
+					delay = 0;
+				} else {
+					delay++;
+				}
+				if (delay_2 > 1) {
+					if (attacking) {
+						if (fireball != null) {
+							if (!fireball.checkNextStep(2, '0')) {
+								for (int i = 0; i < enemys.size(); i++) {
+									if (enemys.get(i).checkNextStep(1, '4')) {
+										enemys.get(i).disable();
+										enemys.remove(i);
 									}
 								}
+								for (int i = 0; i < dummys.size(); i++) {
+									if (dummys.get(i).checkNextStep(1, '4')) {
+										// dummys.get(i).disable();
+										// dummys.remove(i);
+										map.setDummy(map.getDummy() - 1);
+										if (map.getDummy() == 0) {
+											map.setPuzzle(false);
+										}
+									}
+								}
+								tmpX = fireball.getX();
+								tmpY = fireball.getY();
+								fireball.disable();
+								fireball = null;
+								attacking = false;
+								pl.playSound_S("sound/hit.wav");
+								hit = true;
+								anima = 0;
 							}
-							tmpX = fireball.getX();
-							tmpY = fireball.getY();
-							fireball.disable();
-							fireball = null;
-							attacking = false;
-							pl.playSound_S("sound/hit.wav");
-							hit = true;
-							anima = 0;
+						}
+						if (attacking) {
+							fireball.walk();
 						}
 					}
-					if (attacking) {
-						fireball.walk();
-					}
+					delay_2 = 0;
+				} else {
+					delay_2++;
 				}
-				delay_2 = 0;
-			} else {
-				delay_2++;
-			}
-			// ========================================================
-			//
-			// ========================================================
-		} else if (player.getState().equals("next")) {
-			mapNumber++;
-			map = new Map(hintJ, convMap(mapNumber));
-			newGame();
-			mapNmberJ.setText(mapNumber + "");
-			complier.setPointer(0);
-			complier.setExp(true);
-			complier.setIf(false);
-			complier.setState("null");
-			runable = false;
-			line = complier.getPointer();
-			player.setState("alive");
+				// ========================================================
+				//
+				// ========================================================
+			} else if (player.getState().equals("next")) {
+				if (end_map_first) {
+					end_map = true;
+				} else {
+					hintJ_pic.setVisible(false);
+					map.setHint(false);
+					mapNumber++;
+					map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
+					newGame();
+					mapNmberJ.setText(mapNumber + "");
+					complier.setPointer(0);
+					complier.setExp(true);
+					complier.setIf(false);
+					complier.setState("null");
+					runable = false;
+					line = complier.getPointer();
+					player.setState("alive");
 
-			// ========================================================
-			// Save file
-			// ========================================================
-			mapNumberS = mapNumber + "";
-			mapNmberJ.setText(mapNumberS);
-			rf.OpenFile_write();
-			rf.AddRecord(mapNumberS);
-			rf.CloseFile_write();
-		} else if (player.getState().equals("dead")) {
-			player.playerPosition[0] = -99;
+					// ========================================================
+					// Save file
+					// ========================================================
+					mapNumberS = mapNumber + "";
+					mapNmberJ.setText(mapNumberS);
+					rf.OpenFile_write();
+					rf.AddRecord(mapNumberS);
+					rf.CloseFile_write();
+
+					// ========================================================
+					// Score
+					// ========================================================
+					System.out.println("==============================");
+					System.out.println("    SCORE");
+					System.out.println("==============================");
+					System.out.println(timing);
+					timing = 0;
+					end_map_first = true;
+				}
+			} else if (player.getState().equals("dead")) {
+				player.playerPosition[0] = -99;
+			}
+			if (dir >= 1) {
+				dir = 0;
+			} else {
+				dir++;
+			}
+			if (anima >= 4) {
+				anima = 0;
+				timing++;
+				// System.out.println(timing);
+			} else {
+				anima++;
+			}
+			if (timing < 50) {
+				stars = new ImageIcon("icon/player.png");
+			} else if (timing < 100) {
+				stars = new ImageIcon("icon/player_3.png");
+			} else {
+				stars = new ImageIcon("icon/player_5.png");
+			}
+			map.update();
 		}
-		if (dir >= 1) {
-			dir = 0;
-		} else {
-			dir++;
-		}
-		if (anima >= 4) {
-			anima = 0;
-		} else {
-			anima++;
-		}
-		map.update();
 	}
 
 	// ========================================================
@@ -594,9 +652,17 @@ public class Coder extends JPanel implements Runnable {
 			}
 		}
 		if (map.getSmoke()) {
-			gr.drawImage(smoke[0].getImage(), 230, 150, null);
+			gr.drawImage(smokes[0].getImage(), 230, 150, null);
+		}
+		if (map.getHint()) {
+			hintJ_pic.setVisible(true);
+		} else {
+			hintJ_pic.setVisible(false);
 		}
 		first = false;
+		if (end_map) {
+			gr.drawImage(stars.getImage(), 500, 100, null);
+		}
 		update();
 		g.drawImage(screen, 0, 0, null);
 		// g.drawImage(images[0].getImage(), 100, 100, null); // insert picture .gif
