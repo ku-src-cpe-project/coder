@@ -9,9 +9,7 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.*;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
+
 import javax.sound.sampled.*;
 import java.awt.Color;
 import java.util.Collections;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Image;
-import javax.swing.JFrame;
 // =============================================================================
 // Timer Import
 // =============================================================================
@@ -39,7 +36,7 @@ import java.util.TimerTask;
 public class Coder extends JPanel implements Runnable {
 	private Thread thread;
 	private boolean running;
-	private boolean pause = false;
+	// private boolean pause = false;
 	private Graphics gr;
 	private int scale = 100; // 105 *From variable*
 	private int screenx = 1280; // 1115
@@ -51,7 +48,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	private int locationX = 110;
 	private int locationY = 230;
-	private int blockX = 50;
+	public int blockX = 50;
 	public int blockY = 50;
 	private int padX = 15;
 	private int padY = 45;
@@ -59,6 +56,7 @@ public class Coder extends JPanel implements Runnable {
 	private Random random;
 	private Player player;
 	private JTextArea input;
+	private JScrollPane pane;
 	private String text_value;
 	private JButton submit, clear, restart;
 	private JButton next;
@@ -138,6 +136,8 @@ public class Coder extends JPanel implements Runnable {
 		input = new JTextArea("");
 		input.setBackground(new Color(70, 220, 90));
 		input.setFont(f1);
+		// input.setWrapStyleWord(true);
+		input.setLineWrap(true);
 
 		mapNmberJ = new JLabel(mapNumberS);
 		mapNmberJ.setFont(new Font("Serif", Font.PLAIN, 75));
