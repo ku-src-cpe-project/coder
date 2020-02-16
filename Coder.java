@@ -39,8 +39,8 @@ public class Coder extends JPanel implements Runnable {
 	// private boolean pause = false;
 	private Graphics gr;
 	private int scale = 100; // 105 *From variable*
-	private int screenx = 1280; // 1115
-	private int screeny = 500; // 638
+	private int screenx; // 1115 // 1280
+	private int screeny; // 638 // 500
 	private Image screen;
 	private ImageIcon bg;
 	// ========================================================
@@ -101,8 +101,10 @@ public class Coder extends JPanel implements Runnable {
 	private int end_map_time;
 	private boolean end_map_first = true;
 
-	private boolean start = true;
+	private boolean start = true, playing = false;
 	private JLabel startJ;
+
+	private int test;
 
 	// ========================================================
 	// Debug
@@ -165,7 +167,7 @@ public class Coder extends JPanel implements Runnable {
 		smokes = new ImageIcon[1];
 		smokes[0] = new ImageIcon("icon/smoke.png");
 		hintJ_pic = new JLabel(new ImageIcon("icon/player.png"));
-		startJ = new JLabel(new ImageIcon("icon/player_5.png"));
+		startJ = new JLabel(new ImageIcon("icon/button_start.png"));
 
 		// ========================================================
 		// Save file
@@ -318,6 +320,7 @@ public class Coder extends JPanel implements Runnable {
 		startJ.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				start = false;
+				playing = true;
 			}
 		});
 
@@ -326,13 +329,13 @@ public class Coder extends JPanel implements Runnable {
 		clear.setBounds(buttonLocationX + 200, buttonLocationY, buttonSizeX, buttonSizeY);
 		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
 
-		hintJ_pic.setBounds(50, 50, 300, 300);
+		hintJ_pic.setBounds(416, 234, 100, 100);
 		input.setBounds(11, 10, 195, 332);
 		mapNmberJ.setBounds(1010, 10, 150, 75);
 		UhintJ.setBounds(250, 95, 70, 75);
 		hintJ.setBounds(300, 95, 770, 75);
 
-		startJ.setBounds(500, 250, 100, 100);
+		startJ.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
 
 		add(startJ);
 		add(hintJ_pic);
@@ -409,9 +412,14 @@ public class Coder extends JPanel implements Runnable {
 	// Update
 	// ========================================================
 	public void update() {
-		// System.out.println("> Update");
+		// System.out.println("> Update ");
+		// System.out.print(test);
+		// if (test % 10 == 0) {
+		// 	System.out.println();
+		// }
+		// test++;
 		if (start) {
-			startJ.setVisible(true);
+			bg = new ImageIcon("icon/background_start.png");
 			hintJ_pic.setVisible(false);
 			input.setVisible(false);
 			mapNmberJ.setVisible(false);
@@ -421,10 +429,9 @@ public class Coder extends JPanel implements Runnable {
 			next.setVisible(false);
 			clear.setVisible(false);
 			submit.setVisible(false);
-			bg = new ImageIcon("icon/background_2.png");
-		} else {
+		} else if (playing) {
 			startJ.setVisible(false);
-			hintJ_pic.setVisible(true);
+			// hintJ_pic.setVisible(true);
 			input.setVisible(true);
 			mapNmberJ.setVisible(true);
 			UhintJ.setVisible(true);
@@ -579,8 +586,13 @@ public class Coder extends JPanel implements Runnable {
 				} else {
 					stars = new ImageIcon("icon/player_5.png");
 				}
-				map.update();
+				if (map.getHint()) {
+					hintJ_pic.setVisible(true);
+				} else {
+					hintJ_pic.setVisible(false);
+				}
 			}
+			map.update();
 		}
 	}
 
@@ -600,7 +612,9 @@ public class Coder extends JPanel implements Runnable {
 		// System.out.println();
 		// }
 		if (start) {
-		} else {
+			bg = new ImageIcon("icon/background_start.png");
+		} else if (playing) {
+			bg = new ImageIcon("icon/background.png");
 			for (int i = 0; i < map.getRow(); i++) {
 				for (int j = 0; j <= map.getColumn(); j++) {
 					if (map.getMap()[i][j] == '0') {
@@ -694,15 +708,10 @@ public class Coder extends JPanel implements Runnable {
 			if (map.getSmoke()) {
 				gr.drawImage(smokes[0].getImage(), 230, 150, null);
 			}
-			if (map.getHint()) {
-				hintJ_pic.setVisible(true);
-			} else {
-				hintJ_pic.setVisible(false);
-			}
-			first = false;
 			if (end_map) {
 				gr.drawImage(stars.getImage(), 500, 100, null);
 			}
+			first = false;
 		}
 		update();
 		g.drawImage(screen, 0, 0, null);
@@ -721,7 +730,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(200);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

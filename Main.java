@@ -7,9 +7,9 @@ public class Main extends JFrame {
   }
 
   private void init() {
-    Coder myStart = new Coder();
-    myStart.setFocusable(true);
-    add(myStart);
+    Coder game = new Coder();
+    game.setFocusable(true);
+    add(game);
     pack();
     setTitle("Game: Tetris");
     // setLocation(15, 5);
