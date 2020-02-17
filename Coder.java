@@ -256,6 +256,7 @@ public class Coder extends JPanel implements Runnable {
 				// text_value =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// text_value = "while(2){walk(down);while(3){walk(right);}};";
+				text_value = "while(check(down)){walk(down);}";
 
 				// if
 				// text_value =
@@ -466,6 +467,7 @@ public class Coder extends JPanel implements Runnable {
 					if (complier.getPointer() < lines.size()) { // lines.size()-1
 						System.out
 								.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
+						line = complier.getPointer();
 						complier.Runable(player, lines);
 						line++;
 						if (line == (lines.size())) {
