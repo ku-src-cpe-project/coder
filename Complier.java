@@ -21,9 +21,9 @@ class Complier {
     private ArrayList<Integer> positionWhile;
     private int pointer;
     private int pointerWhile,count_if,position_else;
-    private int count, countState,count_braketOP,count_braketCL,find_braketOP_else,find_braketCL_else,count_braketCL_else;
+    private int count, countState,count_braketOP,count_braketCL,find_braketOP_else,find_braketCL_else,count_braketCL_else,find_braketCL_while;
     private ArrayList<String> process,find_braketOP,find_braketCL;
-    private boolean expression, _if,conditionofif,foundif,foundelse;
+    private boolean expression, _if,conditionofif,foundif,foundelse,conditionwhile,foundwhile;
     private String state,checkif,statusif,statuselse,check_braket,check_braket_else,str,m,n,check_else,check_if_out,check_braket2,check_token;
 
     public Complier() {
@@ -46,6 +46,7 @@ class Complier {
         this.conditionofif = true;
         this.foundif = false;
         this.foundelse = false;
+       
         this.check_if_out = "out";
         this.check_token = "x";
        
@@ -172,7 +173,7 @@ class Complier {
         for (int i = 0; i < token.size(); i++) {
 
 
-            if((this.foundelse == true) && (this.controller.get(this.position_else ).equals("F")))
+            if((this.foundelse == true) && (this.controller.get(this.position_else ).equals("F"))) //found else and condition if == False
             {
 
                 System.out.println("elsccccccc");
@@ -376,6 +377,18 @@ class Complier {
                
             }
             // this.foundif = false;
+
+            if (token.get(i).equals("}") && this.foundwhile)
+            {
+                if(this.conditionwhile)
+                {
+                    setPointer(0);
+                    System.out.println(this.positionWhile.get(0)+"check");
+                    System.out.print("///////while///////");
+                    break;
+                }
+
+            }
             
             
 
@@ -389,7 +402,9 @@ class Complier {
                 } else {
                     this.expression = false;
                 }
-            }  if (token.get(i).equals("while")) {
+            }  
+            
+            if (token.get(i).equals("while")) { // function for find while
                 // old while
                 // setPointerWhile(this.pointer);
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
@@ -406,26 +421,24 @@ class Complier {
                         System.out.println(test);
                         if (!player.collision(token.get(i+4))) // condition in while == true
                             {
-                            this.count_braketOP += 1;
-                            
-                           
-                  
-                            
-                            System.out.println(this.controller);        
-                            System.out.println("serExpTrue");
+                             this.positionWhile.add(this.pointer-1);
+                             System.out.println(this.pointer);
+                             this.foundwhile = true;
+                             this.conditionwhile = true;
+                             this.find_braketCL_while = 0;
+                             this.state = "{"+0+"w";
+    
+                            System.out.println("set-Exp-True");
                                 
                             } 
                         else 
                             {
-                                this.count_braketOP += 1;
-                                
-                                
-                                
-                            
-                               
-                                System.out.println(this.controller);
-                                System.out.println("setExpFalse");         
-                                // this.count++;       
+                            this.positionWhile.add(this.pointer-1);
+                             System.out.println(this.pointer);
+                             this.conditionwhile = true;   
+                              this.foundwhile = true;
+                            System.out.println("set-Exp-False");    
+                            // this.count++;       
                             }
                     }
                 
@@ -489,7 +502,7 @@ class Complier {
                             this.conditionofif = true;
                             this.checkif = "0";
                             this.str = Integer.toString(this.count_braketOP);             
-                            this.check_else = "{"+str+"&";
+                            // this.check_else = "{"+str+"&";
                             this.position_else = 1;
                             this.controller.set(1,"T");
                             System.out.println(this.controller);        
