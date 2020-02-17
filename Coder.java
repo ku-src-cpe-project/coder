@@ -169,6 +169,11 @@ public class Coder extends JPanel implements Runnable {
 		hintJ_pic = new JLabel(new ImageIcon("icon/player.png"));
 		startJ = new JLabel(new ImageIcon("icon/button_start.png"));
 
+		submit = new JButton("Submit");
+		clear = new JButton("Clear");
+		next = new JButton("Next");
+		restart = new JButton("Restart");
+
 		// ========================================================
 		// Save file
 		// ========================================================
@@ -228,7 +233,6 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		//
 		// ========================================================
-		submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				// Restart
@@ -272,7 +276,6 @@ public class Coder extends JPanel implements Runnable {
 				runable = true;
 			}
 		});
-		clear = new JButton("Clear");
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				map = new Map(hintJ, hintJ_pic, currentMap);
@@ -285,13 +288,11 @@ public class Coder extends JPanel implements Runnable {
 				line = complier.getPointer();
 			}
 		});
-		next = new JButton("Next");
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.setState("next");
 			}
 		});
-		restart = new JButton("Restart");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				rf.OpenFile_write();
@@ -316,7 +317,6 @@ public class Coder extends JPanel implements Runnable {
 				map.setHint(false);
 			}
 		});
-
 		startJ.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				start = false;
@@ -415,7 +415,7 @@ public class Coder extends JPanel implements Runnable {
 		// System.out.println("> Update ");
 		// System.out.print(test);
 		// if (test % 10 == 0) {
-		// 	System.out.println();
+		// System.out.println();
 		// }
 		// test++;
 		if (start) {
