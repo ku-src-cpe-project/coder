@@ -173,6 +173,7 @@ class Complier {
             if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) // found else and
                                                                                                    // condition if ==
                                                                                                    // False
+
             {
                 // System.out.println("elsccccccc");
                 // System.out.println("checcheckkkkk" + " " +
@@ -222,7 +223,7 @@ class Complier {
                     break;
 
                 }
-                if (token.get(i).equals("}")) {
+                if (token.get(i).equals("}")) { // skip code in case else
                     this.check_braket_else = "{" + "else" + n;
                     // System.out.println("else F");
                     // System.out.println(this.check_braket_else);
@@ -347,7 +348,7 @@ class Complier {
             }
             // this.foundif = false;
             else if (token.get(i).equals("}") && this.foundwhile) {
-                setPointer(getPosWhile().get(0));
+                setPointer(getPosWhile().get(1));
                 // break;
             }
 
@@ -369,7 +370,7 @@ class Complier {
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
                 // -----------------------------------------------
                 // new while
-                condition = true;
+                // condition = true;
                 // this.positionWhile.add(this.pointer);
                 // --------------------------------------------
                 // System.out.println(token.get(i + 2));
@@ -379,17 +380,19 @@ class Complier {
                     if (!player.collision(dir)) { // condition in while == true
                         getPosWhile().add(getPointer() - 1);
                         // System.out.println(this.pointer);
-                        this.foundwhile = false;
+                        this.foundwhile = true;
+                        System.out.println(getPosWhile());
                         // this.conditionwhile = true;
                         // this.find_braketCL_while = 0;
                         // this.state = "{" + 0 + "w";
-                        // System.out.println("set-Exp-True");
+                        System.out.println("set-Exp-True");
                     } else {
                         getPosWhile().add(getPointer() - 1);
                         // System.out.println(this.pointer);
                         // this.conditionwhile = true;
                         this.foundwhile = true;
-                        // System.out.println("set-Exp-F-alse");
+                        System.out.println(getPosWhile());
+                        System.out.println("set-Exp-False");
                         // this.count++;
 
                     }
