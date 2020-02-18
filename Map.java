@@ -292,7 +292,7 @@ class Map {
         }
         if (level.equals("0003")) { // while(cou) fix line
             if (Coder.runable) {
-                System.out.println(Coder.lines.size());
+                // System.out.println(Coder.lines.size());
                 if (getPuzzle() && ((Coder.lines.size() - 2) > 3)) {
                     Coder.runable = false;
                     setPuzzle(false);
@@ -301,7 +301,7 @@ class Map {
         }
         if (level.equals("0004")) { // test while(cou) fix line
             if (Coder.runable) {
-                System.out.println(Coder.lines.size());
+                // System.out.println(Coder.lines.size());
                 if (getPuzzle() && ((Coder.lines.size() - 2) > 6)) {
                     Coder.runable = false;
                     setPuzzle(false);

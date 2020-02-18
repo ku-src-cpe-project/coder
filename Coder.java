@@ -56,10 +56,8 @@ public class Coder extends JPanel implements Runnable {
 	private Random random;
 	private Player player;
 	private JTextArea input;
-	private JScrollPane pane;
 	private String text_value;
-	private JButton submit, clear, restart;
-	private JButton next;
+	private JLabel submit, clear, restart, next;
 	private Complier complier;
 	private ArrayList<String> parses;
 	private ArrayList<String> tokens;
@@ -74,8 +72,8 @@ public class Coder extends JPanel implements Runnable {
 	public static ArrayList<Enemy> enemys;
 	public static ArrayList<Dummy> dummys;
 	private FireBall fireball;
-	private int buttonLocationX = 325, buttonLocationY = 25;
-	private int buttonSizeX = 100, buttonSizeY = 50;
+	private int buttonLocationX = 280, buttonLocationY = 0;
+	private int buttonSizeX = 182, buttonSizeY = 103;
 	private int dir = 0;
 	private String currentMap;
 	private int mapNumber;
@@ -89,7 +87,6 @@ public class Coder extends JPanel implements Runnable {
 	public static String mapNumberS;
 
 	private ImageIcon[] images;
-	private ImageIcon[] smokes;
 	private ImageIcon stars;
 	private int anima;
 	private boolean hit;
@@ -97,14 +94,14 @@ public class Coder extends JPanel implements Runnable {
 
 	private int timing;
 	private JLabel hintJ_pic;
+	private JLabel smokeJ;
+	private ImageIcon smokeI;
 	private boolean end_map = false;
 	private int end_map_time;
 	private boolean end_map_first = true;
 
 	private boolean start = true, playing = false;
 	private JLabel startJ;
-
-	private int test;
 
 	// ========================================================
 	// Debug
@@ -164,15 +161,15 @@ public class Coder extends JPanel implements Runnable {
 		images[2] = new ImageIcon("icon/anima/kaboom_3.png");
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
-		smokes = new ImageIcon[1];
-		smokes[0] = new ImageIcon("icon/smoke.png");
-		hintJ_pic = new JLabel(new ImageIcon("icon/player.png"));
+		smokeI = new ImageIcon("icon/smoke.png");
+		smokeJ = new JLabel(smokeI);
+		hintJ_pic = new JLabel(new ImageIcon("icon/hint.png"));
 		startJ = new JLabel(new ImageIcon("icon/button_start.png"));
 
-		submit = new JButton("Submit");
-		clear = new JButton("Clear");
-		next = new JButton("Next");
-		restart = new JButton("Restart");
+		submit = new JLabel(new ImageIcon("icon/button_submit.png"));
+		clear = new JLabel(new ImageIcon("icon/button_clear.png"));
+		next = new JLabel(new ImageIcon("icon/button_next.png"));
+		restart = new JLabel(new ImageIcon("icon/button_restart.png"));
 
 		// ========================================================
 		// Save file
@@ -190,51 +187,53 @@ public class Coder extends JPanel implements Runnable {
 		int coreX = 70, coreY = 450;
 		int sizeX = 50, sizeY = 50;
 		up = new JButton("^");
+		down = new JButton("V");
+		left = new JButton("<");
+		right = new JButton(">");
+		fire = new JButton("F");
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("up");
 			}
 		});
-		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
-		down = new JButton("V");
 		down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("down");
 			}
 		});
-		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
-		left = new JButton("<");
 		left.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("left");
 			}
 		});
-		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
-		right = new JButton(">");
 		right.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("right");
 			}
 		});
-		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
-		fire = new JButton("F");
 		fire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.attack();
 			}
 		});
+		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
+		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
+		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
+		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
+		fire.setBounds(coreX, coreY, sizeX, sizeY);
 		// add(up);
 		// add(down);
 		// add(left);
 		// add(right);
 		// add(fire);
-		fire.setBounds(coreX, coreY, sizeX, sizeY);
 
 		// ========================================================
 		//
 		// ========================================================
-		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
+		// submit.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		submit.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
 				// Restart
 				complier.setPointer(0);
 				runable = false;
@@ -256,7 +255,7 @@ public class Coder extends JPanel implements Runnable {
 				// text_value =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// text_value = "while(2){walk(down);while(3){walk(right);}};";
-				text_value = "while(check(down)){walk(down);}";
+				// text_value = "while(check(down)){walk(down);}";
 
 				// if
 				// text_value =
@@ -277,25 +276,22 @@ public class Coder extends JPanel implements Runnable {
 				runable = true;
 			}
 		});
-		clear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
+		clear.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
 				map = new Map(hintJ, hintJ_pic, currentMap);
 				newGame();
 				complier.setPointer(0);
-				// complier.setExp(true);
-				// complier.setIf(false);
-				// complier.setState("null");
 				runable = false;
 				line = complier.getPointer();
 			}
 		});
-		next.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
+		next.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
 				player.setState("next");
 			}
 		});
-		restart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
+		restart.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
 				rf.OpenFile_write();
 				rf.AddRecord("0");
 				rf.CloseFile_write();
@@ -305,13 +301,12 @@ public class Coder extends JPanel implements Runnable {
 				mapNmberJ.setText(mapNumberS);
 				newGame();
 				complier.setPointer(0);
-				// complier.setExp(true);
-				// complier.setIf(false);
-				// complier.setState("null");
 				runable = false;
 				line = complier.getPointer();
+				timing = 0;
 			}
 		});
+
 		hintJ_pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				hintJ_pic.setVisible(false);
@@ -325,12 +320,12 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 
-		restart.setBounds(buttonLocationX + 320, buttonLocationY, buttonSizeX, buttonSizeY);
-		next.setBounds(buttonLocationX + 500, buttonLocationY, buttonSizeX, buttonSizeY);
-		clear.setBounds(buttonLocationX + 200, buttonLocationY, buttonSizeX, buttonSizeY);
+		restart.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
+		next.setBounds(buttonLocationX + buttonSizeX * 3, buttonLocationY, buttonSizeX, buttonSizeY);
+		clear.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
 
-		hintJ_pic.setBounds(416, 234, 100, 100);
+		hintJ_pic.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
 		input.setBounds(11, 10, 195, 332);
 		mapNmberJ.setBounds(1010, 10, 150, 75);
 		UhintJ.setBounds(250, 95, 70, 75);
@@ -413,12 +408,6 @@ public class Coder extends JPanel implements Runnable {
 	// Update
 	// ========================================================
 	public void update() {
-		// System.out.println("> Update ");
-		// System.out.print(test);
-		// if (test % 10 == 0) {
-		// System.out.println();
-		// }
-		// test++;
 		if (start) {
 			bg = new ImageIcon("icon/background_start.png");
 			hintJ_pic.setVisible(false);
@@ -432,7 +421,6 @@ public class Coder extends JPanel implements Runnable {
 			submit.setVisible(false);
 		} else if (playing) {
 			startJ.setVisible(false);
-			// hintJ_pic.setVisible(true);
 			input.setVisible(true);
 			mapNmberJ.setVisible(true);
 			UhintJ.setVisible(true);
@@ -481,9 +469,6 @@ public class Coder extends JPanel implements Runnable {
 						for (int i = 0; i < enemys.size(); i++) {
 							enemys.get(i).walk();
 						}
-						// if (attacking) {
-						// fireball.walk();
-						// }
 						delay = 0;
 					} else {
 						delay++;
@@ -500,8 +485,6 @@ public class Coder extends JPanel implements Runnable {
 									}
 									for (int i = 0; i < dummys.size(); i++) {
 										if (dummys.get(i).checkNextStep(1, '4')) {
-											// dummys.get(i).disable();
-											// dummys.remove(i);
 											map.setDummy(map.getDummy() - 1);
 											if (map.getDummy() == 0) {
 												map.setPuzzle(false);
@@ -577,22 +560,22 @@ public class Coder extends JPanel implements Runnable {
 				if (anima >= 4) {
 					anima = 0;
 					timing++;
-					// System.out.println(timing);
 				} else {
 					anima++;
 				}
-				if (timing < 50) {
-					stars = new ImageIcon("icon/player.png");
-				} else if (timing < 100) {
-					stars = new ImageIcon("icon/player_3.png");
+				if (timing < 3) {
+					stars = new ImageIcon("icon/3-star.png");
+				} else if (timing < 6) {
+					stars = new ImageIcon("icon/2-star.png");
 				} else {
-					stars = new ImageIcon("icon/player_5.png");
+					stars = new ImageIcon("icon/1-star.png");
 				}
 				if (map.getHint()) {
 					hintJ_pic.setVisible(true);
 				} else {
 					hintJ_pic.setVisible(false);
 				}
+				System.out.print(timing);
 			}
 			map.update();
 		}
@@ -708,10 +691,10 @@ public class Coder extends JPanel implements Runnable {
 				}
 			}
 			if (map.getSmoke()) {
-				gr.drawImage(smokes[0].getImage(), 230, 150, null);
+				gr.drawImage(smokeI.getImage(), 230, 150, null);
 			}
 			if (end_map) {
-				gr.drawImage(stars.getImage(), 500, 100, null);
+				gr.drawImage(stars.getImage(), ((screenx / 2) - (1066 / 2)), ((screeny / 2) - (600 / 2)), null);
 			}
 			first = false;
 		}
