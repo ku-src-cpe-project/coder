@@ -94,7 +94,7 @@ public class Coder extends JPanel implements Runnable {
 
 	private int timing;
 	private JLabel hintJ_pic;
-	private JLabel smokeJ;
+	private JLabel hintJ_tex;
 	private ImageIcon smokeI;
 	private boolean end_map = false;
 	private int end_map_time;
@@ -152,6 +152,10 @@ public class Coder extends JPanel implements Runnable {
 		hintJ = new JLabel("");
 		hintJ.setBackground(new Color(70, 220, 90));
 		hintJ.setFont(f1);
+		hintJ_tex = new JLabel("");
+		hintJ_tex.setBackground(new Color(70, 220, 90));
+		hintJ_tex.setFont(f1);
+
 		pl.playSound_L("sound/bgm.wav", 999);
 
 		images = new ImageIcon[5];
@@ -162,7 +166,6 @@ public class Coder extends JPanel implements Runnable {
 		images[3] = new ImageIcon("icon/anima/kaboom_4.png");
 		images[4] = new ImageIcon("icon/anima/kaboom_5.png");
 		smokeI = new ImageIcon("icon/smoke.png");
-		smokeJ = new JLabel(smokeI);
 		hintJ_pic = new JLabel(new ImageIcon("icon/hint.png"));
 		startJ = new JLabel(new ImageIcon("icon/button_start.png"));
 
@@ -278,7 +281,7 @@ public class Coder extends JPanel implements Runnable {
 		});
 		clear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				map = new Map(hintJ, hintJ_pic, currentMap);
+				map = new Map(hintJ, hintJ_pic, hintJ_tex, currentMap);
 				newGame();
 				complier.setPointer(0);
 				runable = false;
@@ -297,7 +300,7 @@ public class Coder extends JPanel implements Runnable {
 				rf.CloseFile_write();
 				mapNumber = 0;
 				mapNumberS = "0";
-				map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
+				map = new Map(hintJ, hintJ_pic, hintJ_tex, convMap(mapNumber));
 				mapNmberJ.setText(mapNumberS);
 				newGame();
 				complier.setPointer(0);
@@ -310,6 +313,7 @@ public class Coder extends JPanel implements Runnable {
 		hintJ_pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				hintJ_pic.setVisible(false);
+				hintJ_tex.setVisible(false);
 				map.setHint(false);
 			}
 		});
@@ -326,6 +330,7 @@ public class Coder extends JPanel implements Runnable {
 		submit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
 
 		hintJ_pic.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
+		hintJ_tex.setBounds(100, -200, 1066, 600);
 		input.setBounds(11, 10, 195, 332);
 		mapNmberJ.setBounds(1010, 10, 150, 75);
 		UhintJ.setBounds(250, 95, 70, 75);
@@ -334,6 +339,7 @@ public class Coder extends JPanel implements Runnable {
 		startJ.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
 
 		add(startJ);
+		add(hintJ_tex);
 		add(hintJ_pic);
 
 		add(input);
@@ -346,7 +352,7 @@ public class Coder extends JPanel implements Runnable {
 		add(clear);
 		add(submit);
 		// map = new Map(randMap());
-		map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
+		map = new Map(hintJ, hintJ_pic, hintJ_tex, convMap(mapNumber));
 		currentMap = convMap(mapNumber);
 		newGame();
 	}
@@ -411,6 +417,7 @@ public class Coder extends JPanel implements Runnable {
 		if (start) {
 			bg = new ImageIcon("icon/background_start.png");
 			hintJ_pic.setVisible(false);
+			hintJ_tex.setVisible(false);
 			input.setVisible(false);
 			mapNmberJ.setVisible(false);
 			UhintJ.setVisible(false);
@@ -517,9 +524,10 @@ public class Coder extends JPanel implements Runnable {
 						end_map = true;
 					} else {
 						hintJ_pic.setVisible(false);
+						hintJ_tex.setVisible(false);
 						map.setHint(false);
 						mapNumber++;
-						map = new Map(hintJ, hintJ_pic, convMap(mapNumber));
+						map = new Map(hintJ, hintJ_pic, hintJ_tex, convMap(mapNumber));
 						newGame();
 						mapNmberJ.setText(mapNumber + "");
 						complier.setPointer(0);
@@ -572,8 +580,10 @@ public class Coder extends JPanel implements Runnable {
 				}
 				if (map.getHint()) {
 					hintJ_pic.setVisible(true);
+					hintJ_tex.setVisible(true);
 				} else {
 					hintJ_pic.setVisible(false);
+					hintJ_tex.setVisible(false);
 				}
 				System.out.print(timing);
 			}
@@ -694,7 +704,7 @@ public class Coder extends JPanel implements Runnable {
 				gr.drawImage(smokeI.getImage(), 230, 150, null);
 			}
 			if (end_map) {
-				gr.drawImage(stars.getImage(), ((screenx / 2) - (1066 / 2)), ((screeny / 2) - (600 / 2)), null);
+				gr.drawImage(stars.getImage(), (screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), null);
 			}
 			first = false;
 		}
