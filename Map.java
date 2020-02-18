@@ -17,6 +17,7 @@ class Map {
     private int column = 9;
     private char map[][] = new char[column][row];
     private boolean smoke = false, puzzle = false, hint = false;
+    private String hint_tex;
 
     private int dummy;
     private String level;
@@ -29,12 +30,11 @@ class Map {
     // A=mush.Chun 5=mush.Ken
     // D=dummy
 
-    public Map(JLabel hint, JLabel hint_pic, String level) {
-		this.images = new ImageIcon[3];
-		this.images[0] = new ImageIcon("icon/player.png");
-		this.images[1] = new ImageIcon("icon/player_3.png");
+    public Map(JLabel hint, JLabel hint_pic, JLabel hint_tex, String level) {
+        this.images = new ImageIcon[3];
+        this.images[0] = new ImageIcon("icon/player.png");
+        this.images[1] = new ImageIcon("icon/player_3.png");
         this.images[2] = new ImageIcon("icon/player_5.png");
-        this.hint_pic = new ImageIcon("icon/player.png");
         this.level = level;
         System.out.println("> Map Create");
         if (level.equals("0000")) { // walk(dire)
@@ -48,7 +48,8 @@ class Map {
             this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setHint(true);
-            setHint_pic(this.images[0]);
+            setHintText("0000\nwalk(direct)");
+            hint_tex.setText(getHintText());
             // R
             // R
             // R
@@ -72,6 +73,8 @@ class Map {
             this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setHint(true);
+            setHintText("0001\ntest walk(direct)");
+            hint_tex.setText(getHintText());
             // D
             // D
             // R
@@ -292,7 +295,7 @@ class Map {
         }
         if (level.equals("0003")) { // while(cou) fix line
             if (Coder.runable) {
-                System.out.println(Coder.lines.size());
+                // System.out.println(Coder.lines.size());
                 if (getPuzzle() && ((Coder.lines.size() - 2) > 3)) {
                     Coder.runable = false;
                     setPuzzle(false);
@@ -301,7 +304,7 @@ class Map {
         }
         if (level.equals("0004")) { // test while(cou) fix line
             if (Coder.runable) {
-                System.out.println(Coder.lines.size());
+                // System.out.println(Coder.lines.size());
                 if (getPuzzle() && ((Coder.lines.size() - 2) > 6)) {
                     Coder.runable = false;
                     setPuzzle(false);
@@ -340,6 +343,14 @@ class Map {
 
     public void setHint(boolean a) {
         this.hint = a;
+    }
+
+    public String getHintText() {
+        return this.hint_tex;
+    }
+
+    public void setHintText(String a) {
+        this.hint_tex = a;
     }
 
     public ImageIcon getHint_pic() {
