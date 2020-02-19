@@ -41,11 +41,11 @@ class Map {
             setRow(7);
             hint.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1303000001".toCharArray();
-            this.map[3] = "1000003001".toCharArray();
-            this.map[4] = "1000003001".toCharArray();
-            this.map[5] = "1000003081".toCharArray();
+            this.map[1] = "1030000001".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1030000001".toCharArray();
+            this.map[4] = "1000000001".toCharArray();
+            this.map[5] = "1000000081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setHint(true);
             setHintText("0000\nwalk(direct)");
@@ -67,8 +67,8 @@ class Map {
             hint.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1030003001".toCharArray();
-            this.map[2] = "1030303031".toCharArray();
-            this.map[3] = "1000300031".toCharArray();
+            this.map[2] = "1000303031".toCharArray();
+            this.map[3] = "1330300031".toCharArray();
             this.map[4] = "1330303331".toCharArray();
             this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
