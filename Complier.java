@@ -22,11 +22,11 @@ class Complier {
     private int pointer;
     private int pointerWhile, count_if, position_else;
     private int count, countState, count_braketOP, count_braketCL, find_braketOP_else, find_braketCL_else,
-            count_braketCL_else, find_braketCL_while,count_braketCL_while;
+            count_braketCL_else, find_braketCL_while;
     private ArrayList<String> process, find_braketOP, find_braketCL;
     private boolean expression, _if, conditionofif, foundif, foundelse, conditionwhile, foundwhile;
     private String state, checkif, statusif, statuselse, check_braket, check_braket_else, str, m, n, check_else,
-            check_if_out, check_braket2, check_token,check_braket_while_out,check_braket_while_in;
+            check_if_out, check_braket2, check_token;
 
     public Complier() {
         this.process = new ArrayList<String>();
@@ -43,8 +43,6 @@ class Complier {
         this.find_braketOP_else = 0;
         this.find_braketCL_else = 0;
         this.position_else = 0;
-        this.find_braketCL_while = 0;
-        this.count_braketCL_while = 0;
         this.expression = true;
         this._if = false;
         this.conditionofif = true;
@@ -54,9 +52,7 @@ class Complier {
         this.check_if_out = "out";
         this.check_token = "x";
 
-        this.check_braket_while_in = "null";
-        this.check_braket_while_out = "null";
-        this.state = "out";
+        this.state = "null";
 
     }
 
@@ -172,8 +168,6 @@ class Complier {
 
     public void checkMethod(Player player, ArrayList<String> token) { // WHILE, (, CHECK, (, DOWN, ), ), {
         for (int i = 0; i < token.size(); i++) {
-            
-            // System.out.println(token);
             if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) // found else and
                                                                                                    // condition if ==
                                                                                                    // False
@@ -201,7 +195,7 @@ class Complier {
                 } else {
                     this.count++;
                 }
-            }if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("T"))) {
+            } else if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("T"))) {
                 this.count_braketCL_else = this.find_braketOP_else;
                 this.n = Integer.toString(this.count_braketCL_else);
                 if (token.get(i).equals("{")) {
@@ -230,7 +224,7 @@ class Complier {
                     this.count++;
                     break;
                 }
-            }  if ((this.foundif)) { // found IF
+            } else if ((this.foundif)) { // found IF
                 this.count_braketCL = this.count_braketOP;
                 this.m = Integer.toString(this.count_braketCL);
                 if (this.controller.get(this.position_else).equals("T")) { // condition true for check out or in {}
@@ -242,9 +236,14 @@ class Complier {
                         if (this.check_braket2.equals(this.check_if_out)) {
                             this.check_if_out = "out";
                             this.foundif = false;
-                            
+                            popStack();
+                            this.count++;
+                            break;
                         } else {
                             this.count_braketOP -= 1;
+                            popStack();
+                            this.count++;
+                            break;
                         }
                     }
                 }
@@ -282,67 +281,12 @@ class Complier {
 
             }
             // this.foundif = false;
-            if (this.foundwhile) { //in case found while
-                // setPointer(getPosWhile().get(1));
+            else if (token.get(i).equals("}") && this.foundwhile) {
+                setPointer(getPosWhile().get(1));
                 // break;
-                if(this.conditionwhile) // in case found while and condition == true
-                {
-                    if(token.get(i).equals("}"))
-                    {
-                        setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
-                        // System.out.println(">>>>>>>"+this.getPosWhile());
-                        // System.out.println("><><><><><"+this.getPosWhile().size());
-
-
-                    }
-                }
-                else //in case condition == false (skip code)
-                {
-                     
-                    if (token.get(i).equals("}")) 
-                    { 
-                            System.out.println(">>>>>>>"+this.getPosWhile());
-                            // System.out.println("><><><><><"+this.getPosWhile().size());
-                            
-                            if(this.getPosWhile().size() > 1)
-                            {
-                                this.foundwhile = true;
-                                this.conditionwhile = true;
-                                //  System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
-                                 setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
-                                 
-                            }
-                             if(this.getPosWhile().size() == 1)
-                            {
-                                this.foundwhile = false;
-                                this.conditionwhile = false;
-                                
-                                 System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
-                                popStack();
-                                this.count++;
-                                
-                                 
-                            }
-                            else
-                            {
-                                popStack();
-                                this.count++;
-                                break;
-                            }
-                            
-                           
-                        
-                    } 
-                    else 
-                    {
-                        popStack();
-                        this.count++;
-                        break;
-                    }
-                }
             }
 
-            if (token.get(i).equals("walk")) {
+            else if (token.get(i).equals("walk")) {
 
                 player.walk(token.get(i + 2));
             }
@@ -354,7 +298,7 @@ class Complier {
             // this.expression = false;
             // }
             // }
-            if (token.get(i).equals("while")) { // function for find while
+            else if (token.get(i).equals("while")) { // function for find while
                 // old while
                 // setPointerWhile(this.pointer);
                 // setLoopWhile(Integer.parseInt(token.get(i + 2)) - 1);
@@ -364,59 +308,29 @@ class Complier {
                 // this.positionWhile.add(this.pointer);
                 // --------------------------------------------
                 // System.out.println(token.get(i + 2));
-                this.foundwhile = true;
                 if (token.get(i + 2).equals("check")) {
                     String dir = token.get(i + 4);
-                            if (player.collision(dir)) { // condition in while == true   
-                            getPosWhile().add(getPointer() - 1);
-                            if(this.getPosWhile().size() > 1)  //[1]
-                            {
-                                if(this.getPosWhile().get(0) != null   && this.getPosWhile().get(0) == getPointer() - 1 ) //[1,1]
-                                {
-                                    this.getPosWhile().remove(1); //[1]
-                                }
-                            }
-                            if(this.getPosWhile().size() > 2) //[1,2,2]
-                            {
-                                if( this.getPosWhile().get(1) == getPointer() - 1 ) //[1,2,2]
-                                {
-                                    this.getPosWhile().remove(1); //[1,2]
-                                }
-                            }    
-                            // System.out.println(this.pointer);                   
-                            System.out.println(getPosWhile());
-                            this.conditionwhile = true;
-                            // this.find_braketCL_while += 1;
-                            // this.state = "{" + this.find_braketCL_while + "w";      
-                            System.out.println("set-Exp-True");
-                            } 
-                            else { // condition in while == false
-                                
-                                // System.out.println(">>>>>>>>>"+getPointer());
-                                // System.out.println(this.getPosWhile());
-                                if(this.getPosWhile().size() > 1) //[1,2]
-                                {
-                                        this.getPosWhile().remove(1); //[1] 
-                                        this.conditionwhile = false;
-                                }  
-                                if(this.getPosWhile().size() == 1) //[1]
-                                {
+                    if (!player.collision(dir)) { // condition in while == true
+                        getPosWhile().add(getPointer() - 1);
 
-                                        System.out.println("check in");
-                                        this.conditionwhile = false;
-                                }
-                                
+                        // System.out.println(this.pointer);
+                        this.foundwhile = true;
+                        System.out.println(getPosWhile());
+                        // this.conditionwhile = true;
+                        // this.find_braketCL_while = 0;
+                        // this.state = "{" + 0 + "w";
+                        System.out.println("set-Exp-True");
 
-                            //  this.find_braketCL_while += 1;
-                            // this.state = "{" + this.find_braketCL_while + "w";
-                            // this.getPosWhile().remove(1);      
-                            System.out.println("set-Exp-False");
-                            break;
-                            // this.count++;
+                    } else {
+                        getPosWhile().add(getPointer() - 1);
+                        this.foundwhile = true;
+                        System.out.println(getPosWhile());
+                        System.out.println("set-Exp-False");
+                        // this.count++;
+
                     }
-                    
                 }
-            } if (token.get(i).equals("if")) { // function for find if
+            } else if (token.get(i).equals("if")) { // function for find if
                 this.foundif = true;
                 if (this.check_if_out.equals("out")) { // check if in or out {}
                     if (token.get(i + 2).equals("check")) {
@@ -460,9 +374,9 @@ class Complier {
                         }
                     }
                 }
-            }else if (token.get(i).equals("else")) { // function for find else
+            } else if (token.get(i).equals("else")) { // function for find else
                 if (token.get(i + 1).equals("{")) {
-                    // this.state = "else";
+                    this.state = "else";
                     this.foundelse = true;
                     this.find_braketOP_else = 0;
                     this.statuselse = "{" + "else" + this.find_braketOP_else;
