@@ -6,13 +6,14 @@ import java.util.regex.*;
 import java.lang.*;/*write*/
 
 class ReadFile {
+  private String mapNameStr;
   private String a;
   private Scanner x;
   private Formatter y;
   private String data = "";
 
   // Now
-  public void OpenFile_read() {
+  public void openRead() {
     try {
       x = new Scanner(new File("bin.txt"));
     } catch (Exception e) {
@@ -21,10 +22,10 @@ class ReadFile {
   }
 
   public void ReadFile() {
-    Coder.mapNumberS = x.next();
+    setMapName(x.next());
   }
 
-  public void OpenFile_write() {
+  public void openWrite() {
     try {
       y = new Formatter("bin.txt");
     } catch (Exception e) {
@@ -32,15 +33,15 @@ class ReadFile {
     }
   }
 
-  public void AddRecord(String text) {
+  public void write(String text) {
     y.format(text);
   }
 
-  public void CloseFile_read() {
+  public void closeRead() {
     x.close();
   }
 
-  public void CloseFile_write() {
+  public void closeWrite() {
     y.close();
   }
 
@@ -51,5 +52,13 @@ class ReadFile {
     while (mt.find()) {
       System.out.println(mt.group());
     }
+  }
+
+  public String getMapName() {
+    return this.mapNameStr;
+  }
+
+  public void setMapName(String a) {
+    this.mapNameStr = a;
   }
 }
