@@ -11,21 +11,18 @@ import java.util.StringTokenizer;
 import java.io.*;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
-import java.awt.Dimension;
 
 class Player {
-    private PlaySound soundMedia;
     private ImageIcon[] images;
+    private int x, y, scale;
     public int[] playerPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state, mushroom;
     private FireBall fireball;
-    private ArrayList<FireBall> fireballs;
 
-    public Player(Map map, PlaySound soundMedia) {
-        this.soundMedia = soundMedia;
+    public Player(Map map, int scale) {
         this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("icon/player.png");
         this.images[1] = new ImageIcon("icon/player_2.png");
@@ -35,16 +32,17 @@ class Player {
         this.images[5] = new ImageIcon("icon/player_6.png");
         this.map = map;
         this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
+        this.scale = scale;
+        this.x = this.scale;
+        this.y = this.scale;
         this.state = "alive";
         this.mushroom = "ryu";
-        this.fireball = null;
-        this.fireballs = new ArrayList<FireBall>();
     }
 
-    public void draw(Graphics g, int scale, int dir, int locationX, int locationY, int padX, int padY) {
+    public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
         g.drawImage(this.images[dir].getImage(),
-                (this.playerPosition[1] * scale) + locationX + (padX * this.playerPosition[0]),
-                (this.playerPosition[0] * scale) + locationY - (padY * this.playerPosition[0]) - 143 + 50, null);
+                (this.playerPosition[1] * this.scale) + locationX + (padX * this.playerPosition[0]),
+                (this.playerPosition[0] * this.scale) + locationY - (padY * this.playerPosition[0]) - 143 + 50, null);
         // g.drawImage(this.images[0].getImage(), getX(), getY(), null);
     }
 
@@ -56,12 +54,16 @@ class Player {
             this.nextPosition[1] = tmpPosition[1];
             if (dir.equals("left") && collision(dir)) {
                 this.playerPosition[1] -= 1;
+                this.x = this.x - this.scale;
             } else if (dir.equals("right") && collision(dir)) {
                 this.playerPosition[1] += 1;
+                this.x = this.x + this.scale;
             } else if (dir.equals("up") && collision(dir)) {
                 this.playerPosition[0] -= 1;
+                this.y = this.y - this.scale;
             } else if (dir.equals("down") && collision(dir)) {
                 this.playerPosition[0] += 1;
+                this.y = this.y + this.scale;
             } else {
                 System.out.println("*** Sysntax error ***");
                 if (checkNextStep(dir, '3')) {
@@ -77,7 +79,7 @@ class Player {
                 this.map.setMap(this.playerPosition[0], this.playerPosition[1], '9');
             } else {
                 this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.soundMedia.playSound_S("sound/dead.wav");
+                Coder.soundMedia.playSound_S("sound/dead.wav");
             }
         } else {
             System.out.println("You are dead");
@@ -114,26 +116,26 @@ class Player {
     public void checkStep(String dir) {
         if (checkNextStep(dir, '8')) {
             this.state = "next";
-            this.soundMedia.playSound_S("sound/next.wav");
+            Coder.soundMedia.playSound_S("sound/next.wav");
         }
         if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.playerPosition[0] = this.map.findMap('6')[0];
             this.playerPosition[1] = this.map.findMap('6')[1];
-            this.soundMedia.playSound_S("sound/portal.wav");
+            Coder.soundMedia.playSound_S("sound/portal.wav");
         }
         if (checkNextStep(dir, '5')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.playerPosition[0] = this.nextPosition[0];
             this.playerPosition[1] = this.nextPosition[1];
-            this.soundMedia.playSound_S("sound/mushroom.wav");
+            Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "ken";
         }
         if (checkNextStep(dir, 'A')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.playerPosition[0] = this.nextPosition[0];
             this.playerPosition[1] = this.nextPosition[1];
-            this.soundMedia.playSound_S("sound/mushroom.wav");
+            Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "chun-li";
         }
     }
@@ -171,8 +173,8 @@ class Player {
                         enemys.remove(i);
                     }
                 }
-                this.soundMedia.playSound_S("sound/fire.wav");
-                this.soundMedia.playSound_S("sound/hit.wav");
+                Coder.soundMedia.playSound_S("sound/fire.wav");
+                Coder.soundMedia.playSound_S("sound/hit.wav");
             } else if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '1'
                     || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '3'
                     || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '5'
@@ -182,16 +184,37 @@ class Player {
                     || this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == '9') {
                 System.out.println("Have something front.");
             } else {
-                // (j * scale) + locationX + (padX * i),
-                // (i * scale) + locationY - (padY * i) - 143 + 50,
-                // i,
-                // j)
-                this.soundMedia.playSound_S("sound/fire.wav");
-                map.printMap();
+                this.fireball = new FireBall(this.map, this.scale, this.x, this.y, this.playerPosition[0],
+                        this.playerPosition[1] + 1);
+                Coder.soundMedia.playSound_S("sound/fire.wav");
             }
         } else {
             System.out.println("You are not Ken");
         }
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getScale() {
+        return this.scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
     }
 
     public String getState() {
@@ -206,31 +229,7 @@ class Player {
         return this.mushroom;
     }
 
-    public void setMush(String a) {
-        this.mushroom = a;
-    }
-
-    public PlaySound getSound() {
-        return this.soundMedia;
-    }
-
-    public void setSound(PlaySound a) {
-        this.soundMedia = a;
-    }
-
-    public FireBall getFireball() {
-        return this.fireball;
-    }
-
-    public void setFireball(FireBall a) {
-        this.fireball = a;
-    }
-
-    public ArrayList<FireBall> getFireballs() {
-        return this.fireballs;
-    }
-
-    public void setFireballs(ArrayList<FireBall> a) {
-        this.fireballs = a;
+    public String setMush(String a) {
+        return this.mushroom = a;
     }
 }
