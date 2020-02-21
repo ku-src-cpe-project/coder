@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2
+=======
+1
+>>>>>>> parent of 6debfda... while uncomplete
 =======
 1
 >>>>>>> parent of 6debfda... while uncomplete
