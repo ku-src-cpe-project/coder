@@ -20,7 +20,6 @@ class Player {
     private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state, mushroom;
-    private FireBall fireball;
 
     public Player(Map map, int scale) {
         this.images = new ImageIcon[6];

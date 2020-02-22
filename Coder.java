@@ -646,22 +646,22 @@ public class Coder extends JPanel implements Runnable {
 						// gr.setColor(Color.GREEN);
 						// gr.fillRect(j * scale, i * scale, blockX, blockY);
 						bomb = new Bomb((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						bomb.draw(gr, direction);
 					}
 					if (map.getMap()[i][j] == '8') {
 						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						portal.draw(gr, direction);
 					}
 					if (map.getMap()[i][j] == '7') {
 						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						portal.draw(gr, direction + 2);
 					}
 					if (map.getMap()[i][j] == '6') {
 						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						portal.draw(gr, direction + 4);
 					}
 					if (map.getMap()[i][j] == '5') {
@@ -681,7 +681,7 @@ public class Coder extends JPanel implements Runnable {
 						attacking = true;
 					}
 					if (map.getMap()[i][j] == 'D') {
-						dummy = new Dummy(map, scale, (j * scale) + locationX + (padX * i),
+						dummy = new Dummy(map, (j * scale) + locationX + (padX * i),
 								(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
 						dummy.draw(gr, direction);
 						if (firstMake) {

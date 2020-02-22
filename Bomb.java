@@ -3,19 +3,18 @@ import javax.swing.ImageIcon;
 
 class Bomb {
     private ImageIcon[] images;
-    private int x, y, scale;
+    private int x, y;
 
-    public Bomb(int x, int y, int scale) {
+    public Bomb(int x, int y) {
         this.images = new ImageIcon[2];
         this.images[0] = new ImageIcon("icon/bomb.png");
         this.images[1] = new ImageIcon("icon/bomb_2.png");
         this.x = x;
         this.y = y;
-        this.scale = scale;
     }
 
     public void draw(Graphics g, int dir) {
-        g.drawImage(images[dir].getImage(), getX(), getY(), null);
+        g.drawImage(images[dir].getImage(), this.x, this.y, null);
     }
 
     public int getX() {
@@ -33,13 +32,4 @@ class Bomb {
     public void setY(int y) {
         this.y = y;
     }
-
-    public int getScale() {
-        return this.scale;
-    }
-
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
-
 }

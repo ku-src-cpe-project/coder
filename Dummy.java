@@ -9,15 +9,13 @@ class Dummy {
     private Map map;
     private String state;
 
-    public Dummy(Map map, int scale, int x, int y, int mapX, int mapY) {
+    public Dummy(Map map, int x, int y, int mapRow, int mapColumn) {
         this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("icon/dummy.png");
         this.images[1] = new ImageIcon("icon/dummy.png");
-        this.playerPosition[0] = mapX;
-        this.playerPosition[1] = mapY;
+        this.playerPosition[0] = mapRow;
+        this.playerPosition[1] = mapColumn;
         this.map = map;
-        // this.map.setMap(this.playerPosition[0], this.playerPosition[1], '2');
-        this.scale = scale;
         this.x = x;
         this.y = y;
         this.state = "live";
@@ -25,7 +23,7 @@ class Dummy {
     }
 
     public void draw(Graphics g, int dir) {
-        g.drawImage(images[dir].getImage(), getX(), getY(), null);
+        g.drawImage(images[dir].getImage(), this.x, this.y, null);
     }
 
     public void walk() {

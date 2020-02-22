@@ -12,13 +12,13 @@ class FireBall {
     private Map map;
     private String state;
 
-    public FireBall(Map map, int scale, int x, int y, int mapX, int mapY) {
+    public FireBall(Map map, int scale, int x, int y, int mapRow, int mapColumn) {
         this.images = new ImageIcon[2];
         this.images[0] = new ImageIcon("icon/fire_ball.png");
         this.images[1] = new ImageIcon("icon/fire_ball_2.png");
         this.random = new Random();
-        this.playerPosition[0] = mapX;
-        this.playerPosition[1] = mapY;
+        this.playerPosition[0] = mapRow;
+        this.playerPosition[1] = mapColumn;
         this.map = map;
         this.map.setMap(this.playerPosition[0], this.playerPosition[1], '4');
         this.scale = scale;

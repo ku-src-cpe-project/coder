@@ -3,7 +3,7 @@ import javax.swing.ImageIcon;
 
 class Mushroom {
     private ImageIcon[] images;
-    private int x, y, scale;
+    private int x, y;
     private String mushroom;
 
     public Mushroom(int x, int y) {
@@ -14,7 +14,6 @@ class Mushroom {
         this.images[3] = new ImageIcon("icon/mushroom_4.png");
         this.x = x;
         this.y = y;
-        this.mushroom = "chun-li";
     }
 
     public void draw(Graphics g, int dir) {
