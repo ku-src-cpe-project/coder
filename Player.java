@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 
 class Player {
     private ImageIcon[] images;
-    private int x, y, scale;
+    private int scale;
     public int[] selfPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
@@ -30,8 +30,6 @@ class Player {
         this.images[4] = new ImageIcon("icon/player_5.png");
         this.images[5] = new ImageIcon("icon/player_6.png");
         this.map = map;
-        this.x = scale;
-        this.y = scale;
         this.scale = scale;
         this.state = "live";
         this.mushroom = "ryu";
@@ -54,16 +52,12 @@ class Player {
             this.nextPosition[1] = tmpPosition[1];
             if (dir.equals("left") && collision(dir)) {
                 this.selfPosition[1] -= 1;
-                this.x = this.x - this.scale;
             } else if (dir.equals("right") && collision(dir)) {
                 this.selfPosition[1] += 1;
-                this.x = this.x + this.scale;
             } else if (dir.equals("up") && collision(dir)) {
                 this.selfPosition[0] -= 1;
-                this.y = this.y - this.scale;
             } else if (dir.equals("down") && collision(dir)) {
                 this.selfPosition[0] += 1;
-                this.y = this.y + this.scale;
             } else {
                 System.out.println("*** Sysntax error ***");
                 if (checkNextStep(dir, '3')) {
@@ -190,22 +184,6 @@ class Player {
         } else {
             System.out.println("You are not Ken");
         }
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getScale() {

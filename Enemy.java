@@ -4,28 +4,30 @@ import java.util.Random;
 
 class Enemy {
     private ImageIcon[] images;
-    private int x, y;
+    private int scale;
     private Random random;
     public int[] selfPosition = { 1, 1 };
     private int[] tmpPosition = { 0, 0 };
     private Map map;
     private String state;
 
-    public Enemy(Map map, int mapRow, int mapColumn, int x, int y) {
+    public Enemy(Map map, int scale, int mapRow, int mapColumn) {
         this.images = new ImageIcon[2];
         this.images[0] = new ImageIcon("icon/enemy.png");
         this.images[1] = new ImageIcon("icon/enemy_2.png");
         this.random = new Random();
+        this.map = map;
+        this.scale = scale;
+        this.state = "live";
         this.selfPosition[0] = mapRow;
         this.selfPosition[1] = mapColumn;
-        this.map = map;
-        this.x = x;
-        this.y = y;
-        this.state = "live";
     }
 
-    public void draw(Graphics g, int dir) {
-        g.drawImage(images[dir].getImage(), this.x, this.y, null);
+    public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
+        g.drawImage(this.images[dir].getImage(),
+                (this.selfPosition[1] * this.scale) + locationX + (padX * this.selfPosition[0]),
+                (this.selfPosition[0] * this.scale) + locationY - (padY * this.selfPosition[0]) - 143 + 50, null);
+        // g.drawImage(this.images[0].getImage(), getX(), getY(), null);
     }
 
     public void walk() {
@@ -111,21 +113,5 @@ class Enemy {
         this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
         this.selfPosition[0] = -99;
         this.state = "dead";
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 }
