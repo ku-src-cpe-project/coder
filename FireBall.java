@@ -24,7 +24,7 @@ class FireBall {
         this.scale = scale;
         this.x = x;
         this.y = y;
-        this.state = "alive";
+        this.state = "live";
     }
 
     public void draw(Graphics g, int dir) {

@@ -80,8 +80,8 @@ public class Coder extends JPanel implements Runnable {
 	private int buttonSizeX = 182, buttonSizeY = 103;
 
 	// Store
-	private ArrayList<Enemy> enemys;
 	private ArrayList<Dummy> dummys;
+	public static ArrayList<Enemy> enemys;
 
 	// Update
 	private int direction, chooseStart;
@@ -139,15 +139,8 @@ public class Coder extends JPanel implements Runnable {
 		soundMedia.playSound_L("sound/bgm.wav", 999);
 
 		// ========================================================
-		// Save file
+		// init
 		// ========================================================
-		readFile = new ReadFile();
-		readFile.OpenFile_read();
-		readFile.ReadFile();
-		readFile.CloseFile_read();
-		mapNumber = Integer.parseInt(mapNummberSave);
-		mapNumberLabel.setText(mapNummberSave);
-
 		starting = true;
 		playing = false;
 		direction = 0;
@@ -193,6 +186,16 @@ public class Coder extends JPanel implements Runnable {
 		buttonRestart = new JLabel(new ImageIcon("icon/button_restart.png"));
 
 		// ========================================================
+		// Save file
+		// ========================================================
+		readFile = new ReadFile();
+		readFile.OpenFile_read();
+		readFile.ReadFile();
+		readFile.CloseFile_read();
+		mapNumber = Integer.parseInt(mapNummberSave);
+		mapNumberLabel.setText(mapNummberSave);
+
+		// ========================================================
 		// Debug
 		// ========================================================
 		int coreX = 70, coreY = 450;
@@ -224,7 +227,7 @@ public class Coder extends JPanel implements Runnable {
 		});
 		fire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				player.attack(enemys);
+				player.attack();
 			}
 		});
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
@@ -232,11 +235,11 @@ public class Coder extends JPanel implements Runnable {
 		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
-		// add(up);
-		// add(down);
-		// add(left);
-		// add(right);
-		// add(fire);
+		add(up);
+		add(down);
+		add(left);
+		add(right);
+		add(fire);
 
 		// ========================================================
 		//
@@ -258,6 +261,7 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);walk(right);walk(right);walk(down);walk(right);walk(right);walk(right);walk(right);";
 				// textValue = "walk(right);check(right);";
 				// textValue = "check(right);walk(right);";
+				textValue = "walk(down);attack();walk(down);attack();walk(down);attack();";
 
 				// while
 				// textValue = "walk(down);while(2){walk(right);walk(right);}";
@@ -360,9 +364,11 @@ public class Coder extends JPanel implements Runnable {
 		add(buttonClear);
 		add(buttonSubmit);
 		// map = new Map(randMap());
-		map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
-		mapNow = convMap(mapNumber);
+		// map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+		// mapNow = convMap(mapNumber);
 		newGame();
+		starting = false;
+		playing = true;
 	}
 
 	// ========================================================
@@ -376,12 +382,8 @@ public class Coder extends JPanel implements Runnable {
 		// screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		// screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
-		for (int i = 0; i < map.getRow(); i++) { // debug
-			for (int j = 0; j <= map.getColumn(); j++) {
-				System.out.print(map.getMap()[i][j]);
-			}
-			System.out.print("\n");
-		}
+		map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+		map.printMap();
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
 		dummys = new ArrayList<Dummy>();
@@ -454,7 +456,7 @@ public class Coder extends JPanel implements Runnable {
 					delayMapEnd++;
 				}
 			} else {
-				if (runable && player.getState().equals("alive")) {
+				if (runable && player.getState().equals("live")) {
 					if (complier.getPointer() == 0) {
 						System.out.println("==============================");
 						System.out.println("    PROGRAM ALREADY RUNNING");
@@ -527,7 +529,7 @@ public class Coder extends JPanel implements Runnable {
 					// ========================================================
 					//
 					// ========================================================
-				} else if (player.getState().equals("buttonNext")) {
+				} else if (player.getState().equals("next")) {
 					if (mapStateFirst) {
 						mapStateEnd = true;
 					} else {
@@ -544,7 +546,7 @@ public class Coder extends JPanel implements Runnable {
 						complier.setState("null");
 						runable = false;
 						line = complier.getPointer();
-						player.setState("alive");
+						player.setState("live");
 
 						// ========================================================
 						// Save file
@@ -566,7 +568,7 @@ public class Coder extends JPanel implements Runnable {
 						mapStateFirst = true;
 					}
 				} else if (player.getState().equals("dead")) {
-					player.playerPosition[0] = -99;
+					player.selfPosition[0] = -99;
 				}
 				if (direction >= 1) {
 					direction = 0;
@@ -664,12 +666,12 @@ public class Coder extends JPanel implements Runnable {
 					}
 					if (map.getMap()[i][j] == '5') {
 						mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						mushroom.draw(gr, direction);
 					}
 					if (map.getMap()[i][j] == 'A') {
 						mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, scale);
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						mushroom.draw(gr, direction + 2);
 					}
 					if (map.getMap()[i][j] == '4') {

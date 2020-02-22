@@ -346,6 +346,9 @@ class Complier {
 
                 player.walk(token.get(i + 2));
             }
+            if (token.get(i).equals("attack")) {
+                player.attack();
+            }
             // if (token.get(i).equals("check")) {
             // if (player.collision(token.get(i + 2))) {
             // this.expression = true;

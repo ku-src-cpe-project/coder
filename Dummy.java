@@ -20,7 +20,7 @@ class Dummy {
         this.scale = scale;
         this.x = x;
         this.y = y;
-        this.state = "alive";
+        this.state = "live";
         this.dir = 0;
     }
 
