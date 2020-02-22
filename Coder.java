@@ -611,7 +611,6 @@ public class Coder extends JPanel implements Runnable {
 			}
 			map.update();
 		}
-        this.map.printMap();
 	}
 
 	// ========================================================

@@ -61,12 +61,6 @@ class FireBall {
         return bool;
     }
 
-    public void checkStep(int dir) {
-        if (checkNextStep(dir, '9')) {
-            System.out.println("Found Player");
-        }
-    }
-
     public boolean checkNextStep(int dir, char a) {
         boolean bool = false;
         if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {

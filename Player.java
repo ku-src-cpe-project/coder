@@ -114,8 +114,7 @@ class Player {
         if (checkNextStep(dir, '8')) {
             this.state = "next";
             Coder.soundMedia.playSound_S("sound/next.wav");
-        }
-        else if (checkNextStep(dir, '7')) {
+        } else if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.nextPosition[0] = this.map.findMap('6')[0];
             this.nextPosition[1] = this.map.findMap('6')[1];
@@ -124,16 +123,14 @@ class Player {
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/portal.wav");
-        }
-        else if (checkNextStep(dir, '5')) {
+        } else if (checkNextStep(dir, '5')) {
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "ken";
-        }
-        else if (checkNextStep(dir, 'A')) {
+        } else if (checkNextStep(dir, 'A')) {
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
@@ -178,18 +175,14 @@ class Player {
                 }
                 Coder.soundMedia.playSound_S("sound/fire.wav");
                 Coder.soundMedia.playSound_S("sound/hit.wav");
-            } else if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '1'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '3'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '5'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '6'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '7'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '8'
-                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '9') {
+            } else if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
                 System.out.println("Have something front.");
             } else {
                 this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '4');
                 Coder.soundMedia.playSound_S("sound/fire.wav");
             }
+        } else if (Coder.attacking) {
+            System.out.println("You are attacking");
         } else {
             System.out.println("You are not Ken");
         }
