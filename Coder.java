@@ -88,7 +88,8 @@ public class Coder extends JPanel implements Runnable {
 	private int delayA, delayB, delayMapEnd;
 	private int timing;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
-	private boolean firstMake, attacking, hitting, starting, playing;
+	private boolean firstMake, hitting, starting, playing;
+	public static boolean attacking;
 
 	// Map
 	private String mapNow;
@@ -610,6 +611,7 @@ public class Coder extends JPanel implements Runnable {
 			}
 			map.update();
 		}
+        this.map.printMap();
 	}
 
 	// ========================================================

@@ -52,12 +52,20 @@ class Player {
             this.nextPosition[1] = tmpPosition[1];
             if (dir.equals("left") && collision(dir)) {
                 this.selfPosition[1] -= 1;
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             } else if (dir.equals("right") && collision(dir)) {
                 this.selfPosition[1] += 1;
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             } else if (dir.equals("up") && collision(dir)) {
                 this.selfPosition[0] -= 1;
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             } else if (dir.equals("down") && collision(dir)) {
                 this.selfPosition[0] += 1;
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             } else {
                 System.out.println("*** Sysntax error ***");
                 if (checkNextStep(dir, '3')) {
@@ -73,7 +81,6 @@ class Player {
             Coder.soundMedia.playSound_S("sound/dead.wav");
             System.out.println("You are dead");
         }
-        this.map.printMap();
     }
 
     public boolean collision(String dir) {
@@ -108,25 +115,29 @@ class Player {
             this.state = "next";
             Coder.soundMedia.playSound_S("sound/next.wav");
         }
-        if (checkNextStep(dir, '7')) {
+        else if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.nextPosition[0] = this.map.findMap('6')[0];
             this.nextPosition[1] = this.map.findMap('6')[1];
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/portal.wav");
         }
-        if (checkNextStep(dir, '5')) {
-            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+        else if (checkNextStep(dir, '5')) {
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "ken";
         }
-        if (checkNextStep(dir, 'A')) {
-            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+        else if (checkNextStep(dir, 'A')) {
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "chun-li";
         }
@@ -155,7 +166,7 @@ class Player {
     }
 
     public void attack() {
-        if (this.mushroom.equals("ken")) {
+        if (this.mushroom.equals("ken") && !Coder.attacking) {
             System.out.println("Hadouken!");
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '2') {
                 this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '0');
