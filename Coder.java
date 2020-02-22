@@ -4,26 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.*;
-import java.applet.*;
-import java.util.*;
+// import java.applet.*;
+// import java.util.*;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.io.*;
+// import java.util.StringTokenizer;
+// import java.io.*;
 
-import javax.sound.sampled.*;
+// import javax.sound.sampled.*;
 import java.awt.Color;
-import java.util.Collections;
-import java.util.List;
+// import java.util.Collections;
+// import java.util.List;
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Image;
 // =============================================================================
 // Timer Import
 // =============================================================================
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+// import java.text.SimpleDateFormat;
+// import java.util.Calendar;
+// import java.util.Timer;
+// import java.util.TimerTask;
 // =============================================================================
 // 
 // =============================================================================
@@ -47,7 +47,7 @@ public class Coder extends JPanel implements Runnable {
 	// Variable
 	// ========================================================
 	private int locationX = 110, locationY = 230;
-	private int blockX = 50, blockY = 50;
+	// private int blockX = 50, blockY = 50;
 	private int padX = 15, padY = 45;
 
 	// Function
@@ -88,7 +88,7 @@ public class Coder extends JPanel implements Runnable {
 	private int delayA, delayB, delayMapEnd;
 	private int timing;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
-	private boolean firstMake, hitting, starting, playing;
+	private boolean firstMake, hitting, starting, playing, loading;
 	public static boolean attacking;
 
 	// Map
@@ -143,6 +143,7 @@ public class Coder extends JPanel implements Runnable {
 		// init
 		// ========================================================
 		starting = true;
+		loading = false;
 		playing = false;
 		direction = 0;
 		delayA = 0;
@@ -165,7 +166,6 @@ public class Coder extends JPanel implements Runnable {
 		tutorialText.setBackground(new Color(70, 220, 90));
 		tutorialText.setFont(f1);
 
-		// imageBooms[0] = new ImageIcon("icon/kaboom.gif");
 		imageBooms = new ImageIcon[5];
 		imageSmokes = new ImageIcon[2];
 		imageStars = new ImageIcon[3];
@@ -190,9 +190,9 @@ public class Coder extends JPanel implements Runnable {
 		// Save file
 		// ========================================================
 		readFile = new ReadFile();
-		readFile.OpenFile_read();
+		readFile.openFileRead();
 		readFile.ReadFile();
-		readFile.CloseFile_read();
+		readFile.closeFileRead();
 		mapNumber = Integer.parseInt(mapNummberSave);
 		mapNumberLabel.setText(mapNummberSave);
 
@@ -316,9 +316,9 @@ public class Coder extends JPanel implements Runnable {
 		});
 		buttonRestart.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				readFile.OpenFile_write();
-				readFile.AddRecord("0");
-				readFile.CloseFile_write();
+				readFile.openFileWrite();
+				readFile.write("0");
+				readFile.closeFileWrite();
 				mapNumber = 0;
 				mapNummberSave = "0";
 				map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
@@ -372,15 +372,10 @@ public class Coder extends JPanel implements Runnable {
 		add(buttonNext);
 		add(buttonClear);
 		add(buttonSubmit);
-		// map = new Map(randMap());
-		// map = new Map(objectiveLabel, tutorialBackground, tutorialText,
-		//
-		//
-		// convMap(mapNumber));
-		// mapNow = convMap(mapNumber);
+
 		newGame();
-		starting = false;
-		playing = true;
+		// starting = false;
+		// playing = true;
 	}
 
 	// ========================================================
@@ -448,7 +443,10 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(false);
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
-		} else if (playing) {
+		} else if (loading) {
+			
+		}
+		else if (playing) {
 			buttonStart.setVisible(false);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
@@ -468,6 +466,50 @@ public class Coder extends JPanel implements Runnable {
 					delayMapEnd++;
 				}
 			} else {
+				// ========================================================
+				// Update Player State
+				// ========================================================
+				if (player.getState().equals("next")) {
+					if (mapStateFirst) {
+						mapStateEnd = true;
+					} else {
+						tutorialBackground.setVisible(false);
+						tutorialText.setVisible(false);
+						map.setTutorial(false);
+						mapNumber++;
+						map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
+						newGame();
+						mapNumberLabel.setText(mapNumber + "");
+						complier.setPointer(0);
+						complier.setExp(true);
+						complier.setIf(false);
+						complier.setState("null");
+						runable = false;
+						line = complier.getPointer();
+						player.setState("live");
+
+						// ========================================================
+						// Save file
+						// ========================================================
+						mapNummberSave = mapNumber + "";
+						mapNumberLabel.setText(mapNummberSave);
+						readFile.openFileWrite();
+						readFile.write(mapNummberSave);
+						readFile.closeFileWrite();
+
+						// ========================================================
+						// Score
+						// ========================================================
+						System.out.println("==============================");
+						System.out.println("    SCORE");
+						System.out.println("==============================");
+						System.out.println(timing);
+						timing = 0;
+						mapStateFirst = true;
+					}
+				} else if (player.getState().equals("dead")) {
+					player.selfPosition[0] = -99;
+				}
 				if (runable && player.getState().equals("live")) {
 					if (complier.getPointer() == 0) {
 						System.out.println("==============================");
@@ -502,85 +544,45 @@ public class Coder extends JPanel implements Runnable {
 					} else {
 						delayA++;
 					}
-					if (delayB > 1) {
-						if (attacking) {
-							if (fireball != null) {
-								if (!fireball.checkNextStep(2, '0')) {
-									for (int i = 0; i < enemys.size(); i++) {
-										if (enemys.get(i).checkNextStep(1, '4')) {
-											enemys.get(i).disable();
-											enemys.remove(i);
-										}
+				}
+
+				// ========================================================
+				// Update Playing Condition
+				// ========================================================
+				if (delayB > 1) {
+					if (attacking) {
+						if (fireball != null) {
+							if (!fireball.checkNextStep(2, '0')) {
+								for (int i = 0; i < enemys.size(); i++) {
+									if (enemys.get(i).checkNextStep(1, '4')) {
+										enemys.get(i).disable();
+										enemys.remove(i);
 									}
-									for (int i = 0; i < dummys.size(); i++) {
-										if (dummys.get(i).checkNextStep(1, '4')) {
-											map.setCountDummy(map.getCountDummy() - 1);
-											if (map.getCountDummy() == 0) {
-												map.setPuzzle(false);
-											}
-										}
-									}
-									effectBoomLcationX = fireball.getX();
-									effectBoomLcationY = fireball.getY();
-									fireball.disable();
-									fireball = null;
-									attacking = false;
-									hitting = true;
-									effectBoom = 0;
-									soundMedia.playSound_S("sound/hit.wav");
 								}
-							}
-							if (attacking) {
-								fireball.walk();
+								for (int i = 0; i < dummys.size(); i++) {
+									if (dummys.get(i).checkNextStep(1, '4')) {
+										map.setCountDummy(map.getCountDummy() - 1);
+										if (map.getCountDummy() == 0) {
+											map.setPuzzle(false);
+										}
+									}
+								}
+								effectBoomLcationX = fireball.getX();
+								effectBoomLcationY = fireball.getY();
+								fireball.disable();
+								attacking = false;
+								hitting = true;
+								effectBoom = 0;
+								soundMedia.playSound_S("sound/hit.wav");
 							}
 						}
-						delayB = 0;
-					} else {
-						delayB++;
+						if (attacking) {
+							fireball.walk();
+						}
 					}
-					// ========================================================
-					//
-					// ========================================================
-				} else if (player.getState().equals("next")) {
-					if (mapStateFirst) {
-						mapStateEnd = true;
-					} else {
-						tutorialBackground.setVisible(false);
-						tutorialText.setVisible(false);
-						map.setTutorial(false);
-						mapNumber++;
-						map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
-						newGame();
-						mapNumberLabel.setText(mapNumber + "");
-						complier.setPointer(0);
-						complier.setExp(true);
-						complier.setIf(false);
-						complier.setState("null");
-						runable = false;
-						line = complier.getPointer();
-						player.setState("live");
-
-						// ========================================================
-						// Save file
-						// ========================================================
-						mapNummberSave = mapNumber + "";
-						mapNumberLabel.setText(mapNummberSave);
-						readFile.OpenFile_write();
-						readFile.AddRecord(mapNummberSave);
-						readFile.CloseFile_write();
-
-						// ========================================================
-						// Score
-						// ========================================================
-						System.out.println("==============================");
-						System.out.println("    SCORE");
-						System.out.println("==============================");
-						System.out.println(timing);
-						timing = 0;
-						mapStateFirst = true;
-					}
-				} else if (player.getState().equals("dead")) {
-					player.selfPosition[0] = -99;
+					delayB = 0;
+				} else {
+					delayB++;
 				}
 				if (direction >= 1) {
 					direction = 0;
@@ -607,7 +609,6 @@ public class Coder extends JPanel implements Runnable {
 					tutorialBackground.setVisible(false);
 					tutorialText.setVisible(false);
 				}
-				// System.out.print(timing);
 			}
 			map.update();
 		}
@@ -630,16 +631,8 @@ public class Coder extends JPanel implements Runnable {
 			for (int i = 0; i < map.getRow(); i++) {
 				for (int j = 0; j <= map.getColumn(); j++) {
 					if (map.getMap()[i][j] == '0') {
-						// gr.setColor(Color.WHITE);
-						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
-						// (padY * i), blockX,
-						// blockY);
 					}
 					if (map.getMap()[i][j] == '1') {
-						// gr.setColor(Color.RED);
-						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
-						// (padY * i), blockX,
-						// blockY);
 					}
 					if (map.getMap()[i][j] == '2') {
 						enemy = new Enemy(map, scale, i, j);
@@ -649,8 +642,6 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '3') {
-						// gr.setColor(Color.GREEN);
-						// gr.fillRect(j * scale, i * scale, blockX, blockY);
 						bomb = new Bomb((j * scale) + locationX + (padX * i),
 								(i * scale) + locationY - (padY * i) - 143 + 50);
 						bomb.draw(gr, direction);
@@ -696,10 +687,6 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
-						// gr.setColor(Color.PINK);
-						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
-						// (padY * i), blockX,
-						// blockY);
 						if (player.getMush().equals("chun-li")) {
 							player.draw(gr, direction + 4, locationX, locationY, padX, padY);
 						} else if (player.getMush().equals("ken")) {
@@ -728,7 +715,6 @@ public class Coder extends JPanel implements Runnable {
 		}
 		update();
 		g.drawImage(screen, 0, 0, null);
-		// g.drawImage(imageBooms[0].getImage(), 100, 100, null); // insert picture .gif
 	}
 
 	// ========================================================

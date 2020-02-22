@@ -123,6 +123,15 @@ class Player {
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/portal.wav");
+        } else if (checkNextStep(dir, '6')) {
+            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+            this.nextPosition[0] = this.map.findMap('7')[0];
+            this.nextPosition[1] = this.map.findMap('7')[1];
+            this.selfPosition[0] = this.nextPosition[0];
+            this.selfPosition[1] = this.nextPosition[1];
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
+            Coder.soundMedia.playSound_S("sound/portal.wav");
         } else if (checkNextStep(dir, '5')) {
             this.selfPosition[0] = this.nextPosition[0];
             this.selfPosition[1] = this.nextPosition[1];

@@ -1,18 +1,13 @@
 import java.io.*;
 import java.util.*;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
 import java.util.regex.*;
-import java.lang.*;/*write*/
 
 class ReadFile {
-  private String a;
   private Scanner x;
   private Formatter y;
-  private String data = "";
 
   // Now
-  public void OpenFile_read() {
+  public void openFileRead() {
     try {
       x = new Scanner(new File("bin.txt"));
     } catch (Exception e) {
@@ -24,7 +19,7 @@ class ReadFile {
     Coder.mapNummberSave = x.next();
   }
 
-  public void OpenFile_write() {
+  public void openFileWrite() {
     try {
       y = new Formatter("bin.txt");
     } catch (Exception e) {
@@ -32,15 +27,15 @@ class ReadFile {
     }
   }
 
-  public void AddRecord(String text) {
+  public void write(String text) {
     y.format(text);
   }
 
-  public void CloseFile_read() {
+  public void closeFileRead() {
     x.close();
   }
 
-  public void CloseFile_write() {
+  public void closeFileWrite() {
     y.close();
   }
 
