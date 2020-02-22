@@ -43,6 +43,7 @@ public class Coder extends JPanel implements Runnable {
 	private int screeny; // 638 // 500
 	private Image screen;
 	private ImageIcon bg;
+
 	// ========================================================
 	// Variable
 	// ========================================================
@@ -55,6 +56,7 @@ public class Coder extends JPanel implements Runnable {
 
 	// Object
 	private Map map;
+	private MapStore mapStore;
 	private Player player;
 	private Complier complier;
 	private Bomb bomb;
@@ -80,6 +82,8 @@ public class Coder extends JPanel implements Runnable {
 	private int buttonSizeX = 182, buttonSizeY = 103;
 
 	// Store
+	private ArrayList<MapStore> mapStores;
+	private ArrayList<JLabel> mapStoreLabels;
 	private ArrayList<Dummy> dummys;
 	public static ArrayList<Enemy> enemys;
 
@@ -95,8 +99,7 @@ public class Coder extends JPanel implements Runnable {
 	private String mapNow;
 	private int mapNumber;
 	private JLabel mapNumberLabel, objectiveLabel, objectiveLabelForm;
-	private JLabel tutorialBackground;
-	private JLabel tutorialText;
+	private JLabel tutorialBackground, tutorialText;
 	private boolean mapStateEnd = false;
 	private boolean mapStateFirst = true;
 	public static String mapNummberSave;
@@ -142,6 +145,8 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// init
 		// ========================================================
+		mapStores = new ArrayList<MapStore>();
+		mapStoreLabels = new ArrayList<JLabel>();
 		starting = true;
 		loading = false;
 		playing = false;
@@ -200,50 +205,50 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Debug
 		// ========================================================
-		int coreX = 70, coreY = 450;
-		int sizeX = 50, sizeY = 50;
-		up = new JButton("^");
-		down = new JButton("V");
-		left = new JButton("<");
-		right = new JButton(">");
-		fire = new JButton("F");
-		print = new JButton("P");
-		up.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				player.walk("up");
-			}
-		});
-		down.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				player.walk("down");
-			}
-		});
-		left.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				player.walk("left");
-			}
-		});
-		right.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				player.walk("right");
-			}
-		});
-		fire.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				player.attack();
-			}
-		});
-		print.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				map.printMap();
-			}
-		});
-		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
-		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
-		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
-		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
-		fire.setBounds(coreX, coreY, sizeX, sizeY);
-		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
+		// int coreX = 70, coreY = 450;
+		// int sizeX = 50, sizeY = 50;
+		// up = new JButton("^");
+		// down = new JButton("V");
+		// left = new JButton("<");
+		// right = new JButton(">");
+		// fire = new JButton("F");
+		// print = new JButton("P");
+		// up.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// player.walk("up");
+		// }
+		// });
+		// down.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// player.walk("down");
+		// }
+		// });
+		// left.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// player.walk("left");
+		// }
+		// });
+		// right.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// player.walk("right");
+		// }
+		// });
+		// fire.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// player.attack();
+		// }
+		// });
+		// print.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
+		// map.printMap();
+		// }
+		// });
+		// right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
+		// up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
+		// down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
+		// left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
+		// fire.setBounds(coreX, coreY, sizeX, sizeY);
+		// print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
 		// add(up);
 		// add(down);
 		// add(left);
@@ -252,10 +257,40 @@ public class Coder extends JPanel implements Runnable {
 		// add(print);
 
 		// ========================================================
-		//
+		// Starting
 		// ========================================================
-		// buttonSubmit.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
+		buttonStart.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				starting = false;
+				loading = false;
+				playing = true;
+				newGame();
+			}
+		});
+		buttonLoad.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				starting = false;
+				loading = true;
+				playing = false;
+				for (int i = 0; i < 5; i++) {
+					MapStore mapStore = new MapStore(i);
+					mapStores.add(mapStore);
+				}
+			}
+		});
+
+		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
+		buttonLoad.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2) + 150, 416, 234);
+
+		add(buttonStart);
+		add(buttonLoad);
+		// ========================================================
+		// Loading
+		// ========================================================
+
+		// ========================================================
+		// Playing
+		// ========================================================
 		buttonSubmit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				// Restart
@@ -331,7 +366,6 @@ public class Coder extends JPanel implements Runnable {
 				timing = 0;
 			}
 		});
-
 		tutorialBackground.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				tutorialBackground.setVisible(false);
@@ -339,51 +373,32 @@ public class Coder extends JPanel implements Runnable {
 				map.setTutorial(false);
 			}
 		});
-		buttonStart.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				starting = false;
-				playing = true;
-			}
-		});
-		buttonLoad.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				starting = false;
-				loading = true;
-				playing = false;
-			}
-		});
 
-		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonNext.setBounds(buttonLocationX + buttonSizeX * 3, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonClear.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonSubmit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
-
-		tutorialBackground.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
+		buttonClear.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonNext.setBounds(buttonLocationX + buttonSizeX * 3, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
 		tutorialText.setBounds(100, -200, 1066, 600);
+		tutorialBackground.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
 		input.setBounds(11, 10, 195, 332);
 		mapNumberLabel.setBounds(1010, 10, 150, 75);
 		objectiveLabelForm.setBounds(250, 95, 70, 75);
 		objectiveLabel.setBounds(300, 95, 770, 75);
 
-		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
-		buttonLoad.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2) + 234, 416, 234);
-
-		add(buttonStart);
-		add(buttonLoad);
 		add(tutorialText);
 		add(tutorialBackground);
-
 		add(input);
 		add(mapNumberLabel);
 		add(objectiveLabelForm);
 		add(objectiveLabel);
-
 		add(buttonRestart);
 		add(buttonNext);
 		add(buttonClear);
 		add(buttonSubmit);
 
-		newGame();
+		// ========================================================
+		// Shortcut Starting
+		// ========================================================
 		// starting = false;
 		// playing = true;
 	}
@@ -400,6 +415,7 @@ public class Coder extends JPanel implements Runnable {
 		// screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
 		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
+		mapNumberLabel.setText(mapNumber + "");
 		map.printMap();
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
@@ -456,8 +472,8 @@ public class Coder extends JPanel implements Runnable {
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
 		} else if (loading) {
-			bg = new ImageIcon("icon/background_start.png");
-			buttonStart.setVisible(false);
+			bg = new ImageIcon("icon/background_load6.png");
+			buttonStart.setVisible(true);
 			buttonLoad.setVisible(false);
 			tutorialBackground.setVisible(false);
 			tutorialText.setVisible(false);
@@ -516,7 +532,6 @@ public class Coder extends JPanel implements Runnable {
 						// Save file
 						// ========================================================
 						mapNummberSave = mapNumber + "";
-						mapNumberLabel.setText(mapNummberSave);
 						readFile.openFileWrite();
 						readFile.write(mapNummberSave);
 						readFile.closeFileWrite();
@@ -651,7 +666,6 @@ public class Coder extends JPanel implements Runnable {
 		if (starting) {
 		} else if (loading) {
 		} else if (playing) {
-			bg = new ImageIcon("icon/background.png");
 			for (int i = 0; i < map.getRow(); i++) {
 				for (int j = 0; j <= map.getColumn(); j++) {
 					if (map.getMap()[i][j] == '0') {

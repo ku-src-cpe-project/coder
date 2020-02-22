@@ -410,7 +410,6 @@ class Map {
     }
 
     public void printMap() {
-        System.out.print("\n");
         for (int i = 0; i < this.row; i++) { // debug
             for (int j = 0; j <= this.column; j++) {
                 if (this.map[i][j] != '0' && this.map[i][j] != '1') {
@@ -423,5 +422,6 @@ class Map {
             }
             System.out.print("\n");
         }
+        System.out.print("\n");
     }
 }
