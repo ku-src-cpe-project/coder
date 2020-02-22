@@ -30,9 +30,9 @@ class Player {
         this.images[4] = new ImageIcon("icon/player_5.png");
         this.images[5] = new ImageIcon("icon/player_6.png");
         this.map = map;
-        this.scale = scale;
         this.x = scale;
         this.y = scale;
+        this.scale = scale;
         this.state = "live";
         this.mushroom = "ryu";
         this.selfPosition[0] = this.map.findMap('9')[0];

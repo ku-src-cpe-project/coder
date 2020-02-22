@@ -638,8 +638,8 @@ public class Coder extends JPanel implements Runnable {
 						// blockY);
 					}
 					if (map.getMap()[i][j] == '2') {
-						enemy = new Enemy(map, scale, (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+						enemy = new Enemy(map, i, j, (j * scale) + locationX + (padX * i),
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						enemy.draw(gr, direction);
 						if (firstMake) {
 							enemys.add(enemy);
@@ -678,9 +678,9 @@ public class Coder extends JPanel implements Runnable {
 						mushroom.draw(gr, direction + 2);
 					}
 					if (map.getMap()[i][j] == '4') {
-						fireball = new FireBall(map, scale, (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
-						fireball.draw(gr, direction);
+						fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
+								(i * scale) + locationY - (padY * i) - 143 + 50);
+						fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
 						attacking = true;
 					}
 					if (map.getMap()[i][j] == 'D') {
