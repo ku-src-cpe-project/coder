@@ -75,7 +75,7 @@ public class Coder extends JPanel implements Runnable {
 	public static boolean runable;
 
 	// Button
-	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart;
+	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad;
 	private int buttonLocationX = 280, buttonLocationY = 0;
 	private int buttonSizeX = 182, buttonSizeY = 103;
 
@@ -181,6 +181,7 @@ public class Coder extends JPanel implements Runnable {
 		imageStars[2] = new ImageIcon("icon/2-star.png");
 		tutorialBackground = new JLabel(new ImageIcon("icon/hint.png"));
 		buttonStart = new JLabel(new ImageIcon("icon/button_start.png"));
+		buttonLoad = new JLabel(new ImageIcon("icon/button_load.png"));
 		buttonSubmit = new JLabel(new ImageIcon("icon/button_submit.png"));
 		buttonClear = new JLabel(new ImageIcon("icon/button_clear.png"));
 		buttonNext = new JLabel(new ImageIcon("icon/button_next.png"));
@@ -243,12 +244,12 @@ public class Coder extends JPanel implements Runnable {
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
-		add(print);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
+		// add(print);
 
 		// ========================================================
 		//
@@ -344,6 +345,13 @@ public class Coder extends JPanel implements Runnable {
 				playing = true;
 			}
 		});
+		buttonLoad.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				starting = false;
+				loading = true;
+				playing = false;
+			}
+		});
 
 		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonNext.setBounds(buttonLocationX + buttonSizeX * 3, buttonLocationY, buttonSizeX, buttonSizeY);
@@ -358,8 +366,10 @@ public class Coder extends JPanel implements Runnable {
 		objectiveLabel.setBounds(300, 95, 770, 75);
 
 		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
+		buttonLoad.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2) + 234, 416, 234);
 
 		add(buttonStart);
+		add(buttonLoad);
 		add(tutorialText);
 		add(tutorialBackground);
 
@@ -433,6 +443,8 @@ public class Coder extends JPanel implements Runnable {
 	public void update() {
 		if (starting) {
 			bg = new ImageIcon("icon/background_start.png");
+			buttonStart.setVisible(true);
+			buttonLoad.setVisible(true);
 			tutorialBackground.setVisible(false);
 			tutorialText.setVisible(false);
 			input.setVisible(false);
@@ -444,10 +456,23 @@ public class Coder extends JPanel implements Runnable {
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
 		} else if (loading) {
-			
-		}
-		else if (playing) {
+			bg = new ImageIcon("icon/background_start.png");
 			buttonStart.setVisible(false);
+			buttonLoad.setVisible(false);
+			tutorialBackground.setVisible(false);
+			tutorialText.setVisible(false);
+			input.setVisible(false);
+			mapNumberLabel.setVisible(false);
+			objectiveLabelForm.setVisible(false);
+			objectiveLabel.setVisible(false);
+			buttonRestart.setVisible(false);
+			buttonNext.setVisible(false);
+			buttonClear.setVisible(false);
+			buttonSubmit.setVisible(false);
+		} else if (playing) {
+			bg = new ImageIcon("icon/background.png");
+			buttonStart.setVisible(false);
+			buttonLoad.setVisible(false);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
 			objectiveLabelForm.setVisible(true);
@@ -456,7 +481,6 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(true);
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
-			bg = new ImageIcon("icon/background.png");
 			if (mapStateEnd) {
 				if (delayMapEnd >= 1) {
 					delayMapEnd = 0;
@@ -625,7 +649,7 @@ public class Coder extends JPanel implements Runnable {
 		gr.drawImage(bg.getImage(), 0, 0, null);
 		// map.printMap();
 		if (starting) {
-			bg = new ImageIcon("icon/background_start.png");
+		} else if (loading) {
 		} else if (playing) {
 			bg = new ImageIcon("icon/background.png");
 			for (int i = 0; i < map.getRow(); i++) {
