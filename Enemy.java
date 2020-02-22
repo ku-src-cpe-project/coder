@@ -18,9 +18,9 @@ class Enemy {
         this.random = new Random();
         this.map = map;
         this.scale = scale;
-        this.state = "live";
         this.selfPosition[0] = mapRow;
         this.selfPosition[1] = mapColumn;
+        this.state = "live";
     }
 
     public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {

@@ -73,6 +73,7 @@ class Player {
             Coder.soundMedia.playSound_S("sound/dead.wav");
             System.out.println("You are dead");
         }
+        this.map.printMap();
     }
 
     public boolean collision(String dir) {

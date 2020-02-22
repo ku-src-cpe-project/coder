@@ -129,7 +129,8 @@ public class Coder extends JPanel implements Runnable {
 		thread = new Thread(this);
 		thread.setPriority(Thread.MIN_PRIORITY + 1);
 		thread.start();
-		setLayout(null);
+		setLayout(null); // set position by self <<<<<<<< obj.setBouns(location_x, location_y, size_x,
+							// size_y)
 		Font f1 = new Font("SansSerif", Font.BOLD, 20);
 		complier = new Complier();
 		runable = false;
@@ -163,6 +164,7 @@ public class Coder extends JPanel implements Runnable {
 		tutorialText.setBackground(new Color(70, 220, 90));
 		tutorialText.setFont(f1);
 
+		// imageBooms[0] = new ImageIcon("icon/kaboom.gif");
 		imageBooms = new ImageIcon[5];
 		imageSmokes = new ImageIcon[2];
 		imageStars = new ImageIcon[3];
@@ -248,8 +250,10 @@ public class Coder extends JPanel implements Runnable {
 		add(print);
 
 		// ========================================================
-		// Button
+		//
 		// ========================================================
+		// buttonSubmit.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent ae) {
 		buttonSubmit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				// Restart
@@ -367,6 +371,12 @@ public class Coder extends JPanel implements Runnable {
 		add(buttonNext);
 		add(buttonClear);
 		add(buttonSubmit);
+		// map = new Map(randMap());
+		// map = new Map(objectiveLabel, tutorialBackground, tutorialText,
+		//
+		//
+		// convMap(mapNumber));
+		// mapNow = convMap(mapNumber);
 		newGame();
 		starting = false;
 		playing = true;
@@ -379,6 +389,9 @@ public class Coder extends JPanel implements Runnable {
 		System.out.println("==============================");
 		System.out.println("           New Game");
 		System.out.println("==============================");
+		// map = new Map("0009");
+		// screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
+		// screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
 		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 		map.printMap();
@@ -459,12 +472,20 @@ public class Coder extends JPanel implements Runnable {
 						System.out.println("==============================");
 						System.out.println("    PROGRAM ALREADY RUNNING");
 						System.out.println("==============================");
+						// System.out.println("Parse:");
+						// System.out.println("\t" + parses);
+						// System.out.println("\nTokens:");
+						// System.out.println("\t" + tokens);
+						// System.out.println("\nLines:");
+						// System.out.println("\t" + lines);
+						// System.out.println();
 					}
-					if (complier.getPointer() < lines.size()) {
+					if (complier.getPointer() < lines.size()) { // lines.size()-1
 						System.out
 								.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 						line = complier.getPointer();
 						complier.Runable(player, lines);
+						// line++;
 						if (line == (lines.size())) {
 							runable = false;
 						}
@@ -585,6 +606,7 @@ public class Coder extends JPanel implements Runnable {
 					tutorialBackground.setVisible(false);
 					tutorialText.setVisible(false);
 				}
+				// System.out.print(timing);
 			}
 			map.update();
 		}
@@ -607,19 +629,27 @@ public class Coder extends JPanel implements Runnable {
 			for (int i = 0; i < map.getRow(); i++) {
 				for (int j = 0; j <= map.getColumn(); j++) {
 					if (map.getMap()[i][j] == '0') {
+						// gr.setColor(Color.WHITE);
+						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+						// (padY * i), blockX,
+						// blockY);
 					}
 					if (map.getMap()[i][j] == '1') {
+						// gr.setColor(Color.RED);
+						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+						// (padY * i), blockX,
+						// blockY);
 					}
 					if (map.getMap()[i][j] == '2') {
+						enemy = new Enemy(map, scale, i, j);
+						enemy.draw(gr, direction, locationX, locationY, padX, padY);
 						if (firstMake) {
-							enemy = new Enemy(map, scale, i, j);
 							enemys.add(enemy);
-						}
-						for (int k = 0; k < enemys.size(); k++) {
-							enemys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
 						}
 					}
 					if (map.getMap()[i][j] == '3') {
+						// gr.setColor(Color.GREEN);
+						// gr.fillRect(j * scale, i * scale, blockX, blockY);
 						bomb = new Bomb((j * scale) + locationX + (padX * i),
 								(i * scale) + locationY - (padY * i) - 143 + 50);
 						bomb.draw(gr, direction);
@@ -665,6 +695,10 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
+						// gr.setColor(Color.PINK);
+						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+						// (padY * i), blockX,
+						// blockY);
 						if (player.getMush().equals("chun-li")) {
 							player.draw(gr, direction + 4, locationX, locationY, padX, padY);
 						} else if (player.getMush().equals("ken")) {
@@ -693,6 +727,7 @@ public class Coder extends JPanel implements Runnable {
 		}
 		update();
 		g.drawImage(screen, 0, 0, null);
+		// g.drawImage(imageBooms[0].getImage(), 100, 100, null); // insert picture .gif
 	}
 
 	// ========================================================
