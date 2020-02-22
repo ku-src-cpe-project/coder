@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
-import java.util.Random;
+// import java.util.Random;
 
 class FireBall {
     private ImageIcon[] images;

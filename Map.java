@@ -1,14 +1,14 @@
 // Version 0.0.1
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.Graphics;
-import java.awt.event.*;
-import java.applet.*;
-import java.util.*;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.io.*;
+// import java.awt.*;
+// import java.awt.Graphics;
+// import java.awt.event.*;
+// import java.applet.*;
+// import java.util.*;
+// import java.util.ArrayList;
+// import java.util.StringTokenizer;
+// import java.io.*;
 
 class Map {
     private ImageIcon[] images;

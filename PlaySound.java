@@ -1,10 +1,10 @@
 
 //  .wav
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
+// import java.awt.*;
+// import java.awt.event.*;
+// import java.awt.image.BufferedImage;
+// import javax.swing.JPanel;
+// import javax.swing.ImageIcon;
 import java.io.*;
 import javax.sound.sampled.*;
 
