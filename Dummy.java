@@ -3,23 +3,24 @@ import javax.swing.ImageIcon;
 
 class Dummy {
     private ImageIcon[] images;
-    private int x, y;
-    public int[] selfPosition = { 1, 1 };
+    private int scale;
+    public int[] selfPosition = { 0, 0 };
     private Map map;
 
-    public Dummy(Map map, int mapRow, int mapColumn, int x, int y) {
+    public Dummy(Map map, int scale, int mapRow, int mapColumn) {
         this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("icon/dummy.png");
         this.images[1] = new ImageIcon("icon/dummy.png");
+        this.map = map;
+        this.scale = scale;
         this.selfPosition[0] = mapRow;
         this.selfPosition[1] = mapColumn;
-        this.map = map;
-        this.x = x;
-        this.y = y;
     }
 
-    public void draw(Graphics g, int dir) {
-        g.drawImage(images[dir].getImage(), this.x, this.y, null);
+    public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
+        g.drawImage(this.images[dir].getImage(),
+                (this.selfPosition[1] * this.scale) + locationX + (padX * this.selfPosition[0]),
+                (this.selfPosition[0] * this.scale) + locationY - (padY * this.selfPosition[0]) - 143 + 50, null);
     }
 
     public boolean checkNextStep(int dir, char a) {

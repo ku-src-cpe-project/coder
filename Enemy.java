@@ -6,7 +6,7 @@ class Enemy {
     private ImageIcon[] images;
     private int scale;
     private Random random;
-    public int[] selfPosition = { 1, 1 };
+    public int[] selfPosition = { 0, 0 };
     private int[] tmpPosition = { 0, 0 };
     private Map map;
     private String state;
@@ -27,7 +27,6 @@ class Enemy {
         g.drawImage(this.images[dir].getImage(),
                 (this.selfPosition[1] * this.scale) + locationX + (padX * this.selfPosition[0]),
                 (this.selfPosition[0] * this.scale) + locationY - (padY * this.selfPosition[0]) - 143 + 50, null);
-        // g.drawImage(this.images[0].getImage(), getX(), getY(), null);
     }
 
     public void walk() {
@@ -77,14 +76,7 @@ class Enemy {
                 bool = false;
             }
         }
-        checkStep(dir);
         return bool;
-    }
-
-    public void checkStep(int dir) {
-        if (checkNextStep(dir, '9')) {
-            System.out.println("Found Player");
-        }
     }
 
     public boolean checkNextStep(int dir, char a) {

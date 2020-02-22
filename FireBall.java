@@ -5,7 +5,7 @@ import java.util.Random;
 class FireBall {
     private ImageIcon[] images;
     private int x, y;
-    public int[] selfPosition = { 1, 1 };
+    public int[] selfPosition = { 0, 0 };
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
     private Map map;
@@ -34,12 +34,11 @@ class FireBall {
     }
 
     public void walk() {
-        int dir = 2;
         this.tmpPosition[0] = this.selfPosition[0];
         this.tmpPosition[1] = this.selfPosition[1];
         this.nextPosition[0] = tmpPosition[0];
         this.nextPosition[1] = tmpPosition[1];
-        if (dir == 2 && collision(dir)) {
+        if (collision()) {
             this.selfPosition[1] += 1;
         } else {
             // System.out.println("*** Sysntax error ***");
@@ -53,30 +52,25 @@ class FireBall {
         }
     }
 
-    public boolean collision(int dir) {
+    public boolean collision() {
         boolean bool = true;
-        if (dir == 2) {
-            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
-                bool = false;
-            }
-            this.nextPosition[1] += 1;
+        if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
+            bool = false;
         }
-        checkStep(dir);
+        this.nextPosition[1] += 1;
         return bool;
     }
 
     public void checkStep(int dir) {
-        if (checkNextStep(dir, '2')) {
-            System.out.println("Found Enemy");
+        if (checkNextStep(dir, '9')) {
+            System.out.println("Found Player");
         }
     }
 
     public boolean checkNextStep(int dir, char a) {
         boolean bool = false;
-        if (dir == 2) {
-            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {
-                bool = true;
-            }
+        if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {
+            bool = true;
         }
         return bool;
     }

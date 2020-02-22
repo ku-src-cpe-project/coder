@@ -108,7 +108,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	// Debug
 	// ========================================================
-	private JButton up, down, left, right, fire;
+	private JButton up, down, left, right, fire, print;
 
 	// ========================================================
 	// Constructure
@@ -166,11 +166,11 @@ public class Coder extends JPanel implements Runnable {
 		imageBooms = new ImageIcon[5];
 		imageSmokes = new ImageIcon[2];
 		imageStars = new ImageIcon[3];
-		imageBooms[0] = new ImageIcon("icon/effectBoom/kaboom_1.png");
-		imageBooms[1] = new ImageIcon("icon/effectBoom/kaboom_2.png");
-		imageBooms[2] = new ImageIcon("icon/effectBoom/kaboom_3.png");
-		imageBooms[3] = new ImageIcon("icon/effectBoom/kaboom_4.png");
-		imageBooms[4] = new ImageIcon("icon/effectBoom/kaboom_5.png");
+		imageBooms[0] = new ImageIcon("icon/anima/kaboom_1.png");
+		imageBooms[1] = new ImageIcon("icon/anima/kaboom_2.png");
+		imageBooms[2] = new ImageIcon("icon/anima/kaboom_3.png");
+		imageBooms[3] = new ImageIcon("icon/anima/kaboom_4.png");
+		imageBooms[4] = new ImageIcon("icon/anima/kaboom_5.png");
 		imageSmokes[0] = new ImageIcon("icon/smoke.png");
 		imageSmokes[1] = new ImageIcon("icon/smoke.png");
 		imageStars[0] = new ImageIcon("icon/2-star.png");
@@ -203,6 +203,7 @@ public class Coder extends JPanel implements Runnable {
 		left = new JButton("<");
 		right = new JButton(">");
 		fire = new JButton("F");
+		print = new JButton("P");
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("up");
@@ -228,16 +229,23 @@ public class Coder extends JPanel implements Runnable {
 				player.attack();
 			}
 		});
+		print.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				map.printMap();
+			}
+		});
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
 		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
 		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
+		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
 		add(up);
 		add(down);
 		add(left);
 		add(right);
 		add(fire);
+		add(print);
 
 		// ========================================================
 		// Button
@@ -257,7 +265,7 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);walk(right);walk(right);walk(down);walk(right);walk(right);walk(right);walk(right);";
 				// textValue = "walk(right);check(right);";
 				// textValue = "check(right);walk(right);";
-				textValue = "walk(down);attack();walk(down);attack();walk(down);attack();";
+				// textValue = "walk(down);attack();walk(down);attack();walk(down);attack();";
 
 				// while
 				// textValue = "walk(down);while(2){walk(right);walk(right);}";
@@ -438,7 +446,7 @@ public class Coder extends JPanel implements Runnable {
 			buttonSubmit.setVisible(true);
 			bg = new ImageIcon("icon/background.png");
 			if (mapStateEnd) {
-				if (delayMapEnd >= 20) {
+				if (delayMapEnd >= 1) {
 					delayMapEnd = 0;
 					mapStateEnd = false;
 					mapStateFirst = false;
@@ -495,9 +503,9 @@ public class Coder extends JPanel implements Runnable {
 									fireball.disable();
 									fireball = null;
 									attacking = false;
-									soundMedia.playSound_S("sound/hit.wav");
 									hitting = true;
 									effectBoom = 0;
+									soundMedia.playSound_S("sound/hit.wav");
 								}
 							}
 							if (attacking) {
@@ -591,7 +599,7 @@ public class Coder extends JPanel implements Runnable {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, screenx, screeny);
 		gr.drawImage(bg.getImage(), 0, 0, null);
-		map.printMap();
+		// map.printMap();
 		if (starting) {
 			bg = new ImageIcon("icon/background_start.png");
 		} else if (playing) {
@@ -648,11 +656,12 @@ public class Coder extends JPanel implements Runnable {
 						attacking = true;
 					}
 					if (map.getMap()[i][j] == 'D') {
-						dummy = new Dummy(map, i, j, (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						dummy.draw(gr, direction);
 						if (firstMake) {
+							dummy = new Dummy(map, scale, i, j);
 							dummys.add(dummy);
+						}
+						for (int k = 0; k < dummys.size(); k++) {
+							dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
 						}
 					}
 					if (map.getMap()[i][j] == '9') {

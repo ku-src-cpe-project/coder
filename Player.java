@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 class Player {
     private ImageIcon[] images;
     private int scale;
-    public int[] selfPosition = { 1, 1 };
+    public int[] selfPosition = { 0, 0 };
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
     private Map map;
@@ -68,14 +68,9 @@ class Player {
                     }
                 }
             }
-            if (!this.state.equals("dead")) {
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
-            } else {
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                Coder.soundMedia.playSound_S("sound/dead.wav");
-            }
         } else {
+            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+            Coder.soundMedia.playSound_S("sound/dead.wav");
             System.out.println("You are dead");
         }
     }
@@ -114,8 +109,10 @@ class Player {
         }
         if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
-            this.selfPosition[0] = this.map.findMap('6')[0];
-            this.selfPosition[1] = this.map.findMap('6')[1];
+            this.nextPosition[0] = this.map.findMap('6')[0];
+            this.nextPosition[1] = this.map.findMap('6')[1];
+            this.selfPosition[0] = this.nextPosition[0];
+            this.selfPosition[1] = this.nextPosition[1];
             Coder.soundMedia.playSound_S("sound/portal.wav");
         }
         if (checkNextStep(dir, '5')) {

@@ -92,11 +92,11 @@ class Map {
             setRow(7);
             tutorial.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000900021".toCharArray();
+            this.map[1] = "1070903021".toCharArray();
             this.map[2] = "10005000D1".toCharArray();
-            this.map[3] = "1000000201".toCharArray();
+            this.map[3] = "10A6000201".toCharArray();
             this.map[4] = "10000000D1".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[5] = "1A00000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setSmoke(true);
             setPuzzle(true);
@@ -410,9 +410,16 @@ class Map {
     }
 
     public void printMap() {
+        System.out.print("\n");
         for (int i = 0; i < this.row; i++) { // debug
             for (int j = 0; j <= this.column; j++) {
-                System.out.print(this.map[i][j] + " ");
+                if (this.map[i][j] != '0' && this.map[i][j] != '1') {
+                    System.out.print(this.map[i][j] + " ");
+                } else if (this.map[i][j] == '1') {
+                    System.out.print("+ ");
+                } else {
+                    System.out.print("- ");
+                }
             }
             System.out.print("\n");
         }
