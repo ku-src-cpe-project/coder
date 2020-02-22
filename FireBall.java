@@ -55,7 +55,7 @@ class FireBall {
     public boolean collision(int dir) {
         boolean bool = true;
         if (dir == 2) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
                 bool = false;
             }
             this.nextPosition[1] += 1;
@@ -73,7 +73,7 @@ class FireBall {
     public boolean checkNextStep(int dir, char a) {
         boolean bool = false;
         if (dir == 2) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
                 bool = true;
             }
         }

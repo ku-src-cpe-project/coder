@@ -65,19 +65,19 @@ class Enemy {
     public boolean collision(int dir) {
         boolean bool = true;
         if (dir == 1) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) != '0') {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] - 1) != '0') {
                 bool = false;
             }
         } else if (dir == 2) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] + 1) != '0') {
                 bool = false;
             }
         } else if (dir == 3) {
-            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) != '0') {
+            if (this.map.checkMap(this.playerPosition[0] - 1, this.playerPosition[1]) != '0') {
                 bool = false;
             }
         } else if (dir == 4) {
-            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) != '0') {
+            if (this.map.checkMap(this.playerPosition[0] + 1, this.playerPosition[1]) != '0') {
                 bool = false;
             }
         }
@@ -94,19 +94,19 @@ class Enemy {
     public boolean checkNextStep(int dir, char a) {
         boolean bool = false;
         if (dir == 1) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] - 1) == a) {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] - 1) == a) {
                 bool = true;
             }
         } else if (dir == 2) {
-            if (this.map.cheMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
+            if (this.map.checkMap(this.playerPosition[0], this.playerPosition[1] + 1) == a) {
                 bool = true;
             }
         } else if (dir == 3) {
-            if (this.map.cheMap(this.playerPosition[0] - 1, this.playerPosition[1]) == a) {
+            if (this.map.checkMap(this.playerPosition[0] - 1, this.playerPosition[1]) == a) {
                 bool = true;
             }
         } else if (dir == 4) {
-            if (this.map.cheMap(this.playerPosition[0] + 1, this.playerPosition[1]) == a) {
+            if (this.map.checkMap(this.playerPosition[0] + 1, this.playerPosition[1]) == a) {
                 bool = true;
             }
         }

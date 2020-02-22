@@ -293,7 +293,7 @@ public class Coder extends JPanel implements Runnable {
 		});
 		buttonClear.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				map = new Map(objectiveLabel, tutorialBackground, tutorialText, mapNow);
+				map = new Map(objectiveLabel, tutorialText, mapNow);
 				newGame();
 				complier.setPointer(0);
 				runable = false;
@@ -302,7 +302,7 @@ public class Coder extends JPanel implements Runnable {
 		});
 		buttonNext.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				player.setState("buttonNext");
+				player.setState("next");
 			}
 		});
 		buttonRestart.addMouseListener(new MouseAdapter() {
@@ -312,7 +312,7 @@ public class Coder extends JPanel implements Runnable {
 				readFile.CloseFile_write();
 				mapNumber = 0;
 				mapNummberSave = "0";
-				map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+				map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 				mapNumberLabel.setText(mapNummberSave);
 				newGame();
 				complier.setPointer(0);
@@ -326,7 +326,7 @@ public class Coder extends JPanel implements Runnable {
 			public void mouseClicked(MouseEvent me) {
 				tutorialBackground.setVisible(false);
 				tutorialText.setVisible(false);
-				map.setHint(false);
+				map.setTutorial(false);
 			}
 		});
 		buttonStart.addMouseListener(new MouseAdapter() {
@@ -364,7 +364,10 @@ public class Coder extends JPanel implements Runnable {
 		add(buttonClear);
 		add(buttonSubmit);
 		// map = new Map(randMap());
-		// map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+		// map = new Map(objectiveLabel, tutorialBackground, tutorialText,
+		//
+		//
+		// convMap(mapNumber));
 		// mapNow = convMap(mapNumber);
 		newGame();
 		starting = false;
@@ -382,7 +385,7 @@ public class Coder extends JPanel implements Runnable {
 		// screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		// screeny = (map.getRow()) * blockY + locationY;
 		setPreferredSize(new Dimension(screenx, screeny));
-		map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 		map.printMap();
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
@@ -502,8 +505,8 @@ public class Coder extends JPanel implements Runnable {
 									}
 									for (int i = 0; i < dummys.size(); i++) {
 										if (dummys.get(i).checkNextStep(1, '4')) {
-											map.setDummy(map.getDummy() - 1);
-											if (map.getDummy() == 0) {
+											map.setCountDummy(map.getCountDummy() - 1);
+											if (map.getCountDummy() == 0) {
 												map.setPuzzle(false);
 											}
 										}
@@ -535,9 +538,9 @@ public class Coder extends JPanel implements Runnable {
 					} else {
 						tutorialBackground.setVisible(false);
 						tutorialText.setVisible(false);
-						map.setHint(false);
+						map.setTutorial(false);
 						mapNumber++;
-						map = new Map(objectiveLabel, tutorialBackground, tutorialText, convMap(mapNumber));
+						map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 						newGame();
 						mapNumberLabel.setText(mapNumber + "");
 						complier.setPointer(0);
@@ -588,7 +591,7 @@ public class Coder extends JPanel implements Runnable {
 				} else {
 					chooseStart = 2;
 				}
-				if (map.getHint()) {
+				if (map.getTutorial()) {
 					tutorialBackground.setVisible(true);
 					tutorialText.setVisible(true);
 				} else {
@@ -681,8 +684,8 @@ public class Coder extends JPanel implements Runnable {
 						attacking = true;
 					}
 					if (map.getMap()[i][j] == 'D') {
-						dummy = new Dummy(map, (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+						dummy = new Dummy(map, i, j, (j * scale) + locationX + (padX * i),
+								(i * scale) + locationY - (padY * i) - 143 + 50);
 						dummy.draw(gr, direction);
 						if (firstMake) {
 							dummys.add(dummy);
@@ -706,15 +709,6 @@ public class Coder extends JPanel implements Runnable {
 			if (hitting) {
 				gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74,
 						null);
-				// (456,
-				// 294)
-				// /2
-				// =
-				// (228,
-				// 147)
-				// /2
-				// =
-				// (118, 74)
 				if (effectBoom >= 4) {
 					hitting = false;
 				}

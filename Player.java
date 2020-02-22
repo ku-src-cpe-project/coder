@@ -89,22 +89,22 @@ class Player {
     public boolean collision(String dir) {
         boolean bool = true;
         if (dir.equals("left")) {
-            if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] - 1) != '0') {
+            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) != '0') {
                 bool = false;
             }
             this.nextPosition[1] -= 1;
         } else if (dir.equals("right")) {
-            if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
+            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
                 bool = false;
             }
             this.nextPosition[1] += 1;
         } else if (dir.equals("up")) {
-            if (this.map.cheMap(this.selfPosition[0] - 1, this.selfPosition[1]) != '0') {
+            if (this.map.checkMap(this.selfPosition[0] - 1, this.selfPosition[1]) != '0') {
                 bool = false;
             }
             this.nextPosition[0] -= 1;
         } else if (dir.equals("down")) {
-            if (this.map.cheMap(this.selfPosition[0] + 1, this.selfPosition[1]) != '0') {
+            if (this.map.checkMap(this.selfPosition[0] + 1, this.selfPosition[1]) != '0') {
                 bool = false;
             }
             this.nextPosition[0] += 1;
@@ -143,19 +143,19 @@ class Player {
     public boolean checkNextStep(String dir, char a) {
         boolean bool = false;
         if (dir.equals("left")) {
-            if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] - 1) == a) {
+            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) == a) {
                 bool = true;
             }
         } else if (dir.equals("right")) {
-            if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {
+            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {
                 bool = true;
             }
         } else if (dir.equals("up")) {
-            if (this.map.cheMap(this.selfPosition[0] - 1, this.selfPosition[1]) == a) {
+            if (this.map.checkMap(this.selfPosition[0] - 1, this.selfPosition[1]) == a) {
                 bool = true;
             }
         } else if (dir.equals("down")) {
-            if (this.map.cheMap(this.selfPosition[0] + 1, this.selfPosition[1]) == a) {
+            if (this.map.checkMap(this.selfPosition[0] + 1, this.selfPosition[1]) == a) {
                 bool = true;
             }
         }
@@ -165,7 +165,7 @@ class Player {
     public void attack() {
         if (this.mushroom.equals("ken")) {
             System.out.println("Hadouken!");
-            if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '2') {
+            if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '2') {
                 this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '0');
                 for (int i = 0; i < Coder.enemys.size(); i++) {
                     if (Coder.enemys.get(i).checkNextStep(1, '9')) {
@@ -175,13 +175,13 @@ class Player {
                 }
                 Coder.soundMedia.playSound_S("sound/fire.wav");
                 Coder.soundMedia.playSound_S("sound/hit.wav");
-            } else if (this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '1'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '3'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '5'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '6'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '7'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '8'
-                    || this.map.cheMap(this.selfPosition[0], this.selfPosition[1] + 1) == '9') {
+            } else if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '1'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '3'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '5'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '6'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '7'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '8'
+                    || this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == '9') {
                 System.out.println("Have something front.");
             } else {
                 this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '4');
