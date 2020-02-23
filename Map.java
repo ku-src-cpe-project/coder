@@ -39,7 +39,7 @@ class Map {
             setRow(7);
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1930000001".toCharArray();
+            this.map[1] = "1900000001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1030000001".toCharArray();
             this.map[4] = "1000000001".toCharArray();
@@ -116,9 +116,9 @@ class Map {
             setRow(7);
             tutorial.setText("Find the portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1900300081".toCharArray();
-            this.map[2] = "1500000201".toCharArray();
-            this.map[3] = "1A00000001".toCharArray();
+            this.map[1] = "1908300081".toCharArray();
+            this.map[2] = "15000002D1".toCharArray();
+            this.map[3] = "1D00D00001".toCharArray();
             this.map[4] = "1700000201".toCharArray();
             this.map[5] = "16000800D1".toCharArray();
             this.map[6] = "1111111111".toCharArray();

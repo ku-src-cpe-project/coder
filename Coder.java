@@ -94,11 +94,12 @@ public class Coder extends JPanel implements Runnable {
 
 	// Update
 	private int direction, chooseStart;
-	private int delayA, delayB, delayMapEnd;
+	private int delayA, delayB, delayC, delayMapEnd;
 	private int timing;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
-	public static boolean attacking;
+	public static boolean attacking, walking;
+	public static int frame;
 
 	// Map
 	private String mapNow;
@@ -151,15 +152,10 @@ public class Coder extends JPanel implements Runnable {
 		// init
 		// ========================================================
 		mapStores = new ArrayList<MapStore>();
-		bombs = new ArrayList<Bomb>();
-		portal6s = new ArrayList<Portal>();
-		portal7s = new ArrayList<Portal>();
-		portal8s = new ArrayList<Portal>();
-		mushroom5s = new ArrayList<Mushroom>();
-		mushroomAs = new ArrayList<Mushroom>();
 		starting = true;
 		loading = false;
 		playing = false;
+		walking = false;
 		direction = 0;
 		delayA = 0;
 		delayB = 0;
@@ -326,7 +322,7 @@ public class Coder extends JPanel implements Runnable {
 				// textValue =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				// textValue = "while(check(down)){walk(down);}";
+				textValue = "while(check(right)){walk(right);}";
 
 				// if
 				// textValue =
@@ -410,8 +406,10 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Shortcut Starting
 		// ========================================================
-		// starting = false;
-		// playing = true;
+		starting = false;
+		loading = false;
+		playing = true;
+		newGame();
 	}
 
 	// ========================================================
@@ -424,6 +422,7 @@ public class Coder extends JPanel implements Runnable {
 		// map = new Map("0009");
 		// screenx = (map.getColumn() + 2) * scale + locationX - scale + 50;
 		// screeny = (map.getRow()) * blockY + locationY;
+		// mapNumber = 3;
 		setPreferredSize(new Dimension(screenx, screeny));
 		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 		mapNumberLabel.setText(mapNumber + "");
@@ -431,8 +430,19 @@ public class Coder extends JPanel implements Runnable {
 		player = new Player(map, scale);
 		enemys = new ArrayList<Enemy>();
 		dummys = new ArrayList<Dummy>();
+		bombs = new ArrayList<Bomb>();
+		portal6s = new ArrayList<Portal>();
+		portal7s = new ArrayList<Portal>();
+		portal8s = new ArrayList<Portal>();
+		mushroom5s = new ArrayList<Mushroom>();
+		mushroomAs = new ArrayList<Mushroom>();
+		line = complier.getPointer();
+		runable = false;
 		firstMake = true;
 		attacking = false;
+		tutorialBackground.setVisible(false);
+		tutorialText.setVisible(false);
+		map.setTutorial(false);
 	}
 
 	// ========================================================
@@ -530,20 +540,13 @@ public class Coder extends JPanel implements Runnable {
 					if (mapStateFirst) {
 						mapStateEnd = true;
 					} else {
-						tutorialBackground.setVisible(false);
-						tutorialText.setVisible(false);
-						map.setTutorial(false);
 						mapNumber++;
-						map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 						newGame();
 						mapNumberLabel.setText(mapNumber + "");
 						complier.setPointer(0);
 						complier.setExp(true);
 						complier.setIf(false);
 						complier.setState("null");
-						runable = false;
-						line = complier.getPointer();
-						player.setState("live");
 
 						// ========================================================
 						// Save file
@@ -567,26 +570,24 @@ public class Coder extends JPanel implements Runnable {
 					player.selfPosition[0] = -99;
 				}
 				if (runable && player.getState().equals("live")) {
-					if (complier.getPointer() == 0) {
+					if (complier.getPointer() == 0 && delayC == 0) {
 						System.out.println("==============================");
 						System.out.println("    PROGRAM ALREADY RUNNING");
 						System.out.println("==============================");
-						// System.out.println("Parse:");
-						// System.out.println("\t" + parses);
-						// System.out.println("\nTokens:");
-						// System.out.println("\t" + tokens);
-						// System.out.println("\nLines:");
-						// System.out.println("\t" + lines);
-						// System.out.println();
 					}
 					if (complier.getPointer() < lines.size()) { // lines.size()-1
-						System.out
-								.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
-						line = complier.getPointer();
-						complier.Runable(player, lines);
-						// line++;
-						if (line == (lines.size())) {
-							runable = false;
+						if (delayC >= 60) {
+							System.out.println(
+									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
+							line = complier.getPointer();
+							complier.Runable(player, lines);
+							// line++;
+							if (line == (lines.size())) {
+								runable = false;
+							}
+							delayC = 0;
+						} else {
+							delayC += 10;
 						}
 					}
 					// ========================================================
@@ -666,6 +667,16 @@ public class Coder extends JPanel implements Runnable {
 					tutorialText.setVisible(false);
 				}
 			}
+			if (frame >= 60) {
+				frame = 0;
+				walking = false;
+				player.update();
+			} else {
+				frame += 10;
+			}
+			if (!walking) {
+				frame = 0;
+			}
 			map.update();
 		}
 	}
@@ -699,27 +710,31 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == '3') {
 						if (firstMake) {
 							Bomb bomb = new Bomb((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							bombs.add(bomb);
 						}
 						for (int k = 0; k < bombs.size(); k++) {
-							bombs.get(k).draw(gr, direction);
+							if (bombs.get(k).getSelfRow() == i) {
+								bombs.get(k).draw(gr, direction);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '8') {
 						if (firstMake) {
 							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							portal8s.add(portal);
 						}
 						for (int k = 0; k < portal8s.size(); k++) {
-							portal8s.get(k).draw(gr, direction);
+							if (portal8s.get(k).getSelfRow() == i) {
+								portal8s.get(k).draw(gr, direction);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '7') {
 						if (firstMake) {
 							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							portal7s.add(portal);
 						}
 						for (int k = 0; k < portal7s.size(); k++) {
@@ -729,7 +744,7 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == '6') {
 						if (firstMake) {
 							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							portal6s.add(portal);
 						}
 						for (int k = 0; k < portal6s.size(); k++) {
@@ -739,7 +754,7 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == '5') {
 						if (firstMake) {
 							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							mushroom5s.add(mushroom);
 						}
 						for (int k = 0; k < mushroom5s.size(); k++) {
@@ -749,7 +764,7 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == 'A') {
 						if (firstMake) {
 							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
 							mushroomAs.add(mushroom);
 						}
 						for (int k = 0; k < mushroomAs.size(); k++) {
@@ -768,16 +783,45 @@ public class Coder extends JPanel implements Runnable {
 							dummys.add(dummy);
 						}
 						for (int k = 0; k < dummys.size(); k++) {
-							dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+							if (dummys.get(k).getSelfRow() == i) {
+								dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
-						if (player.getMush().equals("chun-li")) {
-							player.draw(gr, direction + 4, locationX, locationY, padX, padY);
-						} else if (player.getMush().equals("ken")) {
-							player.draw(gr, direction + 2, locationX, locationY, padX, padY);
+						if (!walking) {
+							if (player.getMushroom().equals("chun-li")) {
+								player.draw(gr, direction + 4, locationX, locationY, padX, padY);
+							} else if (player.getMushroom().equals("ken")) {
+								player.draw(gr, direction + 2, locationX, locationY, padX, padY);
+							} else {
+								player.draw(gr, direction, locationX, locationY, padX, padY);
+							}
 						} else {
-							player.draw(gr, direction, locationX, locationY, padX, padY);
+							int hero = 0;
+							float multipleFrameX = 1.50f;
+							float multipleFrameY = 0.90f;
+							if (player.getMushroomNumber() == 2) {
+								hero = direction + 4;
+							} else if (player.getMushroomNumber() == 1) {
+								hero = direction + 2;
+							} else {
+								hero = direction;
+							}
+							if (player.getDirection().equals("left")) {
+								player.draw(gr, hero, (int) (locationX - (frame * multipleFrameX)), locationY, padX,
+										padY);
+							} else if (player.getDirection().equals("right")) {
+								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameX)), locationY, padX,
+										padY);
+							} else if (player.getDirection().equals("up")) {
+								player.draw(gr, hero, locationX, locationY - (int) ((frame * multipleFrameY)), padX,
+										padY);
+							} else if (player.getDirection().equals("down")) {
+								player.draw(gr, hero, locationX, locationY + (int) ((frame * multipleFrameY)), padX,
+										padY);
+							} else {
+							}
 						}
 					}
 				}

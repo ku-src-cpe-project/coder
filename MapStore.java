@@ -13,8 +13,10 @@ import java.io.*;
 class MapStore extends JPanel {
     private int mapStore;
     private JLabel mapStoreLabel;
+    private ReadFile readFile;
 
     public MapStore(JPanel panel, int mapStore) {
+        readFile = new ReadFile();
         this.mapStore = mapStore;
         this.mapStoreLabel = new JLabel(new ImageIcon("icon/map_store.png"));
         this.mapStoreLabel.addMouseListener(new MouseAdapter() {
@@ -24,6 +26,9 @@ class MapStore extends JPanel {
                 System.out.println("==============================");
                 System.out.println("> MapStore " + getMapStore());
                 Coder.mapNumber = getMapStore();
+                readFile.openFileWrite();
+                readFile.write(getMapStore() + "");
+                readFile.closeFileWrite();
             }
         });
         this.mapStoreLabel.setBounds(50 + (mapStore * 150), 100, 149, 84);

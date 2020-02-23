@@ -19,7 +19,7 @@ class Player {
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
     private Map map;
-    private String state, mushroom;
+    private String state, stateTmp, mushroom, direction;
 
     public Player(Map map, int scale) {
         this.images = new ImageIcon[6];
@@ -32,6 +32,7 @@ class Player {
         this.map = map;
         this.scale = scale;
         this.state = "live";
+        this.stateTmp = "live";
         this.mushroom = "ryu";
         this.selfPosition[0] = this.map.findMap('9')[0];
         this.selfPosition[1] = this.map.findMap('9')[1];
@@ -41,46 +42,50 @@ class Player {
         g.drawImage(this.images[dir].getImage(),
                 (this.selfPosition[1] * this.scale) + locationX + (padX * this.selfPosition[0]),
                 (this.selfPosition[0] * this.scale) + locationY - (padY * this.selfPosition[0]) - 143 + 50, null);
-        // g.drawImage(this.images[0].getImage(), getX(), getY(), null);
     }
 
     public void walk(String dir) {
-        if (!this.state.equals("dead")) {
-            this.tmpPosition[0] = this.selfPosition[0];
-            this.tmpPosition[1] = this.selfPosition[1];
-            this.nextPosition[0] = tmpPosition[0];
-            this.nextPosition[1] = tmpPosition[1];
-            if (dir.equals("left") && collision(dir)) {
-                this.selfPosition[1] -= 1;
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
-            } else if (dir.equals("right") && collision(dir)) {
-                this.selfPosition[1] += 1;
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
-            } else if (dir.equals("up") && collision(dir)) {
-                this.selfPosition[0] -= 1;
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
-            } else if (dir.equals("down") && collision(dir)) {
-                this.selfPosition[0] += 1;
-                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-                this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
-            } else {
-                System.out.println("*** Sysntax error ***");
-                if (checkNextStep(dir, '3')) {
-                    if (this.mushroom.equals("chun-li")) {
-                        this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
-                    } else {
-                        this.state = "dead";
+        this.direction = dir;
+        if (!Coder.walking) {
+            Coder.walking = true;
+            Coder.frame = 0;
+            if (!this.state.equals("dead")) {
+                this.tmpPosition[0] = this.selfPosition[0];
+                this.tmpPosition[1] = this.selfPosition[1];
+                this.nextPosition[0] = tmpPosition[0];
+                this.nextPosition[1] = tmpPosition[1];
+                if (dir.equals("left") && collision(dir)) {
+                    this.tmpPosition[1] -= 1;
+                } else if (dir.equals("right") && collision(dir)) {
+                    this.tmpPosition[1] += 1;
+                } else if (dir.equals("up") && collision(dir)) {
+                    this.tmpPosition[0] -= 1;
+                } else if (dir.equals("down") && collision(dir)) {
+                    this.tmpPosition[0] += 1;
+                } else {
+                    System.out.println("*** Sysntax error ***");
+                    if (checkNextStep(dir, '3')) {
+                        if (this.mushroom.equals("chun-li")) {
+                            this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
+                        } else {
+                            this.stateTmp = "dead";
+                        }
                     }
                 }
+            } else {
+                this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                Coder.soundMedia.playSound_S("sound/dead.wav");
+                System.out.println("You are dead");
             }
-        } else {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-            Coder.soundMedia.playSound_S("sound/dead.wav");
-            System.out.println("You are dead");
         }
+    }
+
+    public void update() {
+        this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
+        this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '9');
+        this.selfPosition[0] = this.tmpPosition[0];
+        this.selfPosition[1] = this.tmpPosition[1];
+        this.state = this.stateTmp;
     }
 
     public boolean collision(String dir) {
@@ -112,14 +117,14 @@ class Player {
 
     public void checkStep(String dir) {
         if (checkNextStep(dir, '8')) {
-            this.state = "next";
+            this.stateTmp = "next";
             Coder.soundMedia.playSound_S("sound/next.wav");
         } else if (checkNextStep(dir, '7')) {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.nextPosition[0] = this.map.findMap('6')[0];
             this.nextPosition[1] = this.map.findMap('6')[1];
-            this.selfPosition[0] = this.nextPosition[0];
-            this.selfPosition[1] = this.nextPosition[1];
+            this.tmpPosition[0] = this.nextPosition[0];
+            this.tmpPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/portal.wav");
@@ -127,21 +132,21 @@ class Player {
             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
             this.nextPosition[0] = this.map.findMap('7')[0];
             this.nextPosition[1] = this.map.findMap('7')[1];
-            this.selfPosition[0] = this.nextPosition[0];
-            this.selfPosition[1] = this.nextPosition[1];
+            this.tmpPosition[0] = this.nextPosition[0];
+            this.tmpPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/portal.wav");
         } else if (checkNextStep(dir, '5')) {
-            this.selfPosition[0] = this.nextPosition[0];
-            this.selfPosition[1] = this.nextPosition[1];
+            this.tmpPosition[0] = this.nextPosition[0];
+            this.tmpPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/mushroom.wav");
             this.mushroom = "ken";
         } else if (checkNextStep(dir, 'A')) {
-            this.selfPosition[0] = this.nextPosition[0];
-            this.selfPosition[1] = this.nextPosition[1];
+            this.tmpPosition[0] = this.nextPosition[0];
+            this.tmpPosition[1] = this.nextPosition[1];
             this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSound_S("sound/mushroom.wav");
@@ -197,27 +202,37 @@ class Player {
         }
     }
 
-    public int getScale() {
-        return this.scale;
-    }
-
-    public void setScale(int scale) {
-        this.scale = scale;
+    public int getMushroomNumber() {
+        if (this.mushroom.equals("ken")) {
+            return 1;
+        } else if (this.mushroom.equals("chun-li")) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public String getState() {
         return this.state;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(String a) {
+        this.state = a;
     }
 
-    public String getMush() {
+    public String getMushroom() {
         return this.mushroom;
     }
 
-    public String setMush(String a) {
-        return this.mushroom = a;
+    public void setMushroom(String a) {
+        this.mushroom = a;
+    }
+
+    public String getDirection() {
+        return this.direction;
+    }
+
+    public void setDirection(String a) {
+        this.direction = a;
     }
 }
