@@ -801,6 +801,7 @@ public class Coder extends JPanel implements Runnable {
 							int hero = 0;
 							float multipleFrameX = 1.50f;
 							float multipleFrameY = 0.90f;
+							float multipleFrameZ = 0.30f;
 							if (player.getMushroomNumber() == 2) {
 								hero = direction + 4;
 							} else if (player.getMushroomNumber() == 1) {
@@ -815,12 +816,11 @@ public class Coder extends JPanel implements Runnable {
 								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameX)), locationY, padX,
 										padY);
 							} else if (player.getDirection().equals("up")) {
-								player.draw(gr, hero, locationX, locationY - (int) ((frame * multipleFrameY)), padX,
-										padY);
+								player.draw(gr, hero, (int) (locationX - (frame * multipleFrameZ)),
+										 locationY - (int) ((frame * multipleFrameY)), padX, padY);
 							} else if (player.getDirection().equals("down")) {
-								player.draw(gr, hero, locationX, locationY + (int) ((frame * multipleFrameY)), padX,
-										padY);
-							} else {
+								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameZ)),
+										locationY + (int) ((frame * multipleFrameY)), padX, padY);
 							}
 						}
 					}

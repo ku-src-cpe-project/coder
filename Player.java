@@ -45,8 +45,8 @@ class Player {
     }
 
     public void walk(String dir) {
-        this.direction = dir;
         if (!Coder.walking) {
+            this.direction = dir;
             Coder.walking = true;
             Coder.frame = 0;
             if (!this.state.equals("dead")) {
