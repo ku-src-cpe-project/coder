@@ -297,33 +297,50 @@ class Complier {
                     }
                 } else // in case condition == false (skip code)
                 {
-
-                    if (token.get(i).equals("}")) {
-                        System.out.println(">>>>>>>" + this.getPosWhile());
-                        // System.out.println("><><><><><"+this.getPosWhile().size());
-
-                        if (this.getPosWhile().size() > 1) {
-                            this.foundwhile = true;
-                            this.conditionwhile = true;
-                            // System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
-                            setPointer(getPosWhile().get(+this.getPosWhile().size() - 1));
-
-                        }
-                        if (this.getPosWhile().size() == 1) {
-                            this.foundwhile = false;
-                            this.conditionwhile = false;
-
-                            System.out.println(">>>>>>>" + this.getPosWhile() + "<<<<<<");
-                            popStack();
-                            this.count++;
-
-                        } else {
-                            popStack();
-                            this.count++;
-                            break;
-                        }
-
-                    } else {
+                     
+                    if (token.get(i).equals("}")) 
+                    { 
+                         
+                            
+                            if(this.getPosWhile().size() > 1)
+                            {
+                                this.foundwhile = true;
+                                this.conditionwhile = true;
+                                //  System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
+                                 setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
+                                 
+                            }
+                             if(this.getPosWhile().size() == 1)
+                            {
+                                
+                                    this.foundwhile = true;
+                                    this.conditionwhile = true;
+                                
+                                
+                                // setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
+                                // System.out.println(">>>>>>>"+this.getPosWhile());
+                                // 
+                                
+                                
+                                
+                                //  System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
+                                popStack();
+                                this.count++;
+                                
+                                 
+                            }
+                            else
+                            {
+                                popStack();
+                                this.count++;
+                                break;
+                            }
+                            
+                           
+                        
+                    } 
+                    else 
+                    {
                         popStack();
                         this.count++;
                         break;
@@ -333,6 +350,7 @@ class Complier {
 
             if (token.get(i).equals("walk")) {
 
+                System.out.println("111111111111");
                 player.walk(token.get(i + 2));
             }
             if (token.get(i).equals("attack")) {
@@ -390,10 +408,18 @@ class Complier {
                             this.getPosWhile().remove(1); // [1]
                             this.conditionwhile = false;
                         }
-                        if (this.getPosWhile().size() == 1) // [1]
+                       else if (this.getPosWhile().get(0) == getPointer()-1) // [1]
                         {
 
                             System.out.println("check in");
+                            this.conditionwhile = false;
+                            
+                            this.getPosWhile().remove(0); 
+                            this.getPosWhile().add(99999);
+                            System.out.println(getPosWhile());
+                        }
+                        else
+                        {
                             this.conditionwhile = false;
                         }
 

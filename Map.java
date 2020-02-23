@@ -65,10 +65,10 @@ class Map {
             tutorial.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1030003001".toCharArray();
-            this.map[2] = "1000303031".toCharArray();
+            this.map[2] = "1900303031".toCharArray();
             this.map[3] = "1330300031".toCharArray();
             this.map[4] = "1330303331".toCharArray();
-            this.map[5] = "1900300081".toCharArray();
+            this.map[5] = "1000300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
             setTutorialText("0001\ntest walk(direct)");
