@@ -97,11 +97,11 @@ public class Coder extends JPanel implements Runnable {
 
 	// Map
 	private String mapNow;
-	private int mapNumber;
 	private JLabel mapNumberLabel, objectiveLabel, objectiveLabelForm;
 	private JLabel tutorialBackground, tutorialText;
 	private boolean mapStateEnd = false;
 	private boolean mapStateFirst = true;
+	public static int mapNumber;
 	public static String mapNummberSave;
 
 	// Image
@@ -272,12 +272,13 @@ public class Coder extends JPanel implements Runnable {
 				starting = false;
 				loading = true;
 				playing = false;
-				for (int i = 0; i < 5; i++) {
-					MapStore mapStore = new MapStore(i);
-					mapStores.add(mapStore);
-				}
 			}
 		});
+		for (int i = 0; i < 5; i++) {
+			MapStore mapStore = new MapStore(this, i);
+			mapStores.add(mapStore);
+			mapStores.get(i).getMapStoreLabel().setVisible(false);
+		}
 
 		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
 		buttonLoad.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2) + 150, 416, 234);
@@ -485,6 +486,9 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(false);
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
+			for (int i = 0; i < 5; i++) {
+				mapStores.get(i).getMapStoreLabel().setVisible(true);
+			}
 		} else if (playing) {
 			bg = new ImageIcon("icon/background.png");
 			buttonStart.setVisible(false);
@@ -497,6 +501,9 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(true);
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
+			for (int i = 0; i < 5; i++) {
+				mapStores.get(i).getMapStoreLabel().setVisible(false);
+			}
 			if (mapStateEnd) {
 				if (delayMapEnd >= 1) {
 					delayMapEnd = 0;

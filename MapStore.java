@@ -10,21 +10,24 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.*;
 
-class MapStore {
+class MapStore extends JPanel {
     private int mapStore;
     private JLabel mapStoreLabel;
 
     public MapStore(JPanel panel, int mapStore) {
         this.mapStore = mapStore;
-        System.out.println("MapStore Create " + this.mapStore);
-        mapStoreLabel = new JLabel(new ImageIcon("icon/map_store.png"));
-        mapStoreLabel.addMouseListener(new MouseAdapter() {
+        this.mapStoreLabel = new JLabel(new ImageIcon("icon/map_store.png"));
+        this.mapStoreLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
-                System.out.println("LOAD SUCCESS");
+                System.out.println("==============================");
+                System.out.println("    LOAD SUCCESS");
+                System.out.println("==============================");
+                System.out.println("> MapStore " + getMapStore());
+                Coder.mapNumber = getMapStore();
             }
         });
-        mapStoreLabel.setBounds(50, 50, 149, 84);
-        panel.add(mapStoreLabel);
+        this.mapStoreLabel.setBounds(50 + (mapStore * 150), 100, 149, 84);
+        panel.add(this.mapStoreLabel);
     }
 
     public int getMapStore() {
@@ -33,5 +36,13 @@ class MapStore {
 
     public void setMapStore(int a) {
         this.mapStore = a;
+    }
+
+    public JLabel getMapStoreLabel() {
+        return this.mapStoreLabel;
+    }
+
+    public void setMapStoreLabel(JLabel a) {
+        this.mapStoreLabel = a;
     }
 }
