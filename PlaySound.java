@@ -41,7 +41,7 @@ class PlaySound {
   // // clip.open(audioIn);
   // // clip.start();
   // }
-  public void playSound_L(String fn, int loop) // Loop
+  public void playSoundLoop(String fn, int loop) // Loop
   {
     try {
       if (loop > 0) {
@@ -79,7 +79,7 @@ class PlaySound {
     }
   }
 
-  public void playSound_S(String fn) // Single
+  public void playSoundSingle(String fn) // Single
   {
     try {
       File yourFile = new File(fn);

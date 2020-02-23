@@ -331,8 +331,7 @@ class Complier {
             }
 
             if (token.get(i).equals("walk")) {
-
-                System.out.println("111111111111");
+                // System.out.println("111111111111");
                 player.walk(token.get(i + 2));
             }
             if (token.get(i).equals("attack")) {
@@ -360,7 +359,7 @@ class Complier {
                 if (token.get(i + 2).equals("check")) {
                     String dir = token.get(i + 4);
                     if (player.collision(dir)) { // condition in while == true
-                        System.out.println(">>>>>>>> TRUE");
+                        // System.out.println(">>>>>>>> TRUE");
                         getPosWhile().add(getPointer() - 1);
                         if (this.getPosWhile().size() > 1) // [1]
                         {
@@ -381,9 +380,9 @@ class Complier {
                         this.conditionwhile = true;
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
-                        System.out.println("set-Exp-True");
+                        // System.out.println("set-Exp-True");
                     } else { // condition in while == false
-                        System.out.println(">>>>>>>> FALSE");
+                        // System.out.println(">>>>>>>> FALSE");
                         // System.out.println(">>>>>>>>>"+getPointer());
                         // System.out.println(this.getPosWhile());
                         if (this.getPosWhile().size() > 1) // [1,2]
@@ -392,7 +391,7 @@ class Complier {
                             this.conditionwhile = false;
                         } else if (this.getPosWhile().get(0) == getPointer() - 1) // [1]
                         {
-                            System.out.println("check in");
+                            // System.out.println("check in");
                             this.conditionwhile = false;
 
                             this.getPosWhile().remove(0);
@@ -404,7 +403,7 @@ class Complier {
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
                         // this.getPosWhile().remove(1);
-                        System.out.println("set-Exp-False");
+                        // System.out.println("set-Exp-False");
                         break;
                         // this.count++;
                     }

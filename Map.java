@@ -11,7 +11,6 @@ import javax.swing.*;
 // import java.io.*;
 
 class Map {
-    private ImageIcon[] images;
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
@@ -29,21 +28,17 @@ class Map {
     // D=dummy
 
     public Map(JLabel tutorial, JLabel tutorialText, String mapNow) {
-        this.images = new ImageIcon[3];
-        this.images[0] = new ImageIcon("icon/player.png");
-        this.images[1] = new ImageIcon("icon/player_3.png");
-        this.images[2] = new ImageIcon("icon/player_5.png");
         this.mapNow = mapNow;
         System.out.println("> Map Create");
         if (mapNow.equals("0000")) { // walk(dire)
             setRow(7);
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1900000001".toCharArray();
+            this.map[1] = "1923658AD1".toCharArray();
             this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1030000001".toCharArray();
+            this.map[3] = "1023678AD1".toCharArray();
             this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1000000081".toCharArray();
+            this.map[5] = "1005000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
             setTutorialText("0000\nwalk(direct)");

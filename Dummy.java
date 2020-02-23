@@ -9,8 +9,12 @@ class Dummy {
 
     public Dummy(Map map, int scale, int mapRow, int mapColumn) {
         this.images = new ImageIcon[6];
-        this.images[0] = new ImageIcon("icon/dummy.png");
-        this.images[1] = new ImageIcon("icon/dummy.png");
+        this.images[0] = new ImageIcon("src/enemy/dummy/1.png");
+        this.images[1] = new ImageIcon("src/enemy/dummy/2.png");
+        this.images[2] = new ImageIcon("src/enemy/dummy/3.png");
+        this.images[3] = new ImageIcon("src/enemy/dummy/4.png");
+        this.images[4] = new ImageIcon("src/enemy/dummy/5.png");
+        this.images[5] = new ImageIcon("src/enemy/dummy/6.png");
         this.map = map;
         this.scale = scale;
         this.selfPosition[0] = mapRow;

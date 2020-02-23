@@ -12,9 +12,13 @@ class FireBall {
     private String state;
 
     public FireBall(Map map, int mapRow, int mapColumn, int x, int y) {
-        this.images = new ImageIcon[2];
-        this.images[0] = new ImageIcon("icon/fire_ball.png");
-        this.images[1] = new ImageIcon("icon/fire_ball_2.png");
+        this.images = new ImageIcon[6];
+        this.images[0] = new ImageIcon("src/effect/fireball/1.png");
+        this.images[1] = new ImageIcon("src/effect/fireball/2.png");
+        this.images[2] = new ImageIcon("src/effect/fireball/3.png");
+        this.images[3] = new ImageIcon("src/effect/fireball/4.png");
+        this.images[4] = new ImageIcon("src/effect/fireball/5.png");
+        this.images[5] = new ImageIcon("src/effect/fireball/6.png");
         this.selfPosition[0] = mapRow;
         this.selfPosition[1] = mapColumn;
         this.map = map;

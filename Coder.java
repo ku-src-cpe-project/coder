@@ -10,7 +10,7 @@ import java.util.ArrayList;
 // import java.util.StringTokenizer;
 // import java.io.*;
 
-// import javax.sound.sampled.*;
+// import javax.media.sampled.*;
 import java.awt.Color;
 // import java.util.Collections;
 // import java.util.List;
@@ -94,7 +94,7 @@ public class Coder extends JPanel implements Runnable {
 
 	// Update
 	private int direction, chooseStart;
-	private int delayA, delayB, delayC, delayMapEnd;
+	private int delayA, delayB, delayMapEnd;
 	private int timing;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
@@ -135,7 +135,7 @@ public class Coder extends JPanel implements Runnable {
 		screeny = 600; // 6 * scale; // 5;
 		setPreferredSize(new Dimension(screenx, screeny));
 		running = true;
-		bg = new ImageIcon("icon/background.png");
+		bg = new ImageIcon("src/background/starting.png");
 		thread = new Thread(this);
 		thread.setPriority(Thread.MIN_PRIORITY + 1);
 		thread.start();
@@ -146,7 +146,7 @@ public class Coder extends JPanel implements Runnable {
 		runable = false;
 		line = 0;
 		soundMedia = new PlaySound();
-		soundMedia.playSound_L("sound/bgm.wav", 999);
+		soundMedia.playSoundLoop("media/bgm.wav", 999);
 
 		// ========================================================
 		// init
@@ -177,26 +177,31 @@ public class Coder extends JPanel implements Runnable {
 		tutorialText.setBackground(new Color(70, 220, 90));
 		tutorialText.setFont(f1);
 
-		imageBooms = new ImageIcon[5];
-		imageSmokes = new ImageIcon[2];
+		imageBooms = new ImageIcon[6];
+		imageSmokes = new ImageIcon[6];
 		imageStars = new ImageIcon[3];
-		imageBooms[0] = new ImageIcon("icon/anima/kaboom_1.png");
-		imageBooms[1] = new ImageIcon("icon/anima/kaboom_2.png");
-		imageBooms[2] = new ImageIcon("icon/anima/kaboom_3.png");
-		imageBooms[3] = new ImageIcon("icon/anima/kaboom_4.png");
-		imageBooms[4] = new ImageIcon("icon/anima/kaboom_5.png");
-		imageSmokes[0] = new ImageIcon("icon/smoke.png");
-		imageSmokes[1] = new ImageIcon("icon/smoke.png");
-		imageStars[0] = new ImageIcon("icon/2-star.png");
-		imageStars[1] = new ImageIcon("icon/2-star.png");
-		imageStars[2] = new ImageIcon("icon/2-star.png");
-		tutorialBackground = new JLabel(new ImageIcon("icon/hint.png"));
-		buttonStart = new JLabel(new ImageIcon("icon/button_start.png"));
-		buttonLoad = new JLabel(new ImageIcon("icon/button_load.png"));
-		buttonSubmit = new JLabel(new ImageIcon("icon/button_submit.png"));
-		buttonClear = new JLabel(new ImageIcon("icon/button_clear.png"));
-		buttonNext = new JLabel(new ImageIcon("icon/button_next.png"));
-		buttonRestart = new JLabel(new ImageIcon("icon/button_restart.png"));
+		imageBooms[0] = new ImageIcon("src/effect/boom/1.png");
+		imageBooms[1] = new ImageIcon("src/effect/boom/2.png");
+		imageBooms[2] = new ImageIcon("src/effect/boom/3.png");
+		imageBooms[3] = new ImageIcon("src/effect/boom/4.png");
+		imageBooms[4] = new ImageIcon("src/effect/boom/5.png");
+		imageBooms[5] = new ImageIcon("src/effect/boom/6.png");
+		imageSmokes[0] = new ImageIcon("src/etc/smoke/1.png");
+		imageSmokes[1] = new ImageIcon("src/etc/smoke/2.png");
+		imageSmokes[2] = new ImageIcon("src/etc/smoke/3.png");
+		imageSmokes[3] = new ImageIcon("src/etc/smoke/4.png");
+		imageSmokes[4] = new ImageIcon("src/etc/smoke/5.png");
+		imageSmokes[5] = new ImageIcon("src/etc/smoke/6.png");
+		imageStars[0] = new ImageIcon("src/etc/star/1.png");
+		imageStars[1] = new ImageIcon("src/etc/star/2.png");
+		imageStars[2] = new ImageIcon("src/etc/star/3.png");
+		tutorialBackground = new JLabel(new ImageIcon("src/etc/tutorial/1.png"));
+		buttonStart = new JLabel(new ImageIcon("src/button/button_start.png"));
+		buttonLoad = new JLabel(new ImageIcon("src/button/button_load.png"));
+		buttonSubmit = new JLabel(new ImageIcon("src/button/button_submit.png"));
+		buttonClear = new JLabel(new ImageIcon("src/button/button_clear.png"));
+		buttonNext = new JLabel(new ImageIcon("src/button/button_next.png"));
+		buttonRestart = new JLabel(new ImageIcon("src/button/button_restart.png"));
 
 		// ========================================================
 		// Save file
@@ -322,7 +327,7 @@ public class Coder extends JPanel implements Runnable {
 				// textValue =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				textValue = "while(check(down)){walk(down);}";
+				// textValue = "while(check(down)){walk(down);}";
 
 				// if
 				// textValue =
@@ -479,7 +484,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	public void update() {
 		if (starting) {
-			bg = new ImageIcon("icon/background_start.png");
+			bg = new ImageIcon("src/background/starting.png");
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(true);
 			tutorialBackground.setVisible(false);
@@ -493,7 +498,7 @@ public class Coder extends JPanel implements Runnable {
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
 		} else if (loading) {
-			bg = new ImageIcon("icon/background_load6.png");
+			bg = new ImageIcon("src/background/loading.png");
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(false);
 			tutorialBackground.setVisible(false);
@@ -510,7 +515,7 @@ public class Coder extends JPanel implements Runnable {
 				mapStores.get(i).getMapStoreLabel().setVisible(true);
 			}
 		} else if (playing) {
-			bg = new ImageIcon("icon/background.png");
+			bg = new ImageIcon("src/background/playing.png");
 			buttonStart.setVisible(false);
 			buttonLoad.setVisible(false);
 			input.setVisible(true);
@@ -567,17 +572,16 @@ public class Coder extends JPanel implements Runnable {
 						mapStateFirst = true;
 					}
 				} else if (player.getState().equals("dead")) {
-					System.out.println(lines.size());
 					// player.selfPosition[0] = -99;
 					// complier.setPointer(lines.size());
 				} else if (runable && player.getState().equals("live")) {
-					if (complier.getPointer() == 0 && delayC == 0) {
+					if (complier.getPointer() == 0) {
 						System.out.println("==============================");
 						System.out.println("    PROGRAM ALREADY RUNNING");
 						System.out.println("==============================");
 					}
 					if (complier.getPointer() < lines.size()) { // lines.size()-1
-						if (delayC >= 60) {
+						if (!walking) {
 							System.out.println(
 									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 							line = complier.getPointer();
@@ -586,9 +590,6 @@ public class Coder extends JPanel implements Runnable {
 							if (line == (lines.size())) {
 								runable = false;
 							}
-							delayC = 0;
-						} else {
-							delayC += 10;
 						}
 					}
 					// ========================================================
@@ -631,7 +632,7 @@ public class Coder extends JPanel implements Runnable {
 								attacking = false;
 								hitting = true;
 								effectBoom = 0;
-								soundMedia.playSound_S("sound/hit.wav");
+								soundMedia.playSoundSingle("media/hit.wav");
 							}
 						}
 						if (attacking) {
@@ -642,12 +643,12 @@ public class Coder extends JPanel implements Runnable {
 				} else {
 					delayB++;
 				}
-				if (direction >= 1) {
+				if (direction > 4) {
 					direction = 0;
 				} else {
 					direction++;
 				}
-				if (effectBoom >= 4) {
+				if (effectBoom > 4) {
 					effectBoom = 0;
 					timing++;
 				} else {
@@ -668,12 +669,12 @@ public class Coder extends JPanel implements Runnable {
 					tutorialText.setVisible(false);
 				}
 			}
-			if (frame >= 60) {
+			if (frame >= 6) {
 				frame = 0;
 				walking = false;
 				player.update();
 			} else {
-				frame += 10;
+				frame += 1;
 			}
 			if (!walking) {
 				frame = 0;
@@ -739,7 +740,9 @@ public class Coder extends JPanel implements Runnable {
 							portal7s.add(portal);
 						}
 						for (int k = 0; k < portal7s.size(); k++) {
-							portal7s.get(k).draw(gr, direction + 2);
+							if (portal7s.get(k).getSelfRow() == i) {
+								portal7s.get(k).draw(gr, direction + 6);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '6') {
@@ -749,7 +752,9 @@ public class Coder extends JPanel implements Runnable {
 							portal6s.add(portal);
 						}
 						for (int k = 0; k < portal6s.size(); k++) {
-							portal6s.get(k).draw(gr, direction + 4);
+							if (portal6s.get(k).getSelfRow() == i) {
+								portal6s.get(k).draw(gr, direction + 12);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '5') {
@@ -759,7 +764,9 @@ public class Coder extends JPanel implements Runnable {
 							mushroom5s.add(mushroom);
 						}
 						for (int k = 0; k < mushroom5s.size(); k++) {
-							mushroom5s.get(k).draw(gr, direction);
+							if (mushroom5s.get(k).getSelfRow() == i) {
+								mushroom5s.get(k).draw(gr, direction);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == 'A') {
@@ -769,7 +776,9 @@ public class Coder extends JPanel implements Runnable {
 							mushroomAs.add(mushroom);
 						}
 						for (int k = 0; k < mushroomAs.size(); k++) {
-							mushroomAs.get(k).draw(gr, direction + 2);
+							if (mushroomAs.get(k).getSelfRow() == i) {
+								mushroomAs.get(k).draw(gr, direction + 6);
+							}
 						}
 					}
 					if (map.getMap()[i][j] == '4') {
@@ -790,23 +799,26 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
+						//
 						if (!walking) {
 							if (player.getMushroom().equals("chun-li")) {
-								player.draw(gr, direction + 4, locationX, locationY, padX, padY);
+								player.draw(gr, direction + 12, locationX, locationY, padX, padY);
 							} else if (player.getMushroom().equals("ken")) {
-								player.draw(gr, direction + 2, locationX, locationY, padX, padY);
+								player.draw(gr, direction + 6, locationX, locationY, padX, padY);
 							} else {
 								player.draw(gr, direction, locationX, locationY, padX, padY);
 							}
 						} else {
 							int hero = 0;
-							float multipleFrameX = 1.50f;
-							float multipleFrameY = 0.90f;
-							float multipleFrameZ = 0.30f;
+							float multipleFrameX = 15.0f;
+							float multipleFrameY = 9.0f;
+							float multipleFrameZ = 2.5f;
+							// w 124 = 124 / frame
+							// h 45 = 45 / frame
 							if (player.getMushroomNumber() == 2) {
-								hero = direction + 4;
+								hero = direction + 12;
 							} else if (player.getMushroomNumber() == 1) {
-								hero = direction + 2;
+								hero = direction + 6;
 							} else {
 								hero = direction;
 							}
@@ -827,10 +839,11 @@ public class Coder extends JPanel implements Runnable {
 					}
 				}
 			}
+
 			if (hitting) {
 				gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74,
 						null);
-				if (effectBoom >= 4) {
+				if (effectBoom > 4) {
 					hitting = false;
 				}
 			}
@@ -859,7 +872,7 @@ public class Coder extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(50);
 				repaint();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

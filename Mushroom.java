@@ -7,11 +7,20 @@ class Mushroom {
     private String mushroom;
 
     public Mushroom(int x, int y, int selfRow) {
-        this.images = new ImageIcon[4];
-        this.images[0] = new ImageIcon("icon/mushroom.png");
-        this.images[1] = new ImageIcon("icon/mushroom_2.png");
-        this.images[2] = new ImageIcon("icon/mushroom_3.png");
-        this.images[3] = new ImageIcon("icon/mushroom_4.png");
+        this.images = new ImageIcon[12];
+        this.images[0] = new ImageIcon("src/mushroom/a/1.png");
+        this.images[1] = new ImageIcon("src/mushroom/a/2.png");
+        this.images[2] = new ImageIcon("src/mushroom/a/3.png");
+        this.images[3] = new ImageIcon("src/mushroom/a/4.png");
+        this.images[4] = new ImageIcon("src/mushroom/a/5.png");
+        this.images[5] = new ImageIcon("src/mushroom/a/6.png");
+
+        this.images[6] = new ImageIcon("src/mushroom/b/1.png");
+        this.images[7] = new ImageIcon("src/mushroom/b/2.png");
+        this.images[8] = new ImageIcon("src/mushroom/b/3.png");
+        this.images[9] = new ImageIcon("src/mushroom/b/4.png");
+        this.images[10] = new ImageIcon("src/mushroom/b/5.png");
+        this.images[11] = new ImageIcon("src/mushroom/b/6.png");
         this.x = x;
         this.y = y;
         this.selfRow = selfRow;

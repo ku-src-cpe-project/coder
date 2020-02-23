@@ -12,9 +12,13 @@ class Enemy {
     private String state;
 
     public Enemy(Map map, int scale, int mapRow, int mapColumn) {
-        this.images = new ImageIcon[2];
-        this.images[0] = new ImageIcon("icon/enemy.png");
-        this.images[1] = new ImageIcon("icon/enemy_2.png");
+        this.images = new ImageIcon[6];
+        this.images[0] = new ImageIcon("src/enemy/a/1.png");
+        this.images[1] = new ImageIcon("src/enemy/a/2.png");
+        this.images[2] = new ImageIcon("src/enemy/a/3.png");
+        this.images[3] = new ImageIcon("src/enemy/a/4.png");
+        this.images[4] = new ImageIcon("src/enemy/a/5.png");
+        this.images[5] = new ImageIcon("src/enemy/a/6.png");
         this.random = new Random();
         this.map = map;
         this.scale = scale;
