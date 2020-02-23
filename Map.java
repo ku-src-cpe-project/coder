@@ -39,7 +39,7 @@ class Map {
             setRow(7);
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1030000001".toCharArray();
+            this.map[1] = "1930000001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1030000001".toCharArray();
             this.map[4] = "1000000001".toCharArray();
@@ -68,7 +68,7 @@ class Map {
             this.map[2] = "1000303031".toCharArray();
             this.map[3] = "1330300031".toCharArray();
             this.map[4] = "1330303331".toCharArray();
-            this.map[5] = "1000300081".toCharArray();
+            this.map[5] = "1900300081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
             setTutorialText("0001\ntest walk(direct)");
@@ -116,11 +116,11 @@ class Map {
             setRow(7);
             tutorial.setText("Find the portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000081".toCharArray();
-            this.map[2] = "1000000801".toCharArray();
-            this.map[3] = "1000000001".toCharArray();
-            this.map[4] = "1000080001".toCharArray();
-            this.map[5] = "1800000001".toCharArray();
+            this.map[1] = "1900300081".toCharArray();
+            this.map[2] = "1500000201".toCharArray();
+            this.map[3] = "1A00000001".toCharArray();
+            this.map[4] = "1700000201".toCharArray();
+            this.map[5] = "16000800D1".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             // W(4){
@@ -130,10 +130,10 @@ class Map {
             setRow(7);
             tutorial.setText("How many you enter portal");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
+            this.map[1] = "1700000001".toCharArray();
             this.map[2] = "1333333001".toCharArray();
-            this.map[3] = "1000003001".toCharArray();
-            this.map[4] = "1000003001".toCharArray();
+            this.map[3] = "1000063001".toCharArray();
+            this.map[4] = "1900003001".toCharArray();
             this.map[5] = "1000003081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
@@ -147,7 +147,7 @@ class Map {
             setRow(7);
             tutorial.setText("Jail break.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1003333331".toCharArray();
+            this.map[1] = "1903333331".toCharArray();
             this.map[2] = "1003333331".toCharArray();
             this.map[3] = "1008003031".toCharArray();
             this.map[4] = "1333333331".toCharArray();
@@ -163,11 +163,11 @@ class Map {
             setRow(7);
             tutorial.setText("Destroy all bomb. then you will see goal.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000333331".toCharArray();
+            this.map[1] = "1800333331".toCharArray();
             this.map[2] = "1330033331".toCharArray();
             this.map[3] = "1333003331".toCharArray();
             this.map[4] = "1333300331".toCharArray();
-            this.map[5] = "1333330081".toCharArray();
+            this.map[5] = "1333330091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             // W(11){
             // IF(C(R)){
@@ -181,7 +181,7 @@ class Map {
             setRow(7);
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1033333081".toCharArray();
+            this.map[1] = "1933333081".toCharArray();
             this.map[2] = "1033330031".toCharArray();
             this.map[3] = "1033300031".toCharArray();
             this.map[4] = "1033000331".toCharArray();
@@ -203,11 +203,11 @@ class Map {
             setRow(7);
             tutorial.setText("Where the enemy.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
+            this.map[1] = "1000000091".toCharArray();
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1000000001".toCharArray();
-            this.map[4] = "1000000201".toCharArray();
-            this.map[5] = "1000000081".toCharArray();
+            this.map[4] = "1020000001".toCharArray();
+            this.map[5] = "1800000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0009")) { // mushroom attack
             setRow(7);
@@ -417,7 +417,7 @@ class Map {
                 } else if (this.map[i][j] == '1') {
                     System.out.print("+ ");
                 } else {
-                    System.out.print("- ");
+                    System.out.print(". ");
                 }
             }
             System.out.print("\n");

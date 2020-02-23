@@ -83,8 +83,13 @@ public class Coder extends JPanel implements Runnable {
 
 	// Store
 	private ArrayList<MapStore> mapStores;
-	private ArrayList<JLabel> mapStoreLabels;
 	private ArrayList<Dummy> dummys;
+	private ArrayList<Bomb> bombs;
+	private ArrayList<Portal> portal6s;
+	private ArrayList<Portal> portal7s;
+	private ArrayList<Portal> portal8s;
+	private ArrayList<Mushroom> mushroom5s;
+	private ArrayList<Mushroom> mushroomAs;
 	public static ArrayList<Enemy> enemys;
 
 	// Update
@@ -146,7 +151,12 @@ public class Coder extends JPanel implements Runnable {
 		// init
 		// ========================================================
 		mapStores = new ArrayList<MapStore>();
-		mapStoreLabels = new ArrayList<JLabel>();
+		bombs = new ArrayList<Bomb>();
+		portal6s = new ArrayList<Portal>();
+		portal7s = new ArrayList<Portal>();
+		portal8s = new ArrayList<Portal>();
+		mushroom5s = new ArrayList<Mushroom>();
+		mushroomAs = new ArrayList<Mushroom>();
 		starting = true;
 		loading = false;
 		playing = false;
@@ -205,56 +215,56 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Debug
 		// ========================================================
-		// int coreX = 70, coreY = 450;
-		// int sizeX = 50, sizeY = 50;
-		// up = new JButton("^");
-		// down = new JButton("V");
-		// left = new JButton("<");
-		// right = new JButton(">");
-		// fire = new JButton("F");
-		// print = new JButton("P");
-		// up.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// player.walk("up");
-		// }
-		// });
-		// down.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// player.walk("down");
-		// }
-		// });
-		// left.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// player.walk("left");
-		// }
-		// });
-		// right.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// player.walk("right");
-		// }
-		// });
-		// fire.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// player.attack();
-		// }
-		// });
-		// print.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent ae) {
-		// map.printMap();
-		// }
-		// });
-		// right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
-		// up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
-		// down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
-		// left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
-		// fire.setBounds(coreX, coreY, sizeX, sizeY);
-		// print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
-		// add(up);
-		// add(down);
-		// add(left);
-		// add(right);
-		// add(fire);
-		// add(print);
+		int coreX = 70, coreY = 450;
+		int sizeX = 50, sizeY = 50;
+		up = new JButton("^");
+		down = new JButton("V");
+		left = new JButton("<");
+		right = new JButton(">");
+		fire = new JButton("F");
+		print = new JButton("P");
+		up.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.walk("up");
+			}
+		});
+		down.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.walk("down");
+			}
+		});
+		left.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.walk("left");
+			}
+		});
+		right.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.walk("right");
+			}
+		});
+		fire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.attack();
+			}
+		});
+		print.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				map.printMap();
+			}
+		});
+		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
+		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
+		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
+		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
+		fire.setBounds(coreX, coreY, sizeX, sizeY);
+		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
+		add(up);
+		add(down);
+		add(left);
+		add(right);
+		add(fire);
+		add(print);
 
 		// ========================================================
 		// Starting
@@ -680,41 +690,71 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == '1') {
 					}
 					if (map.getMap()[i][j] == '2') {
-						enemy = new Enemy(map, scale, i, j);
+						Enemy enemy = new Enemy(map, scale, i, j);
 						enemy.draw(gr, direction, locationX, locationY, padX, padY);
 						if (firstMake) {
 							enemys.add(enemy);
 						}
 					}
 					if (map.getMap()[i][j] == '3') {
-						bomb = new Bomb((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						bomb.draw(gr, direction);
+						if (firstMake) {
+							Bomb bomb = new Bomb((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							bombs.add(bomb);
+						}
+						for (int k = 0; k < bombs.size(); k++) {
+							bombs.get(k).draw(gr, direction);
+						}
 					}
 					if (map.getMap()[i][j] == '8') {
-						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						portal.draw(gr, direction);
+						if (firstMake) {
+							Portal portal = new Portal((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							portal8s.add(portal);
+						}
+						for (int k = 0; k < portal8s.size(); k++) {
+							portal8s.get(k).draw(gr, direction);
+						}
 					}
 					if (map.getMap()[i][j] == '7') {
-						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						portal.draw(gr, direction + 2);
+						if (firstMake) {
+							Portal portal = new Portal((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							portal7s.add(portal);
+						}
+						for (int k = 0; k < portal7s.size(); k++) {
+							portal7s.get(k).draw(gr, direction + 2);
+						}
 					}
 					if (map.getMap()[i][j] == '6') {
-						portal = new Portal((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						portal.draw(gr, direction + 4);
+						if (firstMake) {
+							Portal portal = new Portal((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							portal6s.add(portal);
+						}
+						for (int k = 0; k < portal6s.size(); k++) {
+							portal6s.get(k).draw(gr, direction + 4);
+						}
 					}
 					if (map.getMap()[i][j] == '5') {
-						mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						mushroom.draw(gr, direction);
+						if (firstMake) {
+							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							mushroom5s.add(mushroom);
+						}
+						for (int k = 0; k < mushroom5s.size(); k++) {
+							mushroom5s.get(k).draw(gr, direction);
+						}
 					}
 					if (map.getMap()[i][j] == 'A') {
-						mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						mushroom.draw(gr, direction + 2);
+						if (firstMake) {
+							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							mushroomAs.add(mushroom);
+						}
+						for (int k = 0; k < mushroomAs.size(); k++) {
+							mushroomAs.get(k).draw(gr, direction + 2);
+						}
 					}
 					if (map.getMap()[i][j] == '4') {
 						fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
@@ -724,7 +764,7 @@ public class Coder extends JPanel implements Runnable {
 					}
 					if (map.getMap()[i][j] == 'D') {
 						if (firstMake) {
-							dummy = new Dummy(map, scale, i, j);
+							Dummy dummy = new Dummy(map, scale, i, j);
 							dummys.add(dummy);
 						}
 						for (int k = 0; k < dummys.size(); k++) {
