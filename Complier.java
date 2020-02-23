@@ -24,7 +24,7 @@ class Complier {
     private int count, countState, count_braketOP, count_braketCL, find_braketOP_else, find_braketCL_else,
             count_braketCL_else, find_braketCL_while, count_braketCL_while;
     private ArrayList<String> process, find_braketOP, find_braketCL;
-    private boolean expression, _if, conditionofif, foundif, foundelse, conditionwhile, foundwhile,whilecheck;
+    private boolean expression, _if, conditionofif, foundif, foundelse, conditionwhile, foundwhile, whilecheck;
     private String state, checkif, statusif, statuselse, check_braket, check_braket_else, str, m, n, check_else,
             check_if_out, check_braket2, check_token, check_braket_while_out, check_braket_while_in;
 
@@ -50,14 +50,11 @@ class Complier {
         this.conditionofif = true;
         this.foundif = false;
         this.foundelse = false;
-
         this.check_if_out = "out";
         this.check_token = "x";
-
         this.check_braket_while_in = "null";
         this.check_braket_while_out = "null";
         this.state = "out";
-
     }
 
     public ArrayList<String> tokenToLines(ArrayList<String> tokens) {
@@ -155,7 +152,6 @@ class Complier {
         }
         // System.out.println("" + this.tokens);
         return this.tokens;
-
     }
 
     public boolean checkOperater(String parse) {
@@ -297,50 +293,36 @@ class Complier {
                     }
                 } else // in case condition == false (skip code)
                 {
-                     
-                    if (token.get(i).equals("}")) 
-                    { 
-                         
-                            
-                            if(this.getPosWhile().size() > 1)
-                            {
-                                this.foundwhile = true;
-                                this.conditionwhile = true;
-                                //  System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
-                                 setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
-                                 
-                            }
-                             if(this.getPosWhile().size() == 1)
-                            {
-                                
-                                    this.foundwhile = true;
-                                    this.conditionwhile = true;
-                                
-                                
-                                // setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
-                                // System.out.println(">>>>>>>"+this.getPosWhile());
-                                // 
-                                
-                                
-                                
-                                //  System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
-                                popStack();
-                                this.count++;
-                                
-                                 
-                            }
-                            else
-                            {
-                                popStack();
-                                this.count++;
-                                break;
-                            }
-                            
-                           
-                        
-                    } 
-                    else 
-                    {
+
+                    if (token.get(i).equals("}")) {
+
+                        if (this.getPosWhile().size() > 1) {
+                            this.foundwhile = true;
+                            this.conditionwhile = true;
+                            // System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
+                            setPointer(getPosWhile().get(+this.getPosWhile().size() - 1));
+
+                        }
+                        if (this.getPosWhile().size() == 1) {
+
+                            this.foundwhile = true;
+                            this.conditionwhile = true;
+
+                            // setPointer(getPosWhile().get(+this.getPosWhile().size()-1));
+                            // System.out.println(">>>>>>>"+this.getPosWhile());
+                            //
+
+                            // System.out.println(">>>>>>>"+this.getPosWhile()+"<<<<<<");
+                            popStack();
+                            this.count++;
+
+                        } else {
+                            popStack();
+                            this.count++;
+                            break;
+                        }
+
+                    } else {
                         popStack();
                         this.count++;
                         break;
@@ -378,6 +360,7 @@ class Complier {
                 if (token.get(i + 2).equals("check")) {
                     String dir = token.get(i + 4);
                     if (player.collision(dir)) { // condition in while == true
+                        System.out.println(">>>>>>>> TRUE");
                         getPosWhile().add(getPointer() - 1);
                         if (this.getPosWhile().size() > 1) // [1]
                         {
@@ -394,35 +377,30 @@ class Complier {
                             }
                         }
                         // System.out.println(this.pointer);
-                        System.out.println(getPosWhile());
+                        // System.out.println(getPosWhile());
                         this.conditionwhile = true;
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
                         System.out.println("set-Exp-True");
                     } else { // condition in while == false
-
+                        System.out.println(">>>>>>>> FALSE");
                         // System.out.println(">>>>>>>>>"+getPointer());
                         // System.out.println(this.getPosWhile());
                         if (this.getPosWhile().size() > 1) // [1,2]
                         {
                             this.getPosWhile().remove(1); // [1]
                             this.conditionwhile = false;
-                        }
-                       else if (this.getPosWhile().get(0) == getPointer()-1) // [1]
+                        } else if (this.getPosWhile().get(0) == getPointer() - 1) // [1]
                         {
-
                             System.out.println("check in");
                             this.conditionwhile = false;
-                            
-                            this.getPosWhile().remove(0); 
+
+                            this.getPosWhile().remove(0);
                             this.getPosWhile().add(99999);
-                            System.out.println(getPosWhile());
-                        }
-                        else
-                        {
+                            // System.out.println(getPosWhile());
+                        } else {
                             this.conditionwhile = false;
                         }
-
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
                         // this.getPosWhile().remove(1);
@@ -507,7 +485,6 @@ class Complier {
         pushStack(getLines().get(getPointer()));
         readStack(player, peekStack());
         this.pointer = this.pointer + 1;
-
     }
 
     public int endPointer(int sizeLine) {

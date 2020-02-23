@@ -45,7 +45,7 @@ class Player {
     }
 
     public void walk(String dir) {
-        if (!Coder.walking) {
+        if (!Coder.walking && !this.state.equals("dead")) {
             this.direction = dir;
             Coder.walking = true;
             Coder.frame = 0;
@@ -73,6 +73,7 @@ class Player {
                     }
                 }
             } else {
+                this.stateTmp = "dead";
                 this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
                 Coder.soundMedia.playSound_S("sound/dead.wav");
                 System.out.println("You are dead");
