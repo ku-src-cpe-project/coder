@@ -464,7 +464,7 @@ public class Coder extends JPanel implements Runnable {
 								.println("Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 						line = complier.getPointer();
 						complier.Runable(player, lines);
-						line++;
+						// line++;
 						if (line == (lines.size())) {
 							runable = false;
 						}
