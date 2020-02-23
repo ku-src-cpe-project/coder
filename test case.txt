@@ -1,0 +1,162 @@
+if(check(down))
+{
+if
+   walk(down);
+   if(check(down))
+   {  
+      walk(down);
+   }
+   else
+   {
+    walk(down);
+   }  
+}
+else
+{
+walk(right);
+}
+
+-------------------------------------------------------
+
+if(check(right))
+{
+   walk(down);
+   if(check(down))
+   {
+       	walk(down);
+   }
+   else
+   {
+	walk(down);
+   }
+}
+
+--------------------------------------------------------
+if
+{
+}
+xxx
+else
+{
+}
+
+if
+xxx
+yyyy
+else
+xxx
+
+if(A)
+{
+}
+
+if(B)
+{
+}
+
+-------------------------------------------
+
+while(check(right))
+{
+  walk(down);
+  
+}
+******ยังไม่เสร็จ*************
+---------------------------------------
+while(check(right))
+{
+  walk(down);
+  while(check(down))
+  {
+    walk(right);
+  }
+}
+walk(left);
+-----------------------------------------
+while(check(right))
+{
+  walk(right);
+  while(check(down))
+  {
+    walk(down);
+  }
+}
+----------------------------------------
+
+
+
+while(check(right))
+{
+   if(check(right))
+   {
+     walk(down);
+   }
+}
+----------------------------------------
+while(check(right))
+{
+  walk(down);
+  while(check(down))
+  {
+    walk(right);
+  }
+  while(check(left))
+  {
+    walk(left);
+  }
+}
+
+---------------------------------------
+while(check(down))          
+{                           
+  walk(down);               
+  while(check(right))       
+{                         
+    walk(right);            
+  }                         
+}                 
+walk(left);          
+----------------------------------------
+while(check(right)){
+walk(right);
+while(check(down)){
+walk(down);
+}}
+-------------------------------------------
+if(check(right))
+{
+  walk(down);
+  if(check(right))
+  {
+    walk(down);
+   }
+   else
+   {
+     walk(right);
+    }
+}
+
+
+--------------------------------------------------
+
+
+if(check(right))
+{
+  walk(down);
+  
+  if(check(right))
+  {
+    walk(down);
+   }
+   else
+   {
+   while(check(right))
+   {
+     walk(right);
+   }
+    while(check(down))
+    {
+     walk(down);
+     }
+    }
+}
