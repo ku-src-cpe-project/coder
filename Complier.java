@@ -303,7 +303,16 @@ class Complier {
                             setPointer(getPosWhile().get(+this.getPosWhile().size() - 1));
 
                         }
-                        if (this.getPosWhile().size() == 1) {
+                        if (this.getPosWhile().get(0) == 1000) {
+                            this.foundwhile = false;
+                            System.out.println("++++++");
+                        } else if (this.getPosWhile().get(0) == 99999) {
+                            this.getPosWhile().remove(0);
+                            this.getPosWhile().add(1000);
+                            System.out.println("------");
+                        }
+
+                        else if (this.getPosWhile().size() == 1) {
 
                             this.foundwhile = true;
                             this.conditionwhile = true;
@@ -380,11 +389,14 @@ class Complier {
                         this.conditionwhile = true;
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
-                        // System.out.println("set-Exp-True");
+                        System.out.println("set-Exp-True");
                     } else { // condition in while == false
-                        // System.out.println(">>>>>>>> FALSE");
+                        System.out.println(">>>>>>>> FALSE");
                         // System.out.println(">>>>>>>>>"+getPointer());
                         // System.out.println(this.getPosWhile());
+                        if (this.getPosWhile().isEmpty()) {
+                            this.getPosWhile().add(1000);
+                        }
                         if (this.getPosWhile().size() > 1) // [1,2]
                         {
                             this.getPosWhile().remove(1); // [1]
@@ -397,10 +409,11 @@ class Complier {
                             this.getPosWhile().remove(0);
                             this.getPosWhile().add(99999);
                             // System.out.println(getPosWhile());
-                        } else {
+                        } else if (this.getPosWhile().size() == 1) {
                             this.conditionwhile = false;
-                          
+
                         }
+
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
                         // this.getPosWhile().remove(1);
@@ -455,16 +468,15 @@ class Complier {
                         }
                     }
                 }
-            } 
-            else if (token.get(i).equals("else")) { // function for find else
+            } else if (token.get(i).equals("else")) { // function for find else
                 if (token.get(i + 1).equals("{")) {
                     // this.state = "else";
                     this.foundelse = true;
                     this.find_braketOP_else = 0;
                     this.statuselse = "{" + "else" + this.find_braketOP_else;
                 }
-            } 
-            
+            }
+
         }
     }
 
