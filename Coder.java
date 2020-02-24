@@ -322,7 +322,7 @@ public class Coder extends JPanel implements Runnable {
 				// textValue =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				// textValue = "while(check(right)){walk(right);}";
+				textValue = "while(check(down)){walk(down);}";
 
 				// if
 				// textValue =
@@ -568,9 +568,10 @@ public class Coder extends JPanel implements Runnable {
 						mapStateFirst = true;
 					}
 				} else if (player.getState().equals("dead")) {
-					player.selfPosition[0] = -99;
-				}
-				if (runable && player.getState().equals("live")) {
+					System.out.println(lines.size());
+					// player.selfPosition[0] = -99;
+					// complier.setPointer(lines.size());
+				} else if (runable && player.getState().equals("live")) {
 					if (complier.getPointer() == 0 && delayC == 0) {
 						System.out.println("==============================");
 						System.out.println("    PROGRAM ALREADY RUNNING");
@@ -831,7 +832,7 @@ public class Coder extends JPanel implements Runnable {
 										padY);
 							} else if (player.getDirection().equals("up")) {
 								player.draw(gr, hero, (int) (locationX - (frame * multipleFrameZ)),
-										 locationY - (int) ((frame * multipleFrameY)), padX, padY);
+										locationY - (int) ((frame * multipleFrameY)), padX, padY);
 							} else if (player.getDirection().equals("down")) {
 								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameZ)),
 										locationY + (int) ((frame * multipleFrameY)), padX, padY);

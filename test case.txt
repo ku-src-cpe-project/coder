@@ -111,7 +111,7 @@ while(check(down))
 {                           
   walk(down);               
   while(check(right))       
-{                         
+  {                         
     walk(right);            
   }                         
 }                 
