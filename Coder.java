@@ -98,7 +98,7 @@ public class Coder extends JPanel implements Runnable {
 	private int timing;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
-	public static boolean attacking, walking;
+	public static boolean attacking, walking, firing;
 	public static int frame;
 
 	// Map
@@ -445,6 +445,7 @@ public class Coder extends JPanel implements Runnable {
 		runable = false;
 		firstMake = true;
 		attacking = false;
+		firing = false;
 		tutorialBackground.setVisible(false);
 		tutorialText.setVisible(false);
 		map.setTutorial(false);
@@ -635,8 +636,9 @@ public class Coder extends JPanel implements Runnable {
 								soundMedia.playSoundSingle("media/hit.wav");
 							}
 						}
-						if (attacking) {
+						if (attacking && !firing) {
 							fireball.walk();
+							firing = true;
 						}
 					}
 					delayB = 0;
