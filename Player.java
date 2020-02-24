@@ -83,7 +83,8 @@ class Player {
                             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
                         } else {
                             this.stateTmp = "dead";
-                            System.out.println(">>> DEAD");
+                            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
+                            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
                         }
                     }
                 }
@@ -215,6 +216,15 @@ class Player {
             System.out.println("You are attacking");
         } else {
             System.out.println("You are not Ken");
+        }
+    }
+
+    public void check() {
+        if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == 'Q') {
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '0');
+            System.out.println("\t IF");
+        } else {
+            System.out.println("\t ELSE");
         }
     }
 

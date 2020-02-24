@@ -122,7 +122,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	// Debug
 	// ========================================================
-	private JButton up, down, left, right, fire, print;
+	private JButton up, down, left, right, fire, print, check;
 
 	// ========================================================
 	// Constructure
@@ -234,6 +234,7 @@ public class Coder extends JPanel implements Runnable {
 		right = new JButton(">");
 		fire = new JButton("F");
 		print = new JButton("P");
+		check = new JButton("C");
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("up");
@@ -264,18 +265,25 @@ public class Coder extends JPanel implements Runnable {
 				map.printMap();
 			}
 		});
+		check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.check();
+			}
+		});
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
 		up.setBounds(coreX, coreY - sizeY, sizeX, sizeY);
 		down.setBounds(coreX, coreY + sizeY, sizeX, sizeY);
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
-		// add(up);
-		// add(down);
-		// add(left);
-		// add(right);
-		// add(fire);
-		// add(print);
+		check.setBounds(coreX - sizeX, coreY - sizeY, sizeX, sizeY);
+		add(up);
+		add(down);
+		add(left);
+		add(right);
+		add(fire);
+		add(print);
+		add(check);
 
 		// ========================================================
 		// Starting
@@ -585,6 +593,7 @@ public class Coder extends JPanel implements Runnable {
 						mapStateFirst = true;
 					}
 				} else if (player.getState().equals("dead")) {
+					map.setMap(player.selfPosition[0], player.selfPosition[1], '0');
 					// player.selfPosition[0] = -99;
 					// complier.setPointer(lines.size());
 				} else if (runable && player.getState().equals("live")) {
@@ -812,38 +821,40 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
-						if (!walking) {
-							if (player.getMushroom().equals("chun-li")) {
-								player.draw(gr, direction + 12, locationX, locationY, padX, padY);
-							} else if (player.getMushroom().equals("ken")) {
-								player.draw(gr, direction + 6, locationX, locationY, padX, padY);
+						if (!player.getState().equals("dead")) {
+							if (!walking) {
+								if (player.getMushroom().equals("chun-li")) {
+									player.draw(gr, direction + 12, locationX, locationY, padX, padY);
+								} else if (player.getMushroom().equals("ken")) {
+									player.draw(gr, direction + 6, locationX, locationY, padX, padY);
+								} else {
+									player.draw(gr, direction, locationX, locationY, padX, padY);
+								}
 							} else {
-								player.draw(gr, direction, locationX, locationY, padX, padY);
-							}
-						} else {
-							int hero = 0;
-							multipleFrameX = 15.0f;
-							// w 124 = 124 / frameA
-							// h 45 = 45 / frameA
-							if (player.getMushroomNumber() == 2) {
-								hero = direction + 12;
-							} else if (player.getMushroomNumber() == 1) {
-								hero = direction + 6;
-							} else {
-								hero = direction;
-							}
-							if (player.getDirection().equals("left")) {
-								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY, padX,
-										padY);
-							} else if (player.getDirection().equals("right")) {
-								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY, padX,
-										padY);
-							} else if (player.getDirection().equals("up")) {
-								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
-										locationY - (int) ((frameA * multipleFrameY)), padX, padY);
-							} else if (player.getDirection().equals("down")) {
-								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
-										locationY + (int) ((frameA * multipleFrameY)), padX, padY);
+								int hero = 0;
+								multipleFrameX = 15.0f;
+								// w 124 = 124 / frameA
+								// h 45 = 45 / frameA
+								if (player.getMushroomNumber() == 2) {
+									hero = direction + 12;
+								} else if (player.getMushroomNumber() == 1) {
+									hero = direction + 6;
+								} else {
+									hero = direction;
+								}
+								if (player.getDirection().equals("left")) {
+									player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY,
+											padX, padY);
+								} else if (player.getDirection().equals("right")) {
+									player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY,
+											padX, padY);
+								} else if (player.getDirection().equals("up")) {
+									player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
+											locationY - (int) ((frameA * multipleFrameY)), padX, padY);
+								} else if (player.getDirection().equals("down")) {
+									player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
+											locationY + (int) ((frameA * multipleFrameY)), padX, padY);
+								}
 							}
 						}
 					}
@@ -876,7 +887,6 @@ public class Coder extends JPanel implements Runnable {
 					}
 				}
 			}
-
 			if (hitting) {
 				gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74,
 						null);
