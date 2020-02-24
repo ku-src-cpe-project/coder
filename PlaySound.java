@@ -58,8 +58,9 @@ class PlaySound {
         clip.open(stream);
         // Set Volume
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-60.0f);
+        // gainControl.setValue(-20.0f);
         // gainControl.setValue(-4.0f);
+        gainControl.setValue(-60.0f);
         // Set Volume End
         clip.loop(loop - 1);
         clip.start();
@@ -96,6 +97,7 @@ class PlaySound {
       // Set Volume
       FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
       // gainControl.setValue(6.0f); // max 6.0f
+      // gainControl.setValue(-20.0f);
       gainControl.setValue(-60.0f);
       // Set Volume End
       clip.start();
@@ -103,29 +105,4 @@ class PlaySound {
       System.out.println(ex.toString());
     }
   }
-  // public void playBGM(String fn, int loop)
-  // {
-  // try {
-  // if (loop > 0) {
-  // File yourFile = new File(fn);
-  // AudioInputStream stream;
-  // AudioFormat format;
-  // DataLine.Info info;
-  //
-  // stream = AudioSystem.getAudioInputStream(yourFile);
-  // format = stream.getFormat();
-  // info = new DataLine.Info(Clip.class, format);
-  // clipBGM = (Clip) AudioSystem.getLine(info);
-  // clipBGM.open(stream);
-  // clipBGM.loop(loop-1);
-  // clipBGM.start();
-  // }
-  // else {
-  // clipBGM.stop();
-  // }
-  // }
-  // catch (Exception ex) {
-  // System.out.println(ex.toString());
-  // }
-  // }
 }

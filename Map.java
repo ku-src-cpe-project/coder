@@ -87,7 +87,7 @@ class Map {
             setRow(7);
             tutorial.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
+            this.map[1] = "100Q0Q0001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1900Q00001".toCharArray();
             this.map[4] = "1000000001".toCharArray();

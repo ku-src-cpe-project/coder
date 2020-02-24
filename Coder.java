@@ -67,6 +67,7 @@ public class Coder extends JPanel implements Runnable {
 	private Mushroom mushroom;
 	private Enemy enemy;
 	private Dummy dummy;
+	private Treasure treasure;
 	private FireBall fireball;
 	private ReadFile readFile;
 	public static PlaySound soundMedia;
@@ -93,6 +94,7 @@ public class Coder extends JPanel implements Runnable {
 	private ArrayList<Portal> portal8s;
 	private ArrayList<Mushroom> mushroom5s;
 	private ArrayList<Mushroom> mushroomAs;
+	public static ArrayList<Treasure> treasures;
 	public static ArrayList<Enemy> enemys;
 
 	// Update
@@ -101,7 +103,7 @@ public class Coder extends JPanel implements Runnable {
 	private int timing, frameCount = 4;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
-	public static boolean attacking, walking, firing;
+	public static boolean attacking, walking, firing, creating;
 	public static int frameA, frameB;
 
 	// Map
@@ -460,12 +462,14 @@ public class Coder extends JPanel implements Runnable {
 		portal8s = new ArrayList<Portal>();
 		mushroom5s = new ArrayList<Mushroom>();
 		mushroomAs = new ArrayList<Mushroom>();
+		treasures = new ArrayList<Treasure>();
 		line = complier.getPointer();
 		runable = false;
 		firstMake = true;
 		walking = false;
 		attacking = false;
 		firing = false;
+		creating = false;
 		tutorialBackground.setVisible(false);
 		tutorialText.setVisible(false);
 		map.setTutorial(false);
@@ -884,6 +888,19 @@ public class Coder extends JPanel implements Runnable {
 					if (map.getMap()[i][j] == 'Q') {
 						gr.drawImage(imageQuestions[direction].getImage(), (j * scale) + locationX + (padX * i),
 								(i * scale) + locationY - (padY * i) - 143 + 50, null);
+					}
+					if (map.getMap()[i][j] == 'T') {
+						if (creating && map.checkMap(i, j - 1) == '9') {
+							Treasure treasure = new Treasure(map, scale, i, j);
+							treasures.add(treasure);
+							creating = false;
+						} else {
+							for (int k = 0; k < treasures.size(); k++) {
+								if (treasures.get(k).getSelfRow() == i) {
+									treasures.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+								}
+							}
+						}
 					}
 				}
 			}

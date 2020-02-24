@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 
 class Player {
     private ImageIcon[] images;
-    private int scale;
+    private int scale, treasure;
     public int[] selfPosition = { 0, 0 };
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
@@ -45,6 +45,7 @@ class Player {
         this.images[17] = new ImageIcon("src/hero/c/6.png");
         this.map = map;
         this.scale = scale;
+        this.treasure = 0;
         this.state = "live";
         this.stateTmp = "live";
         this.mushroom = "ryu";
@@ -78,14 +79,16 @@ class Player {
                     this.tmpPosition[0]++;
                 } else {
                     System.out.println("*** Sysntax error ***");
-                    if (checkNextStep(dir, '3') || checkNextStep(dir, 'Q')) {
+                    if (checkNextStep(dir, '3')) {
                         if (this.mushroom.equals("chun-li")) {
                             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
                         } else {
                             this.stateTmp = "dead";
-                            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
-                            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
                         }
+                    } else if (checkNextStep(dir, 'Q')) {
+                        this.stateTmp = "dead";
+                        this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
+                        this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
                     }
                 }
             } else {
@@ -168,6 +171,18 @@ class Player {
             this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
             Coder.soundMedia.playSoundSingle("media/mushroom.wav");
             this.mushroom = "chun-li";
+        } else if (checkNextStep(dir, 'T')) {
+            for (int i = 0; i < Coder.treasures.size(); i++) {
+                if (Coder.treasures.get(i).checkNextStep(1, '9')) {
+                    this.tmpPosition[0] = this.nextPosition[0];
+                    this.tmpPosition[1] = this.nextPosition[1];
+                    this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
+                    this.map.setMap(this.selfPosition[0], this.selfPosition[1], '9');
+                    Coder.soundMedia.playSoundSingle("media/treasure.wav");
+                    this.treasure += 50;
+                    Coder.treasures.remove(i);
+                }
+            }
         }
     }
 
@@ -220,11 +235,11 @@ class Player {
     }
 
     public void check() {
+        Coder.creating = true;
         if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == 'Q') {
-            this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, '0');
-            System.out.println("\t IF");
+            this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, 'T');
         } else {
-            System.out.println("\t ELSE");
+            System.out.println("Not treasure right there");
         }
     }
 
@@ -260,5 +275,13 @@ class Player {
 
     public void setDirection(String a) {
         this.direction = a;
+    }
+
+    public int getTreasure() {
+        return this.treasure;
+    }
+
+    public void setTreasure(int a) {
+        this.treasure = a;
     }
 }
