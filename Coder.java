@@ -352,7 +352,8 @@ public class Coder extends JPanel implements Runnable {
 			public void mouseClicked(MouseEvent me) {
 				map = new Map(objectiveLabel, tutorialText, mapNow);
 				newGame();
-				complier.setPointer(0);
+				// complier.setPointer(0);
+				complier = new Complier();
 				runable = false;
 				line = complier.getPointer();
 			}
@@ -585,27 +586,34 @@ public class Coder extends JPanel implements Runnable {
 						if (!walking) {
 							System.out.println(
 									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
-							line = complier.getPointer();
-							complier.Runable(player, lines);
-							// line++;
-							if (line == (lines.size())) {
+
+							if (lines.get(complier.getPointer()).equals("END")) {
+								complier = new Complier();
 								runable = false;
+
+							} else {
+								line = complier.getPointer();
+								complier.Runable(player, lines);
+
+								// line++;
+								if (line == (lines.size())) {
+									runable = false;
+								}
 							}
 						}
-					}
-					// ========================================================
-					// Enemy Delay
-					// ========================================================
-					if (delayA > 20) {
-						for (int i = 0; i < enemys.size(); i++) {
-							enemys.get(i).walk();
+						// ========================================================
+						// Enemy Delay
+						// ========================================================
+						if (delayA > 20) {
+							for (int i = 0; i < enemys.size(); i++) {
+								enemys.get(i).walk();
+							}
+							delayA = 0;
+						} else {
+							delayA++;
 						}
-						delayA = 0;
-					} else {
-						delayA++;
 					}
 				}
-
 				// ========================================================
 				// Update Playing Condition
 				// ========================================================
@@ -631,6 +639,7 @@ public class Coder extends JPanel implements Runnable {
 								effectBoomLcationY = fireball.getY();
 								fireball.disable();
 								attacking = false;
+								firing = false;
 								hitting = true;
 								effectBoom = 0;
 								soundMedia.playSoundSingle("media/hit.wav");
@@ -638,8 +647,8 @@ public class Coder extends JPanel implements Runnable {
 						}
 						if (attacking && !firing) {
 							fireball.walk();
-							firing = true;
 						}
+						firing = false;
 					}
 					delayB = 0;
 				} else {

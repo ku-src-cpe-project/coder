@@ -169,7 +169,7 @@ class Complier {
     public void checkMethod(Player player, ArrayList<String> token) { // WHILE, (, CHECK, (, DOWN, ), ), {
         for (int i = 0; i < token.size(); i++) {
 
-            // System.out.println(token);
+            System.out.println(token);
             if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) // found else and
                                                                                                    // condition if ==
                                                                                                    // False
@@ -399,6 +399,7 @@ class Complier {
                             // System.out.println(getPosWhile());
                         } else {
                             this.conditionwhile = false;
+                          
                         }
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
@@ -454,16 +455,16 @@ class Complier {
                         }
                     }
                 }
-            } else if (token.get(i).equals("else")) { // function for find else
+            } 
+            else if (token.get(i).equals("else")) { // function for find else
                 if (token.get(i + 1).equals("{")) {
                     // this.state = "else";
                     this.foundelse = true;
                     this.find_braketOP_else = 0;
                     this.statuselse = "{" + "else" + this.find_braketOP_else;
                 }
-            } else {
-                // System.out.println("*** Nothing happen ***");
-            }
+            } 
+            
         }
     }
 
