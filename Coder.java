@@ -347,7 +347,8 @@ public class Coder extends JPanel implements Runnable {
 			public void mouseClicked(MouseEvent me) {
 				map = new Map(objectiveLabel, tutorialText, mapNow);
 				newGame();
-				complier.setPointer(0);
+				// complier.setPointer(0);
+				complier = new Complier();
 				runable = false;
 				line = complier.getPointer();
 			}
@@ -579,14 +580,27 @@ public class Coder extends JPanel implements Runnable {
 						if (delayC >= 60) {
 							System.out.println(
 									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
-							line = complier.getPointer();
+							
+							if(lines.get(complier.getPointer()).equals("END"))
+							{
+								complier = new Complier();
+								runable = false;
+								
+							}
+							else{
+								line = complier.getPointer();
 							complier.Runable(player, lines);
+							
+							
 							// line++;
-							if (line == (lines.size())) {
+							if (line == (lines.size())) 
+							{
 								runable = false;
 							}
 							delayC = 0;
-						} else {
+							}
+						} 
+						else {
 							delayC += 10;
 						}
 					}
