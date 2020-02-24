@@ -50,6 +50,9 @@ public class Coder extends JPanel implements Runnable {
 	private int locationX = 110, locationY = 230;
 	// private int blockX = 50, blockY = 50;
 	private int padX = 15, padY = 45;
+	private float multipleFrameX = 15.0f;
+	private float multipleFrameY = 9.0f;
+	private float multipleFrameZ = 2.5f;
 
 	// Function
 	private Random random;
@@ -99,7 +102,7 @@ public class Coder extends JPanel implements Runnable {
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
 	public static boolean attacking, walking, firing;
-	public static int frame;
+	public static int frameA, frameB;
 
 	// Map
 	private String mapNow;
@@ -639,7 +642,6 @@ public class Coder extends JPanel implements Runnable {
 								effectBoomLcationY = fireball.getY();
 								fireball.disable();
 								attacking = false;
-								firing = false;
 								hitting = true;
 								effectBoom = 0;
 								soundMedia.playSoundSingle("media/hit.wav");
@@ -648,7 +650,6 @@ public class Coder extends JPanel implements Runnable {
 						if (attacking && !firing) {
 							fireball.walk();
 						}
-						firing = false;
 					}
 					delayB = 0;
 				} else {
@@ -680,15 +681,25 @@ public class Coder extends JPanel implements Runnable {
 					tutorialText.setVisible(false);
 				}
 			}
-			if (frame >= 6) {
-				frame = 0;
+			if (frameA > 4) {
+				frameA = 0;
 				walking = false;
 				player.update();
 			} else {
-				frame += 1;
+				frameA++;
+			}
+			if (frameB > 4) {
+				frameB = 0;
+				firing = false;
+				fireball.update();
+			} else {
+				frameB++;
 			}
 			if (!walking) {
-				frame = 0;
+				frameA = 0;
+			}
+			if (!firing) {
+				frameB = 0;
 			}
 			map.update();
 		}
@@ -793,9 +804,15 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '4') {
-						fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50);
-						fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
+						if (!firing) {
+							fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							fireball.draw(gr, 0, scale, locationX, locationY, padX, padY);
+						} else {
+							multipleFrameX = 18.0f; //19
+							fireball.draw(gr, 0, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
+									padY);
+						}
 						attacking = true;
 					}
 					if (map.getMap()[i][j] == 'D') {
@@ -810,7 +827,6 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 					if (map.getMap()[i][j] == '9') {
-						//
 						if (!walking) {
 							if (player.getMushroom().equals("chun-li")) {
 								player.draw(gr, direction + 12, locationX, locationY, padX, padY);
@@ -821,11 +837,9 @@ public class Coder extends JPanel implements Runnable {
 							}
 						} else {
 							int hero = 0;
-							float multipleFrameX = 15.0f;
-							float multipleFrameY = 9.0f;
-							float multipleFrameZ = 2.5f;
-							// w 124 = 124 / frame
-							// h 45 = 45 / frame
+							multipleFrameX = 15.0f;
+							// w 124 = 124 / frameA
+							// h 45 = 45 / frameA
 							if (player.getMushroomNumber() == 2) {
 								hero = direction + 12;
 							} else if (player.getMushroomNumber() == 1) {
@@ -834,17 +848,17 @@ public class Coder extends JPanel implements Runnable {
 								hero = direction;
 							}
 							if (player.getDirection().equals("left")) {
-								player.draw(gr, hero, (int) (locationX - (frame * multipleFrameX)), locationY, padX,
+								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY, padX,
 										padY);
 							} else if (player.getDirection().equals("right")) {
-								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameX)), locationY, padX,
+								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY, padX,
 										padY);
 							} else if (player.getDirection().equals("up")) {
-								player.draw(gr, hero, (int) (locationX - (frame * multipleFrameZ)),
-										locationY - (int) ((frame * multipleFrameY)), padX, padY);
+								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
+										locationY - (int) ((frameA * multipleFrameY)), padX, padY);
 							} else if (player.getDirection().equals("down")) {
-								player.draw(gr, hero, (int) (locationX + (frame * multipleFrameZ)),
-										locationY + (int) ((frame * multipleFrameY)), padX, padY);
+								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
+										locationY + (int) ((frameA * multipleFrameY)), padX, padY);
 							}
 						}
 					}

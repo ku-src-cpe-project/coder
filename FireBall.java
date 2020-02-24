@@ -9,7 +9,7 @@ class FireBall {
     private int[] tmpPosition = { 0, 0 };
     private int[] nextPosition = { 0, 0 };
     private Map map;
-    private String state;
+    private String state, stateTmp;
 
     public FireBall(Map map, int mapRow, int mapColumn, int x, int y) {
         this.images = new ImageIcon[6];
@@ -25,6 +25,7 @@ class FireBall {
         this.x = x;
         this.y = y;
         this.state = "live";
+        this.stateTmp = "live";
     }
 
     // public void draw(Graphics g, int dir) {
@@ -38,22 +39,28 @@ class FireBall {
     }
 
     public void walk() {
+        Coder.firing = true;
         this.tmpPosition[0] = this.selfPosition[0];
         this.tmpPosition[1] = this.selfPosition[1];
-        this.nextPosition[0] = tmpPosition[0];
-        this.nextPosition[1] = tmpPosition[1];
+        this.nextPosition[0] = this.selfPosition[0];
+        this.nextPosition[1] = this.selfPosition[1];
         if (collision()) {
-            this.selfPosition[1] += 1;
+            this.tmpPosition[1]++;
         } else {
             // System.out.println("*** Sysntax error ***");
-            this.state = "dead";
+            this.stateTmp = "dead";
         }
-        if (!this.state.equals("dead")) {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
-            this.map.setMap(this.selfPosition[0], this.selfPosition[1], '4');
+        if (!this.stateTmp.equals("dead")) {
         } else {
-            this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
         }
+    }
+
+    public void update() {
+        this.map.setMap(this.selfPosition[0], this.selfPosition[1], '0');
+        this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '4');
+        this.selfPosition[0] = this.tmpPosition[0];
+        this.selfPosition[1] = this.tmpPosition[1];
+        this.state = this.stateTmp;
     }
 
     public boolean collision() {

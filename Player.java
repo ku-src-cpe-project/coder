@@ -62,20 +62,20 @@ class Player {
         if (!Coder.walking && !this.state.equals("dead")) {
             this.direction = dir;
             Coder.walking = true;
-            Coder.frame = 0;
+            Coder.frameA = 0;
             if (!this.state.equals("dead")) {
                 this.tmpPosition[0] = this.selfPosition[0];
                 this.tmpPosition[1] = this.selfPosition[1];
-                this.nextPosition[0] = tmpPosition[0];
-                this.nextPosition[1] = tmpPosition[1];
+                this.nextPosition[0] = this.selfPosition[0];
+                this.nextPosition[1] = this.selfPosition[1];
                 if (dir.equals("left") && collision(dir)) {
-                    this.tmpPosition[1] -= 1;
+                    this.tmpPosition[1]--;
                 } else if (dir.equals("right") && collision(dir)) {
-                    this.tmpPosition[1] += 1;
+                    this.tmpPosition[1]++;
                 } else if (dir.equals("up") && collision(dir)) {
-                    this.tmpPosition[0] -= 1;
+                    this.tmpPosition[0]--;
                 } else if (dir.equals("down") && collision(dir)) {
-                    this.tmpPosition[0] += 1;
+                    this.tmpPosition[0]++;
                 } else {
                     System.out.println("*** Sysntax error ***");
                     if (checkNextStep(dir, '3')) {
@@ -109,22 +109,22 @@ class Player {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) != '0') {
                 bool = false;
             }
-            this.nextPosition[1] -= 1;
+            this.nextPosition[1]--;
         } else if (dir.equals("right")) {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) != '0') {
                 bool = false;
             }
-            this.nextPosition[1] += 1;
+            this.nextPosition[1]++;
         } else if (dir.equals("up")) {
             if (this.map.checkMap(this.selfPosition[0] - 1, this.selfPosition[1]) != '0') {
                 bool = false;
             }
-            this.nextPosition[0] -= 1;
+            this.nextPosition[0]--;
         } else if (dir.equals("down")) {
             if (this.map.checkMap(this.selfPosition[0] + 1, this.selfPosition[1]) != '0') {
                 bool = false;
             }
-            this.nextPosition[0] += 1;
+            this.nextPosition[0]++;
         }
         checkStep(dir);
         return bool;

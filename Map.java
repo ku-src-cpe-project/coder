@@ -35,7 +35,7 @@ class Map {
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1500000001".toCharArray();
+            this.map[2] = "1500000D01".toCharArray();
             this.map[3] = "1900000001".toCharArray();
             this.map[4] = "1000000001".toCharArray();
             this.map[5] = "1000000001".toCharArray();

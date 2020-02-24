@@ -169,7 +169,7 @@ class Complier {
     public void checkMethod(Player player, ArrayList<String> token) { // WHILE, (, CHECK, (, DOWN, ), ), {
         for (int i = 0; i < token.size(); i++) {
 
-            System.out.println(token);
+            // System.out.println(token);
             if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) // found else and
                                                                                                    // condition if ==
                                                                                                    // False
