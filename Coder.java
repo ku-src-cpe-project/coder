@@ -98,7 +98,7 @@ public class Coder extends JPanel implements Runnable {
 	// Update
 	private int direction, chooseStart;
 	private int delayA, delayB, delayMapEnd;
-	private int timing;
+	private int timing, frameCount = 4;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
 	public static boolean attacking, walking, firing;
@@ -117,6 +117,7 @@ public class Coder extends JPanel implements Runnable {
 	private ImageIcon[] imageBooms;
 	private ImageIcon[] imageStars;
 	private ImageIcon[] imageSmokes;
+	private ImageIcon[] imageQuestions;
 
 	// ========================================================
 	// Debug
@@ -158,7 +159,6 @@ public class Coder extends JPanel implements Runnable {
 		starting = true;
 		loading = false;
 		playing = false;
-		walking = false;
 		direction = 0;
 		delayA = 0;
 		delayB = 0;
@@ -182,6 +182,7 @@ public class Coder extends JPanel implements Runnable {
 
 		imageBooms = new ImageIcon[6];
 		imageSmokes = new ImageIcon[6];
+		imageQuestions = new ImageIcon[6];
 		imageStars = new ImageIcon[3];
 		imageBooms[0] = new ImageIcon("src/effect/boom/1.png");
 		imageBooms[1] = new ImageIcon("src/effect/boom/2.png");
@@ -195,6 +196,12 @@ public class Coder extends JPanel implements Runnable {
 		imageSmokes[3] = new ImageIcon("src/etc/smoke/4.png");
 		imageSmokes[4] = new ImageIcon("src/etc/smoke/5.png");
 		imageSmokes[5] = new ImageIcon("src/etc/smoke/6.png");
+		imageQuestions[0] = new ImageIcon("src/etc/question/1.png");
+		imageQuestions[1] = new ImageIcon("src/etc/question/2.png");
+		imageQuestions[2] = new ImageIcon("src/etc/question/3.png");
+		imageQuestions[3] = new ImageIcon("src/etc/question/4.png");
+		imageQuestions[4] = new ImageIcon("src/etc/question/5.png");
+		imageQuestions[5] = new ImageIcon("src/etc/question/6.png");
 		imageStars[0] = new ImageIcon("src/etc/star/1.png");
 		imageStars[1] = new ImageIcon("src/etc/star/2.png");
 		imageStars[2] = new ImageIcon("src/etc/star/3.png");
@@ -263,12 +270,12 @@ public class Coder extends JPanel implements Runnable {
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
-		add(print);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
+		// add(print);
 
 		// ========================================================
 		// Starting
@@ -288,20 +295,20 @@ public class Coder extends JPanel implements Runnable {
 				playing = false;
 			}
 		});
-		for (int i = 0; i < 5; i++) {
-			MapStore mapStore = new MapStore(this, i);
-			mapStores.add(mapStore);
-			mapStores.get(i).getMapStoreLabel().setVisible(false);
-		}
 
 		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
-		buttonLoad.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2) + 150, 416, 234);
+		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
 
 		add(buttonStart);
 		add(buttonLoad);
 		// ========================================================
 		// Loading
 		// ========================================================
+		for (int i = 0; i < 5; i++) {
+			MapStore mapStore = new MapStore(this, i);
+			mapStores.add(mapStore);
+			mapStores.get(i).getMapStoreLabel().setVisible(false);
+		}
 
 		// ========================================================
 		// Playing
@@ -330,7 +337,7 @@ public class Coder extends JPanel implements Runnable {
 				// textValue =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				// textValue = "while(check(down)){walk(down);}";
+				textValue = "while(check(down)){walk(right);};";
 
 				// if
 				// textValue =
@@ -407,7 +414,7 @@ public class Coder extends JPanel implements Runnable {
 		add(mapNumberLabel);
 		add(objectiveLabelForm);
 		add(objectiveLabel);
-		add(buttonRestart);
+		// add(buttonRestart);
 		add(buttonNext);
 		add(buttonClear);
 		add(buttonSubmit);
@@ -415,10 +422,10 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Shortcut Starting
 		// ========================================================
-		starting = false;
-		loading = false;
-		playing = true;
-		newGame();
+		// starting = false;
+		// loading = false;
+		// playing = true;
+		// newGame();
 	}
 
 	// ========================================================
@@ -448,6 +455,7 @@ public class Coder extends JPanel implements Runnable {
 		line = complier.getPointer();
 		runable = false;
 		firstMake = true;
+		walking = false;
 		attacking = false;
 		firing = false;
 		tutorialBackground.setVisible(false);
@@ -522,12 +530,12 @@ public class Coder extends JPanel implements Runnable {
 		} else if (playing) {
 			bg = new ImageIcon("src/background/playing.png");
 			buttonStart.setVisible(false);
-			buttonLoad.setVisible(false);
+			buttonLoad.setVisible(true);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
 			objectiveLabelForm.setVisible(true);
 			objectiveLabel.setVisible(true);
-			buttonRestart.setVisible(true);
+			buttonRestart.setVisible(false);
 			buttonNext.setVisible(true);
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
@@ -681,14 +689,14 @@ public class Coder extends JPanel implements Runnable {
 					tutorialText.setVisible(false);
 				}
 			}
-			if (frameA > 4) {
+			if (frameA > frameCount) {
 				frameA = 0;
 				walking = false;
 				player.update();
 			} else {
 				frameA++;
 			}
-			if (frameB > 4) {
+			if (frameB > frameCount) {
 				frameB = 0;
 				firing = false;
 				fireball.update();
@@ -743,27 +751,27 @@ public class Coder extends JPanel implements Runnable {
 							}
 						}
 					}
-					if (map.getMap()[i][j] == '8') {
-						if (firstMake) {
-							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							portal8s.add(portal);
+					if (map.getMap()[i][j] == '4') {
+						if (!firing) {
+							fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50);
+							fireball.draw(gr, 0, scale, locationX, locationY, padX, padY);
+						} else {
+							multipleFrameX = 18.0f; // 19
+							fireball.draw(gr, 0, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
+									padY);
 						}
-						for (int k = 0; k < portal8s.size(); k++) {
-							if (portal8s.get(k).getSelfRow() == i) {
-								portal8s.get(k).draw(gr, direction);
-							}
-						}
+						attacking = true;
 					}
-					if (map.getMap()[i][j] == '7') {
+					if (map.getMap()[i][j] == '5') {
 						if (firstMake) {
-							Portal portal = new Portal((j * scale) + locationX + (padX * i),
+							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
 									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							portal7s.add(portal);
+							mushroom5s.add(mushroom);
 						}
-						for (int k = 0; k < portal7s.size(); k++) {
-							if (portal7s.get(k).getSelfRow() == i) {
-								portal7s.get(k).draw(gr, direction + 6);
+						for (int k = 0; k < mushroom5s.size(); k++) {
+							if (mushroom5s.get(k).getSelfRow() == i) {
+								mushroom5s.get(k).draw(gr, direction);
 							}
 						}
 					}
@@ -779,50 +787,27 @@ public class Coder extends JPanel implements Runnable {
 							}
 						}
 					}
-					if (map.getMap()[i][j] == '5') {
+					if (map.getMap()[i][j] == '7') {
 						if (firstMake) {
-							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							Portal portal = new Portal((j * scale) + locationX + (padX * i),
 									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							mushroom5s.add(mushroom);
+							portal7s.add(portal);
 						}
-						for (int k = 0; k < mushroom5s.size(); k++) {
-							if (mushroom5s.get(k).getSelfRow() == i) {
-								mushroom5s.get(k).draw(gr, direction);
+						for (int k = 0; k < portal7s.size(); k++) {
+							if (portal7s.get(k).getSelfRow() == i) {
+								portal7s.get(k).draw(gr, direction + 6);
 							}
 						}
 					}
-					if (map.getMap()[i][j] == 'A') {
+					if (map.getMap()[i][j] == '8') {
 						if (firstMake) {
-							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							Portal portal = new Portal((j * scale) + locationX + (padX * i),
 									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							mushroomAs.add(mushroom);
+							portal8s.add(portal);
 						}
-						for (int k = 0; k < mushroomAs.size(); k++) {
-							if (mushroomAs.get(k).getSelfRow() == i) {
-								mushroomAs.get(k).draw(gr, direction + 6);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '4') {
-						if (!firing) {
-							fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
-							fireball.draw(gr, 0, scale, locationX, locationY, padX, padY);
-						} else {
-							multipleFrameX = 18.0f; //19
-							fireball.draw(gr, 0, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
-									padY);
-						}
-						attacking = true;
-					}
-					if (map.getMap()[i][j] == 'D') {
-						if (firstMake) {
-							Dummy dummy = new Dummy(map, scale, i, j);
-							dummys.add(dummy);
-						}
-						for (int k = 0; k < dummys.size(); k++) {
-							if (dummys.get(k).getSelfRow() == i) {
-								dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+						for (int k = 0; k < portal8s.size(); k++) {
+							if (portal8s.get(k).getSelfRow() == i) {
+								portal8s.get(k).draw(gr, direction);
 							}
 						}
 					}
@@ -861,6 +846,33 @@ public class Coder extends JPanel implements Runnable {
 										locationY + (int) ((frameA * multipleFrameY)), padX, padY);
 							}
 						}
+					}
+					if (map.getMap()[i][j] == 'A') {
+						if (firstMake) {
+							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+									(i * scale) + locationY - (padY * i) - 143 + 50, i);
+							mushroomAs.add(mushroom);
+						}
+						for (int k = 0; k < mushroomAs.size(); k++) {
+							if (mushroomAs.get(k).getSelfRow() == i) {
+								mushroomAs.get(k).draw(gr, direction + 6);
+							}
+						}
+					}
+					if (map.getMap()[i][j] == 'D') {
+						if (firstMake) {
+							Dummy dummy = new Dummy(map, scale, i, j);
+							dummys.add(dummy);
+						}
+						for (int k = 0; k < dummys.size(); k++) {
+							if (dummys.get(k).getSelfRow() == i) {
+								dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+							}
+						}
+					}
+					if (map.getMap()[i][j] == 'Q') {
+						gr.drawImage(imageQuestions[direction].getImage(), (j * scale) + locationX + (padX * i),
+								(i * scale) + locationY - (padY * i) - 143 + 50, null);
 					}
 				}
 			}

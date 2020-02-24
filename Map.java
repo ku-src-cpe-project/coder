@@ -87,13 +87,13 @@ class Map {
             setRow(7);
             tutorial.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1070903021".toCharArray();
-            this.map[2] = "10005000D1".toCharArray();
-            this.map[3] = "10A6000201".toCharArray();
-            this.map[4] = "10000000D1".toCharArray();
-            this.map[5] = "1A00000001".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1900Q00001".toCharArray();
+            this.map[4] = "1000000001".toCharArray();
+            this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            setSmoke(true);
+            setSmoke(false);
             setPuzzle(true);
             setCountDummy(2);
             // D

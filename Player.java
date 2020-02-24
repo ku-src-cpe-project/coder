@@ -78,11 +78,12 @@ class Player {
                     this.tmpPosition[0]++;
                 } else {
                     System.out.println("*** Sysntax error ***");
-                    if (checkNextStep(dir, '3')) {
+                    if (checkNextStep(dir, '3') || checkNextStep(dir, 'Q')) {
                         if (this.mushroom.equals("chun-li")) {
                             this.map.setMap(this.nextPosition[0], this.nextPosition[1], '0');
                         } else {
                             this.stateTmp = "dead";
+                            System.out.println(">>> DEAD");
                         }
                     }
                 }
