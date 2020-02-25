@@ -101,6 +101,7 @@ class Complier {
             } else if (!parses.get(i).equals("\n")) {
                 tmp = tmp.concat(tokens.get(i) + "");
             }
+            
         }
         this.lines.add("END");
         // System.out.println(this.lines);
@@ -306,13 +307,14 @@ class Complier {
                         if(this.getPosWhile().get(0) == 1000 )
                         {
                             this.foundwhile = false;
-                            System.out.println("++++++");
+                            this.getPosWhile().remove(0);
+                           
                         }
                         else if(this.getPosWhile().get(0) == 99999)
                         {
                             this.getPosWhile().remove(0);
                             this.getPosWhile().add(1000);
-                            System.out.println("------");
+                            
                         }
 
                         else if (this.getPosWhile().size() == 1) {

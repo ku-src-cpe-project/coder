@@ -41,7 +41,7 @@ class Map {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1900000001".toCharArray();
             this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1030000001".toCharArray();
+            this.map[3] = "1330000001".toCharArray();
             this.map[4] = "1000000001".toCharArray();
             this.map[5] = "1000000081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
@@ -163,11 +163,11 @@ class Map {
             setRow(7);
             tutorial.setText("Destroy all bomb. then you will see goal.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1800333331".toCharArray();
+            this.map[1] = "1900333331".toCharArray();
             this.map[2] = "1330033331".toCharArray();
             this.map[3] = "1333003331".toCharArray();
             this.map[4] = "1333300331".toCharArray();
-            this.map[5] = "1333330091".toCharArray();
+            this.map[5] = "1333330001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             // W(11){
             // IF(C(R)){
