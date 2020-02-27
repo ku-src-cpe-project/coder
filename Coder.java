@@ -347,7 +347,7 @@ public class Coder extends JPanel implements Runnable {
 				// textValue =
 				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
 				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				textValue = "while(check(down)){walk(right);};";
+				// textValue = "while(check(down)){walk(right);};";
 
 				// if
 				// textValue =
