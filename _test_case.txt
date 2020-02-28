@@ -45,3 +45,24 @@ while(2){
      }
 }
 *walk(down);walk(right);while(2){walk(right);walk(right);while(2){walk(left);while(1){walk(right);}}}
+
+
+
+
+
+
+if(check(right, bomb)){
+
+
+}
+
+
+WHILE(
+	SEARCH()
+	if(check(right) = 'bomb')}
+		walk R
+	}
+
+
+
+

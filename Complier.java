@@ -18,15 +18,17 @@ import java.util.ArrayList;
 
 class Complier {
     private ArrayList<String> parses, tokens, lines, controller;
-    private ArrayList<Integer> positionWhile;
-    private int pointer;
+    private ArrayList<Integer> positionWhile,forloop;
+    private int pointer,markfor;
     private int pointerWhile, count_if, position_else;
     private int count, countState, count_braketOP, count_braketCL, find_braketOP_else, find_braketCL_else,
-            count_braketCL_else, find_braketCL_while, count_braketCL_while;
+            count_braketCL_else, find_braketCL_while, count_braketCL_while,
+            count_braket_forOut,count_braket_forIn,count_braket_for,count_braket_forOut_real,count_braket_forIn_real;
     private ArrayList<String> process, find_braketOP, find_braketCL;
-    private boolean expression, _if, conditionofif, foundif, foundelse, conditionwhile, foundwhile, whilecheck;
+    private boolean expression, _if, conditionofif, foundif, foundelse, conditionwhile, foundwhile, whilecheck,foundfor;
     private String state, checkif, statusif, statuselse, check_braket, check_braket_else, str, m, n, check_else,
-            check_if_out, check_braket2, check_token, check_braket_while_out, check_braket_while_in;
+            check_if_out, check_braket2, check_token, check_braket_while_out, check_braket_while_in
+            ,check_braket_forOut,check_braket_forIn,check_braket_for;
 
     public Complier() {
         this.process = new ArrayList<String>();
@@ -35,6 +37,7 @@ class Complier {
         this.controller.add("x");
         this.find_braketOP = new ArrayList<String>();
         this.find_braketCL = new ArrayList<String>();
+        this.forloop= new ArrayList<Integer>();
         this.pointer = 0;
         this.count_braketOP = 0;
         this.count_if = 0;
@@ -43,6 +46,8 @@ class Complier {
         this.find_braketOP_else = 0;
         this.find_braketCL_else = 0;
         this.position_else = 0;
+        this.count_braket_forIn = 0;
+        this.count_braket_forOut = 0;
         this.find_braketCL_while = 0;
         this.count_braketCL_while = 0;
         this.expression = true;
@@ -50,6 +55,7 @@ class Complier {
         this.conditionofif = true;
         this.foundif = false;
         this.foundelse = false;
+        this.foundfor = false;
         this.check_if_out = "out";
         this.check_token = "x";
         this.check_braket_while_in = "null";
@@ -78,7 +84,16 @@ class Complier {
                 this.lines.add(tmp);
                 tmp = "";
                 i += 7;
-            } else if (tokens.get(i).equals("if")) { // if(check(right)){
+            } else if (tokens.get(i).equals("for")) { // for(number){
+                tmp = tmp.concat(tokens.get(i) + ""); // for
+                tmp = tmp.concat(tokens.get(i + 1) + ""); // (
+                tmp = tmp.concat(tokens.get(i + 2) + ""); // number
+                tmp = tmp.concat(tokens.get(i + 3) + ""); // )
+                tmp = tmp.concat(tokens.get(i + 4) + ""); // {
+                this.lines.add(tmp);
+                tmp = "";
+                i += 4;
+            }else if (tokens.get(i).equals("if")) { // if(check(right)){
                 tmp = tmp.concat(tokens.get(i) + ""); // if
                 tmp = tmp.concat(tokens.get(i + 1) + ""); // (
                 tmp = tmp.concat(tokens.get(i + 2) + ""); // check
@@ -98,9 +113,12 @@ class Complier {
                 i += 1;
             } else if (tokens.get(i).equals("}")) {
                 this.lines.add("}");
-            } else if (!parses.get(i).equals("\n")) {
+            }  
+            else if (!parses.get(i).equals("\n")) {
                 tmp = tmp.concat(tokens.get(i) + "");
             }
+            
+            
         }
         this.lines.add("END");
         // System.out.println(this.lines);
@@ -149,6 +167,7 @@ class Complier {
                 }
                 // System.out.println(tmp);
             }
+            
         }
         // System.out.println("" + this.tokens);
         return this.tokens;
@@ -170,6 +189,10 @@ class Complier {
         for (int i = 0; i < token.size(); i++) {
 
             // System.out.println(token);
+            if((this.foundelse == true) && this.position_else == 1 && this.check_if_out.equals("out"))
+            {
+                 this.position_else = 0;
+            }
             if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) // found else and
                                                                                                    // condition if ==
                                                                                                    // False
@@ -280,6 +303,91 @@ class Complier {
 
             }
             // this.foundif = false;
+            if(this.foundfor) //function when found for
+            {
+                if(this.forloop.size() == 2) //check for out or in (out)
+                {
+                    this.count_braket_for = this.count_braket_forOut;
+                    if (token.get(i).equals("{")) 
+                    {
+                        
+                        this.count_braket_forOut += 1;
+                    }
+                    if (token.get(i).equals("}")) 
+                    {
+                        this.check_braket_for = "for" + (this.count_braket_for-1) + "{";
+                        System.out.println(this.check_braket_for);
+                        System.out.println(this.check_braket_forOut);
+                        if (this.check_braket_forOut.equals(this.check_braket_for)) 
+                        {
+                            System.out.println(">>>>>>>>>>");
+                           
+                           if(this.forloop.get(1) > 1 )
+                           {
+                               this.forloop.set(1,this.forloop.get(1)-1);
+                               this.count_braket_forOut = this.count_braket_forOut_real+1;
+                               System.out.println(this.forloop);
+                               setPointer(this.forloop.get(0));
+                           }
+                           else
+                           {
+                               this.foundfor = false;
+                               this.forloop.remove(1);
+                               this.forloop.remove(0);
+                               System.out.println(this.forloop);
+                           }
+                        } 
+                        else 
+                        {
+                            this.count_braket_forOut -= 1;
+                        }
+                    }
+                }
+                
+                if(this.forloop.size() == 4)//check for out or in (in)
+                {
+                    this.count_braket_for = this.count_braket_forIn;
+                    if (token.get(i).equals("{")) 
+                    {
+                        this.count_braket_forIn += 1;
+                    }
+                    if (token.get(i).equals("}")) 
+                    {
+                        this.check_braket_for = "for" + (this.count_braket_for-1) + "{";
+                        System.out.println( this.check_braket_for);
+                        System.out.println(this.check_braket_forIn);
+                        if (this.check_braket_forIn.equals(this.check_braket_for))  //check braket for in
+                        {
+                            System.out.println("++++++++++");
+                           if(this.forloop.get(3) > 1) //
+                           {
+                               this.forloop.set(3,this.forloop.get(3)-1);
+                               this.count_braket_forIn = this.count_braket_forIn_real+1;
+                               setPointer(this.forloop.get(2));
+                               System.out.println(this.forloop);
+                           }
+                           else 
+                           {
+                               this.foundfor = true;
+                               this.forloop.remove(3);
+                               this.forloop.remove(2);
+                               System.out.println(this.forloop);
+                              
+                               
+                           }
+
+                        } 
+                        
+                        else 
+                        {
+                            this.count_braket_forIn -= 1;
+                        }
+                    }
+                }
+                
+            }
+
+            
             if (this.foundwhile) { // in case found while
                 // setPointer(getPosWhile().get(1));
                 // break;
@@ -306,10 +414,11 @@ class Complier {
                         if (this.getPosWhile().get(0) == 1000) {
                             this.foundwhile = false;
                             System.out.println("++++++");
+                            this.getPosWhile().remove(0);
                         } else if (this.getPosWhile().get(0) == 99999) {
                             this.getPosWhile().remove(0);
                             this.getPosWhile().add(1000);
-                            System.out.println("------");
+                            
                         }
 
                         else if (this.getPosWhile().size() == 1) {
@@ -389,9 +498,9 @@ class Complier {
                         this.conditionwhile = true;
                         // this.find_braketCL_while += 1;
                         // this.state = "{" + this.find_braketCL_while + "w";
-                        System.out.println("set-Exp-True");
+                        // System.out.println("set-Exp-True");
                     } else { // condition in while == false
-                        System.out.println(">>>>>>>> FALSE");
+                        // System.out.println(">>>>>>>> FALSE");
                         // System.out.println(">>>>>>>>>"+getPointer());
                         // System.out.println(this.getPosWhile());
                         if (this.getPosWhile().isEmpty()) {
@@ -423,6 +532,36 @@ class Complier {
                     }
 
                 }
+            }
+            if(token.get(i).equals("for")) //function for find for
+            {   this.foundfor = true;
+                
+                if(this.forloop.isEmpty())
+                {
+                    this.forloop.add((this.pointer));
+                    this.forloop.add(Integer.parseInt(token.get(i+2)));
+                    
+                    this.count_braket_forOut = 0;
+                    this.count_braket_forOut_real = this.count_braket_forOut;
+                    this.check_braket_forOut = "for"+this.count_braket_forOut+"{";
+                }
+                else
+                {
+                    this.forloop.add((this.pointer));
+                    this.forloop.add(Integer.parseInt(token.get(i+2)));
+
+                     this.count_braket_forIn = 0;
+                    this.count_braket_forIn_real = this.count_braket_forIn;
+                    this.check_braket_forIn = "for"+this.count_braket_forIn_real+"{";
+                  
+
+                }
+                
+                System.out.println(this.forloop);
+              
+                
+                
+               
             }
             if (token.get(i).equals("if")) { // function for find if
                 this.foundif = true;
@@ -511,11 +650,11 @@ class Complier {
         this.pointer = pointer;
     }
 
-    public int getPointerWhile() {
+    public int getPointerFor() {
         return this.pointerWhile;
     }
 
-    public void setPointerWhile(int pointer) {
+    public void setPointerFor(int pointer) {
         this.pointerWhile = pointer;
     }
 
