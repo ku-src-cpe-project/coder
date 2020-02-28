@@ -8,7 +8,7 @@ import java.awt.event.*;
 // import java.util.*;
 import java.util.ArrayList;
 // import java.util.StringTokenizer;
-// import java.io.*;
+import java.io.*;
 
 // import javax.media.sampled.*;
 import java.awt.Color;
@@ -47,8 +47,8 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	// Variable
 	// ========================================================
-	private int locationX = 110, locationY = 230;
-	// private int blockX = 50, blockY = 50;
+	private int locationX = 110, locationY = 260;
+	private int blockX = 50, blockY = 50;
 	private int padX = 15, padY = 45;
 	private float multipleFrameX = 15.0f;
 	private float multipleFrameY = 9.0f;
@@ -82,8 +82,10 @@ public class Coder extends JPanel implements Runnable {
 
 	// Button
 	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad;
-	private int buttonLocationX = 280, buttonLocationY = 0;
-	private int buttonSizeX = 182, buttonSizeY = 103;
+	private int buttonLocationX = 250, buttonLocationY = 8;
+	private int buttonSizeX = 250, buttonSizeY = 83;
+	private int buttonStartSizeX = 400, buttonStartSizeY = 133;
+	private int buttonSubmitSizeX = 120, buttonSubmitSizeY = 120;
 
 	// Store
 	private ArrayList<MapStore> mapStores;
@@ -108,14 +110,16 @@ public class Coder extends JPanel implements Runnable {
 
 	// Map
 	private String mapNow;
-	private JLabel mapNumberLabel, objectiveLabel, objectiveLabelForm;
+	private JLabel mapNumberLabel;
 	private JLabel tutorialBackground, tutorialText;
+	private JTextArea objectiveLabel;
 	private boolean mapStateEnd = false;
 	private boolean mapStateFirst = true;
 	public static int mapNumber;
 	public static String mapNummberSave;
 
 	// Image
+	private int starSizeX = 224, starSizeY = 224;
 	private ImageIcon[] imageBooms;
 	private ImageIcon[] imageStars;
 	private ImageIcon[] imageSmokes;
@@ -166,18 +170,17 @@ public class Coder extends JPanel implements Runnable {
 		delayB = 0;
 
 		input = new JTextArea("");
-		input.setBackground(new Color(70, 220, 90));
+		// input.setBackground(new Color(70, 220, 90));
 		input.setFont(f1);
 		input.setLineWrap(true);
 		mapNumberLabel = new JLabel(mapNummberSave);
 		mapNumberLabel.setFont(new Font("Serif", Font.PLAIN, 75));
 		mapNumberLabel.setForeground(Color.BLACK);
-		objectiveLabelForm = new JLabel("Hint: ");
-		objectiveLabelForm.setBackground(new Color(70, 220, 90));
-		objectiveLabelForm.setFont(f1);
-		objectiveLabel = new JLabel("");
+		objectiveLabel = new JTextArea("");
 		objectiveLabel.setBackground(new Color(70, 220, 90));
 		objectiveLabel.setFont(f1);
+		objectiveLabel.setEditable(false);
+		objectiveLabel.setLineWrap(true);
 		tutorialText = new JLabel("");
 		tutorialText.setBackground(new Color(70, 220, 90));
 		tutorialText.setFont(f1);
@@ -306,11 +309,13 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 
-		buttonStart.setBounds((screenx / 2) - (416 / 2), (screeny / 2) - (234 / 2), 416, 234);
-		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonStart.setBounds((screenx / 2) - (buttonStartSizeX / 2), (screeny / 2) - (buttonStartSizeY / 2) + 200,
+				buttonStartSizeX, buttonStartSizeY);
+		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 
 		add(buttonStart);
 		add(buttonLoad);
+
 		// ========================================================
 		// Loading
 		// ========================================================
@@ -407,24 +412,24 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 
-		buttonSubmit.setBounds(buttonLocationX, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonClear.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonNext.setBounds(buttonLocationX + buttonSizeX * 3, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonSubmit.setBounds(screenx - buttonSubmitSizeX - 10, 85, buttonSubmitSizeX, buttonSubmitSizeY);
+		buttonClear.setBounds(buttonLocationX + buttonSizeX * 0, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		tutorialText.setBounds(100, -200, 1066, 600);
 		tutorialBackground.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
-		input.setBounds(11, 10, 195, 332);
-		mapNumberLabel.setBounds(1010, 10, 150, 75);
-		objectiveLabelForm.setBounds(250, 95, 70, 75);
-		objectiveLabel.setBounds(300, 95, 770, 75);
+		input.setBounds(15, 12, 207, 332);
+		mapNumberLabel.setBounds(230, 110, 120, 120);
+		mapNumberLabel.setHorizontalAlignment(JLabel.CENTER);
+		objectiveLabel.setBounds(375, 105, 275, 135);
+		objectiveLabel.setOpaque(false);
 
 		add(tutorialText);
 		add(tutorialBackground);
 		add(input);
 		add(mapNumberLabel);
-		add(objectiveLabelForm);
 		add(objectiveLabel);
-		// add(buttonRestart);
+		add(buttonRestart);
 		add(buttonNext);
 		add(buttonClear);
 		add(buttonSubmit);
@@ -516,7 +521,6 @@ public class Coder extends JPanel implements Runnable {
 			tutorialText.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
-			objectiveLabelForm.setVisible(false);
 			objectiveLabel.setVisible(false);
 			buttonRestart.setVisible(false);
 			buttonNext.setVisible(false);
@@ -530,7 +534,6 @@ public class Coder extends JPanel implements Runnable {
 			tutorialText.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
-			objectiveLabelForm.setVisible(false);
 			objectiveLabel.setVisible(false);
 			buttonRestart.setVisible(false);
 			buttonNext.setVisible(false);
@@ -545,7 +548,6 @@ public class Coder extends JPanel implements Runnable {
 			buttonLoad.setVisible(true);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
-			objectiveLabelForm.setVisible(true);
 			objectiveLabel.setVisible(true);
 			buttonRestart.setVisible(false);
 			buttonNext.setVisible(true);
@@ -555,7 +557,7 @@ public class Coder extends JPanel implements Runnable {
 				mapStores.get(i).getMapStoreLabel().setVisible(false);
 			}
 			if (mapStateEnd) {
-				if (delayMapEnd >= 1) {
+				if (delayMapEnd >= 40) {
 					delayMapEnd = 0;
 					mapStateEnd = false;
 					mapStateFirst = false;
@@ -660,7 +662,7 @@ public class Coder extends JPanel implements Runnable {
 									}
 								}
 								effectBoomLcationX = fireball.getX();
-								effectBoomLcationY = fireball.getY();
+								effectBoomLcationY = fireball.getY()-50;
 								fireball.disable();
 								attacking = false;
 								hitting = true;
@@ -688,11 +690,11 @@ public class Coder extends JPanel implements Runnable {
 					effectBoom++;
 				}
 				if (timing < 3) {
-					chooseStart = 0;
+					chooseStart = 2;
 				} else if (timing < 6) {
 					chooseStart = 1;
 				} else {
-					chooseStart = 2;
+					chooseStart = 0;
 				}
 				if (map.getTutorial()) {
 					tutorialBackground.setVisible(true);
@@ -742,8 +744,16 @@ public class Coder extends JPanel implements Runnable {
 			for (int i = 0; i < map.getRow(); i++) {
 				for (int j = 0; j <= map.getColumn(); j++) {
 					if (map.getMap()[i][j] == '0') {
+						// gr.setColor(Color.WHITE);
+						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+						// (padY * i), blockX,
+						// blockY);
 					}
 					if (map.getMap()[i][j] == '1') {
+						// gr.setColor(Color.RED);
+						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+						// (padY * i), blockX,
+						// blockY);
 					}
 					if (map.getMap()[i][j] == '2') {
 						Enemy enemy = new Enemy(map, scale, i, j);
@@ -768,10 +778,10 @@ public class Coder extends JPanel implements Runnable {
 						if (!firing) {
 							fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
 									(i * scale) + locationY - (padY * i) - 143 + 50);
-							fireball.draw(gr, 0, scale, locationX, locationY, padX, padY);
+							fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
 						} else {
 							multipleFrameX = 18.0f; // 19
-							fireball.draw(gr, 0, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
+							fireball.draw(gr, direction, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
 									padY);
 						}
 						attacking = true;
@@ -915,7 +925,7 @@ public class Coder extends JPanel implements Runnable {
 				gr.drawImage(imageSmokes[direction].getImage(), 230, 150, null);
 			}
 			if (mapStateEnd) {
-				gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2),
+				gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (starSizeX / 2), (screeny / 2) - (starSizeY / 2),
 						null);
 			}
 			firstMake = false;

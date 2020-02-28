@@ -27,7 +27,7 @@ class Map {
     // A=mush.Chun 5=mush.Ken
     // D=dummy
 
-    public Map(JLabel tutorial, JLabel tutorialText, String mapNow) {
+    public Map(JTextArea tutorial, JLabel tutorialText, String mapNow) {
         this.mapNow = mapNow;
         System.out.println("> Map Create");
         if (mapNow.equals("0000")) { // walk(dire)
@@ -35,10 +35,10 @@ class Map {
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1500000D01".toCharArray();
+            this.map[2] = "1500D00001".toCharArray();
             this.map[3] = "1900000001".toCharArray();
             this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[5] = "1235678AD1".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
             setTutorialText("0000\nwalk(direct)");
