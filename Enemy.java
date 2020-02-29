@@ -110,4 +110,12 @@ class Enemy {
         this.selfPosition[0] = -99;
         this.state = "dead";
     }
+
+    public int getSelfRow() {
+        return this.selfPosition[0];
+    }
+
+    public int getSelfColumn() {
+        return this.selfPosition[1];
+    }
 }

@@ -52,4 +52,8 @@ class Treasure {
     public int getSelfRow() {
         return this.selfPosition[0];
     }
+
+    public int getSelfColumn() {
+        return this.selfPosition[1];
+    }
 }

@@ -3,9 +3,9 @@ import javax.swing.ImageIcon;
 
 class Portal {
     private ImageIcon[] images;
-    private int x, y, selfRow;
+    private int x, y, selfRow, selfColumn;
 
-    public Portal(int x, int y, int selfRow) {
+    public Portal(int x, int y, int mapRow, int mapColumn) {
         this.images = new ImageIcon[18];
         this.images[0] = new ImageIcon("src/portal/a/1.png");
         this.images[1] = new ImageIcon("src/portal/a/2.png");
@@ -29,7 +29,8 @@ class Portal {
         this.images[17] = new ImageIcon("src/portal/c/6.png");
         this.x = x;
         this.y = y;
-        this.selfRow = selfRow;
+        this.selfRow = mapRow;
+        this.selfColumn = mapColumn;
     }
 
     public void draw(Graphics g, int dir) {
@@ -38,5 +39,9 @@ class Portal {
 
     public int getSelfRow() {
         return this.selfRow;
+    }
+
+    public int getSelfColumn() {
+        return this.selfColumn;
     }
 }

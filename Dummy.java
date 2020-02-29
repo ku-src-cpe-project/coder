@@ -3,7 +3,7 @@ import javax.swing.ImageIcon;
 
 class Dummy {
     private ImageIcon[] images;
-    private int scale, selfRow;
+    private int scale;
     public int[] selfPosition = { 0, 0 };
     private Map map;
 
@@ -19,7 +19,6 @@ class Dummy {
         this.scale = scale;
         this.selfPosition[0] = mapRow;
         this.selfPosition[1] = mapColumn;
-        this.selfRow = mapRow;
     }
 
     public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
@@ -56,6 +55,10 @@ class Dummy {
     }
 
     public int getSelfRow(){
-        return this.selfRow;
+        return this.selfPosition[0];
+    }
+
+    public int getSelfColumn() {
+        return this.selfPosition[1];
     }
 }
