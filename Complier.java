@@ -608,6 +608,11 @@ class Complier {
                     }
                 }
             } else if (token.get(i).equals("else")) { // function for find else
+
+                if(this.foundif == false)
+                {
+                    System.out.println("Error");
+                }
                 if (token.get(i + 1).equals("{")) {
                     // this.state = "else";
                     this.foundelse = true;
