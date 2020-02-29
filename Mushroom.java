@@ -3,10 +3,10 @@ import javax.swing.ImageIcon;
 
 class Mushroom {
     private ImageIcon[] images;
-    private int x, y, selfRow;
+    private int x, y, selfRow, selfColumn;
     private String mushroom;
 
-    public Mushroom(int x, int y, int selfRow) {
+    public Mushroom(int x, int y, int mapRow, int mapColumn) {
         this.images = new ImageIcon[12];
         this.images[0] = new ImageIcon("src/mushroom/a/1.png");
         this.images[1] = new ImageIcon("src/mushroom/a/2.png");
@@ -23,7 +23,8 @@ class Mushroom {
         this.images[11] = new ImageIcon("src/mushroom/b/6.png");
         this.x = x;
         this.y = y;
-        this.selfRow = selfRow;
+        this.selfRow = mapRow;
+        this.selfColumn = mapColumn;
     }
 
     public void draw(Graphics g, int dir) {
@@ -36,5 +37,9 @@ class Mushroom {
 
     public int getSelfRow() {
         return this.selfRow;
+    }
+
+    public int getSelfColumn() {
+        return this.selfColumn;
     }
 }

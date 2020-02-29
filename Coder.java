@@ -58,7 +58,7 @@ public class Coder extends JPanel implements Runnable {
 	private Random random;
 
 	// Object
-	private Map map;
+	private Map map, mapTmp;
 	private MapStore mapStore;
 	private Player player;
 	private Complier complier;
@@ -78,7 +78,7 @@ public class Coder extends JPanel implements Runnable {
 	private int line;
 	private ArrayList<String> parses, tokens;
 	public static ArrayList<String> lines;
-	public static boolean runable;
+	public static boolean runable, processing;
 
 	// Button
 	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad;
@@ -89,6 +89,8 @@ public class Coder extends JPanel implements Runnable {
 
 	// Store
 	private ArrayList<MapStore> mapStores;
+	private ArrayList<Path> paths;
+	private ArrayList<Wall> walls;
 	private ArrayList<Dummy> dummys;
 	private ArrayList<Bomb> bombs;
 	private ArrayList<Portal> portal6s;
@@ -96,6 +98,7 @@ public class Coder extends JPanel implements Runnable {
 	private ArrayList<Portal> portal8s;
 	private ArrayList<Mushroom> mushroom5s;
 	private ArrayList<Mushroom> mushroomAs;
+	private ArrayList<Question> questions;
 	public static ArrayList<Treasure> treasures;
 	public static ArrayList<Enemy> enemys;
 
@@ -195,18 +198,6 @@ public class Coder extends JPanel implements Runnable {
 		imageBooms[3] = new ImageIcon("src/effect/boom/4.png");
 		imageBooms[4] = new ImageIcon("src/effect/boom/5.png");
 		imageBooms[5] = new ImageIcon("src/effect/boom/6.png");
-		imageSmokes[0] = new ImageIcon("src/etc/smoke/1.png");
-		imageSmokes[1] = new ImageIcon("src/etc/smoke/2.png");
-		imageSmokes[2] = new ImageIcon("src/etc/smoke/3.png");
-		imageSmokes[3] = new ImageIcon("src/etc/smoke/4.png");
-		imageSmokes[4] = new ImageIcon("src/etc/smoke/5.png");
-		imageSmokes[5] = new ImageIcon("src/etc/smoke/6.png");
-		imageQuestions[0] = new ImageIcon("src/etc/question/1.png");
-		imageQuestions[1] = new ImageIcon("src/etc/question/2.png");
-		imageQuestions[2] = new ImageIcon("src/etc/question/3.png");
-		imageQuestions[3] = new ImageIcon("src/etc/question/4.png");
-		imageQuestions[4] = new ImageIcon("src/etc/question/5.png");
-		imageQuestions[5] = new ImageIcon("src/etc/question/6.png");
 		imageStars[0] = new ImageIcon("src/etc/star/1.png");
 		imageStars[1] = new ImageIcon("src/etc/star/2.png");
 		imageStars[2] = new ImageIcon("src/etc/star/3.png");
@@ -309,13 +300,6 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 
-		buttonStart.setBounds((screenx / 2) - (buttonStartSizeX / 2), (screeny / 2) - (buttonStartSizeY / 2) + 200,
-				buttonStartSizeX, buttonStartSizeY);
-		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
-
-		add(buttonStart);
-		add(buttonLoad);
-
 		// ========================================================
 		// Loading
 		// ========================================================
@@ -363,7 +347,6 @@ public class Coder extends JPanel implements Runnable {
 				// else
 				// textValue = "else{walk(down);}";
 
-				map.setSmoke(false);
 				textValue = textValue.replace(" ", "");
 				textValue = textValue.replace("\n", "");
 				textValue = textValue.replace("\t", "");
@@ -371,6 +354,7 @@ public class Coder extends JPanel implements Runnable {
 				tokens = complier.parseToTokens(parses);
 				lines = complier.tokenToLines(tokens);
 				runable = true;
+				processing = true;
 			}
 		});
 		buttonClear.addMouseListener(new MouseAdapter() {
@@ -412,20 +396,25 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 
+		buttonStart.setBounds((screenx / 2) - (buttonStartSizeX / 2), (screeny / 2) - (buttonStartSizeY / 2) + 200,
+				buttonStartSizeX, buttonStartSizeY);
+		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonSubmit.setBounds(screenx - buttonSubmitSizeX - 10, 85, buttonSubmitSizeX, buttonSubmitSizeY);
 		buttonClear.setBounds(buttonLocationX + buttonSizeX * 0, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
-		tutorialText.setBounds(100, -200, 1066, 600);
-		tutorialBackground.setBounds((screenx / 2) - (1066 / 2), (screeny / 2) - (600 / 2), 1066, 600);
-		input.setBounds(15, 12, 207, 332);
-		mapNumberLabel.setBounds(230, 110, 120, 120);
+		tutorialText.setBounds(100, -200, screenx, screeny);
+		tutorialBackground.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx, screeny);
+		input.setBounds(18, 12, 207, 332);
+		mapNumberLabel.setBounds(235, 110, 120, 120);
 		mapNumberLabel.setHorizontalAlignment(JLabel.CENTER);
-		objectiveLabel.setBounds(375, 105, 275, 135);
+		objectiveLabel.setBounds(380, 105, 275, 135);
 		objectiveLabel.setOpaque(false);
 
 		add(tutorialText);
 		add(tutorialBackground);
+		add(buttonStart);
+		add(buttonLoad);
 		add(input);
 		add(mapNumberLabel);
 		add(objectiveLabel);
@@ -437,10 +426,10 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Shortcut Starting
 		// ========================================================
-		// starting = false;
-		// loading = false;
-		// playing = true;
-		// newGame();
+		starting = false;
+		loading = false;
+		playing = true;
+		newGame();
 	}
 
 	// ========================================================
@@ -456,9 +445,12 @@ public class Coder extends JPanel implements Runnable {
 		// mapNumber = 3;
 		setPreferredSize(new Dimension(screenx, screeny));
 		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
+		mapTmp = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
 		mapNumberLabel.setText(mapNumber + "");
 		map.printMap();
 		player = new Player(map, scale);
+		paths = new ArrayList<Path>();
+		walls = new ArrayList<Wall>();
 		enemys = new ArrayList<Enemy>();
 		dummys = new ArrayList<Dummy>();
 		bombs = new ArrayList<Bomb>();
@@ -468,16 +460,15 @@ public class Coder extends JPanel implements Runnable {
 		mushroom5s = new ArrayList<Mushroom>();
 		mushroomAs = new ArrayList<Mushroom>();
 		treasures = new ArrayList<Treasure>();
+		questions = new ArrayList<Question>();
 		line = complier.getPointer();
 		runable = false;
+		processing = false;
 		firstMake = true;
 		walking = false;
 		attacking = false;
 		firing = false;
 		creating = false;
-		tutorialBackground.setVisible(false);
-		tutorialText.setVisible(false);
-		map.setTutorial(false);
 	}
 
 	// ========================================================
@@ -507,6 +498,236 @@ public class Coder extends JPanel implements Runnable {
 		mapName = tmp.substring(tmp.length() - 4, tmp.length());
 		mapNow = mapName;
 		return mapName;
+	}
+
+	public void makePath(int i, int j) {
+		Path path = new Path((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i) - 143 + 50, i,
+				j);
+		paths.add(path);
+	}
+
+	// ========================================================
+	// Create Object Map
+	// ========================================================
+	public void makeObject() {
+		for (int i = 0; i < map.getRow(); i++) {
+			for (int j = 0; j <= map.getColumn(); j++) {
+				if (map.getMap()[i][j] == '0') {
+				} else if (map.getMap()[i][j] == '1') {
+				} else if (map.getMap()[i][j] == '2') {
+					Enemy enemy = new Enemy(map, scale, i, j);
+					enemys.add(enemy);
+				} else if (map.getMap()[i][j] == '3') {
+					Bomb bomb = new Bomb((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					bombs.add(bomb);
+				} else if (map.getMap()[i][j] == '4') {
+				} else if (map.getMap()[i][j] == '5') {
+					Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					mushroom5s.add(mushroom);
+				} else if (map.getMap()[i][j] == '6') {
+					Portal portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					portal6s.add(portal);
+				} else if (map.getMap()[i][j] == '7') {
+					Portal portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					portal7s.add(portal);
+				} else if (map.getMap()[i][j] == '8') {
+					Portal portal = new Portal((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					portal8s.add(portal);
+				} else if (map.getMap()[i][j] == '9') {
+				} else if (map.getMap()[i][j] == 'A') {
+					Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					mushroomAs.add(mushroom);
+				} else if (map.getMap()[i][j] == 'D') {
+					Dummy dummy = new Dummy(map, scale, i, j);
+					dummys.add(dummy);
+				} else if (map.getMap()[i][j] == 'Q') {
+					Question question = new Question((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					questions.add(question);
+				} else if (map.getMap()[i][j] == 'T') {
+				} else if (map.getMap()[i][j] == 'W') {
+					Wall wall = new Wall((j * scale) + locationX + (padX * i),
+							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
+					walls.add(wall);
+				}
+				if (mapTmp.getMap()[i][j] != '1') {
+					makePath(i, j);
+					mapTmp.setMap(i, j, '0');
+				}
+			}
+		}
+	}
+
+	// ========================================================
+	// Draw Path Map
+	// ========================================================
+	public void drawPath(Graphics gr) {
+		for (int i = 0; i < mapTmp.getRow(); i++) {
+			for (int j = 0; j <= mapTmp.getColumn(); j++) {
+				if (mapTmp.getMap()[i][j] == '0') {
+					for (int k = 0; k < paths.size(); k++) {
+						if (paths.get(k).getSelfRow() == i && paths.get(k).getSelfColumn() == j) {
+							paths.get(k).draw(gr, 0);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// ========================================================
+	// Draw Map
+	// ========================================================
+	public void drawMap(Graphics gr) {
+		for (int i = 0; i < map.getRow(); i++) {
+			for (int j = 0; j <= map.getColumn(); j++) {
+				if (map.getMap()[i][j] == '0') {
+					// gr.setColor(Color.WHITE);
+					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+					// (padY * i), blockX,
+					// blockY);
+				} else if (map.getMap()[i][j] == '1') {
+					// gr.setColor(Color.RED);
+					// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
+					// (padY * i), blockX,
+					// blockY);
+				} else if (map.getMap()[i][j] == '2') {
+					for (int k = 0; k < enemys.size(); k++) {
+						if (enemys.get(k).getSelfRow() == i && enemys.get(k).getSelfColumn() == j) {
+							enemys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+						}
+					}
+				} else if (map.getMap()[i][j] == '3') {
+					for (int k = 0; k < bombs.size(); k++) {
+						if (bombs.get(k).getSelfRow() == i && bombs.get(k).getSelfColumn() == j) {
+							bombs.get(k).draw(gr, direction);
+						}
+					}
+				} else if (map.getMap()[i][j] == '4') {
+					if (!firing) {
+						fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
+								(i * scale) + locationY - (padY * i) - 143 + 50);
+						fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
+					} else {
+						multipleFrameX = 18.0f; // 19
+						fireball.draw(gr, direction, scale, (int) (locationX + (frameB * multipleFrameX)), locationY,
+								padX, padY);
+					}
+					attacking = true;
+				} else if (map.getMap()[i][j] == '5') {
+					for (int k = 0; k < mushroom5s.size(); k++) {
+						if (mushroom5s.get(k).getSelfRow() == i && mushroom5s.get(k).getSelfColumn() == j) {
+							mushroom5s.get(k).draw(gr, direction);
+						}
+					}
+				} else if (map.getMap()[i][j] == '6') {
+					for (int k = 0; k < portal6s.size(); k++) {
+						if (portal6s.get(k).getSelfRow() == i && portal6s.get(k).getSelfColumn() == j) {
+							portal6s.get(k).draw(gr, direction + 12);
+						}
+					}
+				} else if (map.getMap()[i][j] == '7') {
+					for (int k = 0; k < portal7s.size(); k++) {
+						if (portal7s.get(k).getSelfRow() == i && portal7s.get(k).getSelfColumn() == j) {
+							portal7s.get(k).draw(gr, direction + 6);
+						}
+					}
+				} else if (map.getMap()[i][j] == '8') {
+					for (int k = 0; k < portal8s.size(); k++) {
+						if (portal8s.get(k).getSelfRow() == i && portal8s.get(k).getSelfColumn() == j) {
+							portal8s.get(k).draw(gr, direction);
+						}
+					}
+				} else if (map.getMap()[i][j] == '9') {
+					if (!player.getState().equals("dead")) {
+						if (!walking) {
+							if (player.getMushroom().equals("chun-li")) {
+								player.draw(gr, direction + 12, locationX, locationY, padX, padY);
+							} else if (player.getMushroom().equals("ken")) {
+								player.draw(gr, direction + 6, locationX, locationY, padX, padY);
+							} else {
+								player.draw(gr, direction, locationX, locationY, padX, padY);
+							}
+						} else {
+							int hero = 0;
+							multipleFrameX = 15.0f;
+							// w 124 = 124 / frameA
+							// h 45 = 45 / frameA
+							if (player.getMushroomNumber() == 2) {
+								hero = direction + 12;
+							} else if (player.getMushroomNumber() == 1) {
+								hero = direction + 6;
+							} else {
+								hero = direction;
+							}
+							if (player.getDirection().equals("left")) {
+								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY, padX,
+										padY);
+							} else if (player.getDirection().equals("right")) {
+								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY, padX,
+										padY);
+							} else if (player.getDirection().equals("up")) {
+								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
+										locationY - (int) ((frameA * multipleFrameY)), padX, padY);
+							} else if (player.getDirection().equals("down")) {
+								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
+										locationY + (int) ((frameA * multipleFrameY)), padX, padY);
+							}
+						}
+					}
+				} else if (map.getMap()[i][j] == 'A') {
+					for (int k = 0; k < mushroomAs.size(); k++) {
+						if (mushroomAs.get(k).getSelfRow() == i && mushroomAs.get(k).getSelfColumn() == j) {
+							mushroomAs.get(k).draw(gr, direction + 6);
+						}
+					}
+				} else if (map.getMap()[i][j] == 'D') {
+					for (int k = 0; k < dummys.size(); k++) {
+						if (dummys.get(k).getSelfRow() == i && dummys.get(k).getSelfColumn() == j) {
+							dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+						}
+					}
+				} else if (map.getMap()[i][j] == 'Q') {
+					for (int k = 0; k < questions.size(); k++) {
+						if (questions.get(k).getSelfRow() == i && questions.get(k).getSelfColumn() == j) {
+							questions.get(k).draw(gr, direction);
+						}
+					}
+				} else if (map.getMap()[i][j] == 'T') {
+					if (creating && map.checkMap(i, j - 1) == '9') {
+						Treasure treasure = new Treasure(map, scale, i, j);
+						treasures.add(treasure);
+						creating = false;
+					} else {
+						for (int k = 0; k < treasures.size(); k++) {
+							if (treasures.get(k).getSelfRow() == i && treasures.get(k).getSelfColumn() == j) {
+								treasures.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+							}
+						}
+					}
+				} else if (map.getMap()[i][j] == 'W') {
+					for (int k = 0; k < walls.size(); k++) {
+						if (walls.get(k).getSelfRow() == i && walls.get(k).getSelfColumn() == j) {
+							walls.get(k).draw(gr, direction);
+						}
+					}
+				}
+			}
+		}
+		if (hitting) {
+			gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74, null);
+		}
+		if (mapStateEnd) {
+			gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (starSizeX / 2),
+					(screeny / 2) - (starSizeY / 2), null);
+		}
+		map.update();
 	}
 
 	// ========================================================
@@ -600,6 +821,8 @@ public class Coder extends JPanel implements Runnable {
 					}
 				} else if (player.getState().equals("dead")) {
 					map.setMap(player.selfPosition[0], player.selfPosition[1], '0');
+					runable = false;
+					processing = false;
 					// player.selfPosition[0] = -99;
 					// complier.setPointer(lines.size());
 				} else if (runable && player.getState().equals("live")) {
@@ -612,37 +835,31 @@ public class Coder extends JPanel implements Runnable {
 						if (!walking) {
 							System.out.println(
 									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
-
 							if (lines.get(complier.getPointer()).equals("END")) {
 								complier = new Complier();
 								runable = false;
-
 							} else {
 								line = complier.getPointer();
 								complier.Runable(player, lines);
-
 								// line++;
 								if (line == (lines.size())) {
 									runable = false;
 								}
 							}
 						}
-						// ========================================================
-						// Enemy Delay
-						// ========================================================
-						if (delayA > 20) {
-							for (int i = 0; i < enemys.size(); i++) {
-								enemys.get(i).walk();
-							}
-							delayA = 0;
-						} else {
-							delayA++;
-						}
 					}
 				}
 				// ========================================================
 				// Update Playing Condition
 				// ========================================================
+				if (delayA > 20 && processing) {
+					for (int i = 0; i < enemys.size(); i++) {
+						enemys.get(i).walk();
+					}
+					delayA = 0;
+				} else {
+					delayA++;
+				}
 				if (delayB > 1) {
 					if (attacking) {
 						if (fireball != null) {
@@ -662,7 +879,7 @@ public class Coder extends JPanel implements Runnable {
 									}
 								}
 								effectBoomLcationX = fireball.getX();
-								effectBoomLcationY = fireball.getY()-50;
+								effectBoomLcationY = fireball.getY() - 50;
 								fireball.disable();
 								attacking = false;
 								hitting = true;
@@ -678,17 +895,6 @@ public class Coder extends JPanel implements Runnable {
 				} else {
 					delayB++;
 				}
-				if (direction > 4) {
-					direction = 0;
-				} else {
-					direction++;
-				}
-				if (effectBoom > 4) {
-					effectBoom = 0;
-					timing++;
-				} else {
-					effectBoom++;
-				}
 				if (timing < 3) {
 					chooseStart = 2;
 				} else if (timing < 6) {
@@ -696,13 +902,25 @@ public class Coder extends JPanel implements Runnable {
 				} else {
 					chooseStart = 0;
 				}
-				if (map.getTutorial()) {
-					tutorialBackground.setVisible(true);
-					tutorialText.setVisible(true);
-				} else {
-					tutorialBackground.setVisible(false);
-					tutorialText.setVisible(false);
-				}
+			}
+			if (direction > 4) {
+				direction = 0;
+			} else {
+				direction++;
+			}
+			if (effectBoom > 4) {
+				effectBoom = 0;
+				hitting = false;
+				timing++;
+			} else {
+				effectBoom++;
+			}
+			if (map.getTutorial()) {
+				tutorialBackground.setVisible(true);
+				tutorialText.setVisible(true);
+			} else {
+				tutorialBackground.setVisible(false);
+				tutorialText.setVisible(false);
 			}
 			if (frameA > frameCount) {
 				frameA = 0;
@@ -724,7 +942,6 @@ public class Coder extends JPanel implements Runnable {
 			if (!firing) {
 				frameB = 0;
 			}
-			map.update();
 		}
 	}
 
@@ -741,194 +958,12 @@ public class Coder extends JPanel implements Runnable {
 		if (starting) {
 		} else if (loading) {
 		} else if (playing) {
-			for (int i = 0; i < map.getRow(); i++) {
-				for (int j = 0; j <= map.getColumn(); j++) {
-					if (map.getMap()[i][j] == '0') {
-						// gr.setColor(Color.WHITE);
-						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
-						// (padY * i), blockX,
-						// blockY);
-					}
-					if (map.getMap()[i][j] == '1') {
-						// gr.setColor(Color.RED);
-						// gr.fillRect((j * scale) + locationX + (padX * i), (i * scale) + locationY -
-						// (padY * i), blockX,
-						// blockY);
-					}
-					if (map.getMap()[i][j] == '2') {
-						Enemy enemy = new Enemy(map, scale, i, j);
-						enemy.draw(gr, direction, locationX, locationY, padX, padY);
-						if (firstMake) {
-							enemys.add(enemy);
-						}
-					}
-					if (map.getMap()[i][j] == '3') {
-						if (firstMake) {
-							Bomb bomb = new Bomb((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							bombs.add(bomb);
-						}
-						for (int k = 0; k < bombs.size(); k++) {
-							if (bombs.get(k).getSelfRow() == i) {
-								bombs.get(k).draw(gr, direction);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '4') {
-						if (!firing) {
-							fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50);
-							fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
-						} else {
-							multipleFrameX = 18.0f; // 19
-							fireball.draw(gr, direction, scale, (int) (locationX + (frameB * multipleFrameX)), locationY, padX,
-									padY);
-						}
-						attacking = true;
-					}
-					if (map.getMap()[i][j] == '5') {
-						if (firstMake) {
-							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							mushroom5s.add(mushroom);
-						}
-						for (int k = 0; k < mushroom5s.size(); k++) {
-							if (mushroom5s.get(k).getSelfRow() == i) {
-								mushroom5s.get(k).draw(gr, direction);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '6') {
-						if (firstMake) {
-							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							portal6s.add(portal);
-						}
-						for (int k = 0; k < portal6s.size(); k++) {
-							if (portal6s.get(k).getSelfRow() == i) {
-								portal6s.get(k).draw(gr, direction + 12);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '7') {
-						if (firstMake) {
-							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							portal7s.add(portal);
-						}
-						for (int k = 0; k < portal7s.size(); k++) {
-							if (portal7s.get(k).getSelfRow() == i) {
-								portal7s.get(k).draw(gr, direction + 6);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '8') {
-						if (firstMake) {
-							Portal portal = new Portal((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							portal8s.add(portal);
-						}
-						for (int k = 0; k < portal8s.size(); k++) {
-							if (portal8s.get(k).getSelfRow() == i) {
-								portal8s.get(k).draw(gr, direction);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == '9') {
-						if (!player.getState().equals("dead")) {
-							if (!walking) {
-								if (player.getMushroom().equals("chun-li")) {
-									player.draw(gr, direction + 12, locationX, locationY, padX, padY);
-								} else if (player.getMushroom().equals("ken")) {
-									player.draw(gr, direction + 6, locationX, locationY, padX, padY);
-								} else {
-									player.draw(gr, direction, locationX, locationY, padX, padY);
-								}
-							} else {
-								int hero = 0;
-								multipleFrameX = 15.0f;
-								// w 124 = 124 / frameA
-								// h 45 = 45 / frameA
-								if (player.getMushroomNumber() == 2) {
-									hero = direction + 12;
-								} else if (player.getMushroomNumber() == 1) {
-									hero = direction + 6;
-								} else {
-									hero = direction;
-								}
-								if (player.getDirection().equals("left")) {
-									player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY,
-											padX, padY);
-								} else if (player.getDirection().equals("right")) {
-									player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY,
-											padX, padY);
-								} else if (player.getDirection().equals("up")) {
-									player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
-											locationY - (int) ((frameA * multipleFrameY)), padX, padY);
-								} else if (player.getDirection().equals("down")) {
-									player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
-											locationY + (int) ((frameA * multipleFrameY)), padX, padY);
-								}
-							}
-						}
-					}
-					if (map.getMap()[i][j] == 'A') {
-						if (firstMake) {
-							Mushroom mushroom = new Mushroom((j * scale) + locationX + (padX * i),
-									(i * scale) + locationY - (padY * i) - 143 + 50, i);
-							mushroomAs.add(mushroom);
-						}
-						for (int k = 0; k < mushroomAs.size(); k++) {
-							if (mushroomAs.get(k).getSelfRow() == i) {
-								mushroomAs.get(k).draw(gr, direction + 6);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == 'D') {
-						if (firstMake) {
-							Dummy dummy = new Dummy(map, scale, i, j);
-							dummys.add(dummy);
-						}
-						for (int k = 0; k < dummys.size(); k++) {
-							if (dummys.get(k).getSelfRow() == i) {
-								dummys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
-							}
-						}
-					}
-					if (map.getMap()[i][j] == 'Q') {
-						gr.drawImage(imageQuestions[direction].getImage(), (j * scale) + locationX + (padX * i),
-								(i * scale) + locationY - (padY * i) - 143 + 50, null);
-					}
-					if (map.getMap()[i][j] == 'T') {
-						if (creating && map.checkMap(i, j - 1) == '9') {
-							Treasure treasure = new Treasure(map, scale, i, j);
-							treasures.add(treasure);
-							creating = false;
-						} else {
-							for (int k = 0; k < treasures.size(); k++) {
-								if (treasures.get(k).getSelfRow() == i) {
-									treasures.get(k).draw(gr, direction, locationX, locationY, padX, padY);
-								}
-							}
-						}
-					}
-				}
+			if (firstMake) {
+				makeObject();
+				firstMake = false;
 			}
-			if (hitting) {
-				gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74,
-						null);
-				if (effectBoom > 4) {
-					hitting = false;
-				}
-			}
-			if (map.getSmoke()) {
-				gr.drawImage(imageSmokes[direction].getImage(), 230, 150, null);
-			}
-			if (mapStateEnd) {
-				gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (starSizeX / 2), (screeny / 2) - (starSizeY / 2),
-						null);
-			}
-			firstMake = false;
+			drawPath(gr);
+			drawMap(gr);
 		}
 		update();
 		g.drawImage(screen, 0, 0, null);

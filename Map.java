@@ -14,7 +14,7 @@ class Map {
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
-    private boolean smoke = false, puzzle = false, tutorial = false;
+    private boolean puzzle = false, tutorial = false;
     private String tutorialText;
     private int countDummy;
     private String mapNow;
@@ -34,13 +34,13 @@ class Map {
             setRow(7);
             tutorial.setText("Go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1500D00001".toCharArray();
-            this.map[3] = "1900000001".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1235678AD1".toCharArray();
+            this.map[1] = "1111000031".toCharArray();
+            this.map[2] = "1111011111".toCharArray();
+            this.map[3] = "1900000081".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            setTutorial(true);
+            // setTutorial(true);
             setTutorialText("0000\nwalk(direct)");
             tutorialText.setText(getTutorialText());
             // R
@@ -59,13 +59,13 @@ class Map {
             setRow(7);
             tutorial.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1030003001".toCharArray();
-            this.map[2] = "1900303031".toCharArray();
-            this.map[3] = "1330300031".toCharArray();
-            this.map[4] = "1330303331".toCharArray();
-            this.map[5] = "1000300081".toCharArray();
+            this.map[1] = "1010001001".toCharArray();
+            this.map[2] = "1900101011".toCharArray();
+            this.map[3] = "1110100011".toCharArray();
+            this.map[4] = "1110101111".toCharArray();
+            this.map[5] = "1000100081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            setTutorial(true);
+            // setTutorial(true);
             setTutorialText("0001\ntest walk(direct)");
             tutorialText.setText(getTutorialText());
             // D
@@ -93,7 +93,6 @@ class Map {
             this.map[4] = "1000000001".toCharArray();
             this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            setSmoke(false);
             setPuzzle(true);
             setCountDummy(2);
             // D
@@ -320,14 +319,6 @@ class Map {
 
     public void setColumn(int a) {
         this.column = a;
-    }
-
-    public boolean getSmoke() {
-        return this.smoke;
-    }
-
-    public void setSmoke(boolean a) {
-        this.smoke = a;
     }
 
     public boolean getTutorial() {
