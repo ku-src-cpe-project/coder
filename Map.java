@@ -6,7 +6,7 @@ import javax.swing.*;
 // import java.awt.event.*;
 // import java.applet.*;
 // import java.util.*;
-// import java.util.ArrayList;
+import java.util.ArrayList;
 // import java.util.StringTokenizer;
 // import java.io.*;
 
@@ -14,7 +14,7 @@ class Map {
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
-    private boolean puzzle = false, tutorial = false;
+    private boolean puzzle = false, objectiveText = false;
     private String tutorialText;
     private int countDummy;
     private String mapNow;
@@ -27,12 +27,12 @@ class Map {
     // A=mush.Chun 5=mush.Ken
     // D=dummy
 
-    public Map(JTextArea tutorial, JLabel tutorialText, String mapNow) {
+    public Map(JTextArea objectiveText, JLabel tutorialText, String mapNow) {
         this.mapNow = mapNow;
         System.out.println("> Map Create");
-        if (mapNow.equals("0000")) { // walk(dire)
+        if (mapNow.equals("0000")) { // walk(dir)
             setRow(7);
-            tutorial.setText("Go to portal blue.");
+            objectiveText.setText("Easy walk go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1111000031".toCharArray();
             this.map[2] = "1111011111".toCharArray();
@@ -40,264 +40,323 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // setTutorial(true);
-            setTutorialText("0000\nwalk(direct)");
+            setTutorial(true);
+            setTutorialText("walk(direct)");
             tutorialText.setText(getTutorialText());
-            // R
-            // R
-            // R
-            // R
-            // R
-            // R
-            // R
-            // R
-            // D
-            // D
-            // D
-            // D
-        } else if (mapNow.equals("0001")) { // test walk(dir)
+        } else if (mapNow.equals("0001")) { // walk(dir)
             setRow(7);
-            tutorial.setText("Escape from maze.");
+            objectiveText.setText("Now. Try harder escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1010001001".toCharArray();
-            this.map[2] = "1900101011".toCharArray();
+            this.map[1] = "1810001001".toCharArray();
+            this.map[2] = "1000101011".toCharArray();
             this.map[3] = "1110100011".toCharArray();
             this.map[4] = "1110101111".toCharArray();
-            this.map[5] = "1000100081".toCharArray();
+            this.map[5] = "1000100091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // setTutorial(true);
-            setTutorialText("0001\ntest walk(direct)");
-            tutorialText.setText(getTutorialText());
-            // D
-            // D
-            // R
-            // R
-            // U
-            // U
-            // R
-            // R
-            // D
-            // D
-            // D
-            // D
-            // R
-            // R
-            // R
-        } else if (mapNow.equals("0002")) { // attack(dir)
+        } else if (mapNow.equals("0002")) { // walk(dir)
             setRow(7);
-            tutorial.setText("Escape from maze.");
+            objectiveText.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "100Q0Q0001".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1011111011".toCharArray();
+            this.map[3] = "1000190001".toCharArray();
+            this.map[4] = "1110A11101".toCharArray();
+            this.map[5] = "180000T151".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0003")) { // attack()
+            setRow(7);
+            objectiveText.setText("Attack dummy 2 time.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1911111111".toCharArray();
             this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1900Q00001".toCharArray();
+            this.map[3] = "15000000D1".toCharArray();
             this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             setCountDummy(2);
-            // D
-            // A
-            // A
-            // D
-            // R
-            // R
-            // R
-            // R
-            // R
-            // R
-            // R
-        } else if (mapNow.equals("0003")) { // while(cou) fix line
+        } else if (mapNow.equals("0004")) { // while(check(dir))
             setRow(7);
-            tutorial.setText("Find the portal");
+            objectiveText.setText("Try write code under 4 line.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1908300081".toCharArray();
-            this.map[2] = "15000002D1".toCharArray();
-            this.map[3] = "1D00D00001".toCharArray();
-            this.map[4] = "1700000201".toCharArray();
-            this.map[5] = "16000800D1".toCharArray();
+            this.map[1] = "1111110811".toCharArray();
+            this.map[2] = "1111100111".toCharArray();
+            this.map[3] = "1111001111".toCharArray();
+            this.map[4] = "1110011111".toCharArray();
+            this.map[5] = "1190111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-            // W(4){
-            // D
+            // While(R){
+            // W(R)
+            // W(U)
             // }
-        } else if (mapNow.equals("0004")) { // test while(cou) fix line
+        } else if (mapNow.equals("0005")) { // while(check(dir))
             setRow(7);
-            tutorial.setText("How many you enter portal");
+            objectiveText.setText("Try write code under 10 line.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1700000001".toCharArray();
-            this.map[2] = "1333333001".toCharArray();
-            this.map[3] = "1000063001".toCharArray();
-            this.map[4] = "1900003001".toCharArray();
-            this.map[5] = "1000003081".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1801000191".toCharArray();
+            this.map[3] = "1101010101".toCharArray();
+            this.map[4] = "1100010001".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-            // W(7){
-            // R
+            // While(U){
+            // W(D)
+            // W(D)
+            // W(L)
+            // W(L)
+            // W(U)
+            // W(U)
+            // W(L)
+            // W(L)
             // }
-            // W(4){
-            // D
-            // }
-        } else if (mapNow.equals("0005")) { // check(dir)
+        } else if (mapNow.equals("0006")) { // while(check(dir))
             setRow(7);
-            tutorial.setText("Jail break.");
+            objectiveText.setText("Try write code under 7 line.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1903333331".toCharArray();
-            this.map[2] = "1003333331".toCharArray();
-            this.map[3] = "1008003031".toCharArray();
-            this.map[4] = "1333333331".toCharArray();
-            this.map[5] = "1333333331".toCharArray();
+            this.map[1] = "1111110091".toCharArray();
+            this.map[2] = "1131000111".toCharArray();
+            this.map[3] = "1300011111".toCharArray();
+            this.map[4] = "1118111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // D
-            // D
-            // IF(C(D)){
-            // R
-            // R
+            setPuzzle(true);
+            // While(R){
+            // W(L)
+            // W(L)
+            // W(D)
             // }
-        } else if (mapNow.equals("0006")) { // if
+            // W(R)
+            // W(D)
+        } else if (mapNow.equals("0007")) { // if
             setRow(7);
-            tutorial.setText("Destroy all bomb. then you will see goal.");
+            objectiveText.setText("Get a treasure after you search treasure box.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1900333331".toCharArray();
-            this.map[2] = "1330033331".toCharArray();
-            this.map[3] = "1333003331".toCharArray();
-            this.map[4] = "1333300331".toCharArray();
-            this.map[5] = "1333330001".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "190QQQ0001".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // W(11){
-            // IF(C(R)){
-            // D
-            // }
-            // IF(C(D)){
-            // R
-            // }
-            // }
-        } else if (mapNow.equals("0007")) { // if else
+            setPuzzle(true);
+        } else if (mapNow.equals("0008")) { // if
             setRow(7);
-            tutorial.setText("Go to portal blue.");
+            objectiveText.setText("Get a treasure after you search treasure box.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1933333081".toCharArray();
-            this.map[2] = "1033330031".toCharArray();
-            this.map[3] = "1033300031".toCharArray();
-            this.map[4] = "1033000331".toCharArray();
-            this.map[5] = "1000003331".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1111111001".toCharArray();
+            this.map[4] = "1111000Q11".toCharArray();
+            this.map[5] = "1900Q11111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // D
-            // D
-            // D
-            // D
-            // W(11){
-            // IF(C(R)){
-            // U
-            // }
-            // EL{
-            // R
-            // }
-            // }
-        } else if (mapNow.equals("0008")) { // test if else
+            setPuzzle(true);
+        } else if (mapNow.equals("0009")) { // if else
             setRow(7);
-            tutorial.setText("Where the enemy.");
+            objectiveText.setText("Choose path you should go.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000091".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000000001".toCharArray();
-            this.map[4] = "1020000001".toCharArray();
-            this.map[5] = "1800000001".toCharArray();
+            this.map[1] = "1911111111".toCharArray();
+            this.map[2] = "1011111111".toCharArray();
+            this.map[3] = "1000000081".toCharArray();
+            this.map[4] = "1011111111".toCharArray();
+            this.map[5] = "1311111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0009")) { // mushroom attack
+            // While(D){
+            // IF(R){
+            // W(R)
+            // }
+            // ELSE{
+            // W(D)
+            // }
+            // }
+        } else if (mapNow.equals("0010")) { // for
             setRow(7);
-            tutorial.setText("More the enemy.");
+            objectiveText.setText("Try write code under 3 line.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1000002001".toCharArray();
-            this.map[3] = "1000000001".toCharArray();
-            this.map[4] = "1002000001".toCharArray();
-            this.map[5] = "1000000081".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1800000091".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0010")) { // enemy
-            setRow(7);
-            tutorial.setText("Room of death.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000030081".toCharArray();
-            this.map[2] = "1000030201".toCharArray();
-            this.map[3] = "1000033331".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "10000000A1".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            // For(7){
+            // W(L)
+            // }
             // ========================================================
             // World 1
             // ========================================================
-        } else if (mapNow.equals("0011")) {
+        } else if (mapNow.equals("0011")) { // for
             setRow(7);
-            tutorial.setText("Go to portal blue.");
+            objectiveText.setText("Try write code under 7 line.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1030303031".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1303030301".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1030383031".toCharArray();
+            this.map[1] = "1901111111".toCharArray();
+            this.map[2] = "1100111111".toCharArray();
+            this.map[3] = "1110011111".toCharArray();
+            this.map[4] = "1111001111".toCharArray();
+            this.map[5] = "1111100081".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            // For(4){
+            // W(R)
+            // W(D)
+            // }
+            // For(3){
+            // W(R)
+            // }
         } else if (mapNow.equals("0012")) {
             setRow(7);
-            tutorial.setText("Kill the enemy.");
+            objectiveText.setText("How many line you can pass this stage.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1000000021".toCharArray();
-            this.map[3] = "1500000001".toCharArray();
-            this.map[4] = "1000000021".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1100010001".toCharArray();
+            this.map[2] = "1101010101".toCharArray();
+            this.map[3] = "1101010101".toCharArray();
+            this.map[4] = "1101010101".toCharArray();
+            this.map[5] = "1803000391".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0013")) {
             setRow(7);
-            tutorial.setText("Kill the enemy.");
+            objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "10000000A1".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1000000021".toCharArray();
-            this.map[4] = "1000000331".toCharArray();
-            this.map[5] = "1000000351".toCharArray();
+            this.map[1] = "1000038391".toCharArray();
+            this.map[2] = "1011111101".toCharArray();
+            this.map[3] = "1000110001".toCharArray();
+            this.map[4] = "1110110101".toCharArray();
+            this.map[5] = "1A00000151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0014")) {
             setRow(7);
-            tutorial.setText("Kill the enemy then mushroom will append.");
+            objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1000333001".toCharArray();
-            this.map[3] = "1020383501".toCharArray();
-            this.map[4] = "1000333001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1111111111".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0015")) {
             setRow(7);
-            tutorial.setText("Go to portal blue.");
+            objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1038000301".toCharArray();
-            this.map[2] = "1033333301".toCharArray();
-            this.map[3] = "103A000001".toCharArray();
-            this.map[4] = "1033333301".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1111111111".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         }
     }
 
-    public void update() {
-        if (mapNow.equals("0002")) { // attack(dir)
+    public void update(Player player, ArrayList<Portal> portal8s, int scale, int locationX, int locationY, int padX,
+            int padY) {
+        // ========================================================
+        // Example Setting Map Puzzle
+        // ========================================================
+        // set if puzzle clear with anything condition
+        if (mapNow.equals("9999")) {
             if (!getPuzzle()) {
-                this.map[5][2] = '8';
+                int row = 3;
+                int col = 4;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
             }
         }
-        if (mapNow.equals("0003")) { // while(cou) fix line
+        // count line
+        if (mapNow.equals("9999")) {
+            int line = 3;
             if (Coder.runable) {
-                // System.out.println(Coder.lines.size());
-                if (getPuzzle() && ((Coder.lines.size() - 2) > 3)) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
                     Coder.runable = false;
                     setPuzzle(false);
                 }
             }
         }
-        if (mapNow.equals("0004")) { // test while(cou) fix line
+        // ========================================================
+        //
+        // ========================================================
+        if (mapNow.equals("0003")) {
+            if (getCountDummy() == 0) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 3;
+                int col = 4;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0004")) {
+            int line = 4;
             if (Coder.runable) {
-                // System.out.println(Coder.lines.size());
-                if (getPuzzle() && ((Coder.lines.size() - 2) > 6)) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
+            }
+        }
+        if (mapNow.equals("0005")) {
+            int line = 10;
+            if (Coder.runable) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
+            }
+        }
+        if (mapNow.equals("0006")) {
+            int line = 7;
+            if (Coder.runable) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
+            }
+        }
+        if (mapNow.equals("0007")) {
+            int treasure = 150;
+            if (player.getTreasure() > treasure - 1) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 3;
+                int col = 8;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0008")) {
+            int treasure = 100;
+            if (player.getTreasure() > treasure - 1) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 3;
+                int col = 8;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0010")) {
+            int line = 3;
+            if (Coder.runable) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
+            }
+        }
+        if (mapNow.equals("0011")) {
+            int line = 7;
+            if (Coder.runable) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
                     Coder.runable = false;
                     setPuzzle(false);
                 }
@@ -322,11 +381,11 @@ class Map {
     }
 
     public boolean getTutorial() {
-        return this.tutorial;
+        return this.objectiveText;
     }
 
     public void setTutorial(boolean a) {
-        this.tutorial = a;
+        this.objectiveText = a;
     }
 
     public String getTutorialText() {

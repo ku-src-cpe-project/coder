@@ -551,6 +551,8 @@ public class Coder extends JPanel implements Runnable {
 							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
 					questions.add(question);
 				} else if (map.getMap()[i][j] == 'T') {
+					Treasure treasure = new Treasure(map, scale, i, j);
+					treasures.add(treasure);
 				} else if (map.getMap()[i][j] == 'W') {
 					Wall wall = new Wall((j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
@@ -727,7 +729,7 @@ public class Coder extends JPanel implements Runnable {
 			gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (starSizeX / 2),
 					(screeny / 2) - (starSizeY / 2), null);
 		}
-		map.update();
+		map.update(player, portal8s, scale, locationX, locationY, padX, padY);
 	}
 
 	// ========================================================
@@ -778,7 +780,7 @@ public class Coder extends JPanel implements Runnable {
 				mapStores.get(i).getMapStoreLabel().setVisible(false);
 			}
 			if (mapStateEnd) {
-				if (delayMapEnd >= 40) {
+				if (delayMapEnd >= 2) {
 					delayMapEnd = 0;
 					mapStateEnd = false;
 					mapStateFirst = false;
@@ -873,9 +875,6 @@ public class Coder extends JPanel implements Runnable {
 								for (int i = 0; i < dummys.size(); i++) {
 									if (dummys.get(i).checkNextStep(1, '4')) {
 										map.setCountDummy(map.getCountDummy() - 1);
-										if (map.getCountDummy() == 0) {
-											map.setPuzzle(false);
-										}
 									}
 								}
 								effectBoomLcationX = fireball.getX();
