@@ -184,16 +184,26 @@ class Complier {
         }
     }
 
-    public String convType(String _type){
-        if(_type.equals("bomb")){
+    public String convType(String _type) {
+        if (_type.equals("wall")) {
+            this.type = "1";
+        } else if (_type.equals("enemy")) {
+            this.type = "2";
+        } else if (_type.equals("bomb")) {
             this.type = "3";
-        } else if(_type.equals("mushroom_red")){
-            this.type = "A";
-        } else if(_type.equals("mushroom_yellow")){
+        } else if (_type.equals("mushroom_yellow")) {
             this.type = "5";
-        } else if(_type.equals("treasure_box")){
+        } else if (_type.equals("portal_red")) {
+            this.type = "6";
+        } else if (_type.equals("portal_green")) {
+            this.type = "7";
+        } else if (_type.equals("portal_blue")) {
+            this.type = "8";
+        } else if (_type.equals("mushroom_red")) {
+            this.type = "A";
+        } else if (_type.equals("treasure_box")) {
             this.type = "Q";
-        } else if(_type.equals("treasure")){
+        } else if (_type.equals("treasure")) {
             this.type = "T";
         }
         return this.type;
@@ -425,6 +435,9 @@ class Complier {
             }
             if (token.get(i).equals("attack")) {
                 player.attack();
+            }
+            if (token.get(i).equals("search")) {
+                player.search(token.get(i + 2));
             }
             if (token.get(i).equals("while")) { // function for find while
                 // old while
