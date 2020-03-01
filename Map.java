@@ -216,15 +216,55 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0013")) {
             setRow(7);
-            objectiveText.setText(".");
+            objectiveText.setText("Destroy bomb to pass stage.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1000038391".toCharArray();
             this.map[2] = "1011111101".toCharArray();
-            this.map[3] = "1000110001".toCharArray();
-            this.map[4] = "1110110101".toCharArray();
+            this.map[3] = "1012010001".toCharArray();
+            this.map[4] = "1011110101".toCharArray();
             this.map[5] = "1A00000151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         } else if (mapNow.equals("0014")) {
+            setRow(7);
+            objectiveText.setText("Destroy bomb to pass stage.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1803000001".toCharArray();
+            this.map[2] = "1003A11101".toCharArray();
+            this.map[3] = "1331111101".toCharArray();
+            this.map[4] = "10A1111101".toCharArray();
+            this.map[5] = "1000000091".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0015")) {
+            setRow(7);
+            objectiveText.setText("Destroy bomb to pass stage.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1011111301".toCharArray();
+            this.map[3] = "1930038101".toCharArray();
+            this.map[4] = "1A10111101".toCharArray();
+            this.map[5] = "1150000001".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0016")) {
+            setRow(7);
+            objectiveText.setText("Find way to go blue portal.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1160000091".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1600000081".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1607117071".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0017")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1011111111".toCharArray();
+            this.map[3] = "1931111111".toCharArray();
+            this.map[4] = "1011111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0018")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
@@ -234,7 +274,7 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0015")) {
+        } else if (mapNow.equals("0019")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();

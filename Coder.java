@@ -339,10 +339,12 @@ public class Coder extends JPanel implements Runnable {
 				// textValue = "while(check(down)){walk(right);};";
 
 				// if
+				// textValue = "if(check(right)){walk(down);}";
 				// textValue =
 				// "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
 				// textValue =
 				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
+				textValue = "if(check(right)=3){walk(up);}else{walk(down);}";
 
 				// else
 				// textValue = "else{walk(down);}";
@@ -358,6 +360,7 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 		buttonClear.addMouseListener(new MouseAdapter() {
+
 			public void mouseClicked(MouseEvent me) {
 				map = new Map(objectiveLabel, tutorialText, mapNow);
 				newGame();
