@@ -260,7 +260,7 @@ class Map {
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1111111111".toCharArray();
             this.map[2] = "1011111111".toCharArray();
-            this.map[3] = "1931111111".toCharArray();
+            this.map[3] = "1951111111".toCharArray();
             this.map[4] = "1011111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
