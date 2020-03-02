@@ -30,6 +30,7 @@ class Complier {
     private String state, checkif, statusif, statuselse, check_braket, check_braket_else, str, m, n, check_else,
             check_if_out, check_braket2, check_token, check_braket_while_out, check_braket_while_in,
             check_braket_forOut, check_braket_forIn, check_braket_for;
+    private String type;
 
     public Complier() {
         this.process = new ArrayList<String>();
@@ -40,6 +41,7 @@ class Complier {
         this.find_braketCL = new ArrayList<String>();
         this.forloop = new ArrayList<Integer>();
         this.pointer = 0;
+        this.type = "";
         this.count_braketOP = 0;
         this.count_if = 0;
         this.count_braketCL = 0;
@@ -95,6 +97,7 @@ class Complier {
                 tmp = "";
                 i += 4;
             } else if (tokens.get(i).equals("if")) { // if(check(right)){
+                String type = convType(tokens.get(i + 7));
                 tmp = tmp.concat(tokens.get(i) + ""); // if
                 tmp = tmp.concat(tokens.get(i + 1) + ""); // (
                 tmp = tmp.concat(tokens.get(i + 2) + ""); // check
@@ -102,7 +105,7 @@ class Complier {
                 tmp = tmp.concat(tokens.get(i + 4) + ""); // right
                 tmp = tmp.concat(tokens.get(i + 5) + ""); // )
                 tmp = tmp.concat(tokens.get(i + 6) + ""); // =
-                tmp = tmp.concat(tokens.get(i + 7) + ""); // 3
+                tmp = tmp.concat(type); // bomb
                 tmp = tmp.concat(tokens.get(i + 8) + ""); // )
                 tmp = tmp.concat(tokens.get(i + 9) + ""); // {
                 this.lines.add(tmp);
@@ -144,6 +147,8 @@ class Complier {
                     this.tokens.add("{");
                 } else if (parses.get(i).equals("}")) {
                     this.tokens.add("}");
+                } else if (parses.get(i).equals("=")) {
+                    this.tokens.add("=");
                 } else {
                     // System.out.println(parses.get(i) + " is Operater");
                     if (tmp != "") {
@@ -160,29 +165,48 @@ class Complier {
                         && (parses.get(i + 3).equals("e"))) {
                     this.tokens.add("else");
                     i += 3;
-                } else if (parses.get(i).equals("=")) {
-                    this.tokens.add("=");
-                    this.tokens.add(parses.get(i + 1));
-                    this.tokens.add(")");
-                    this.tokens.add("{");
-                    i += 3;
                 } else {
                     tmp = tmp.concat(parses.get(i) + "");
                 }
                 // System.out.println(tmp);
             }
-
         }
         // System.out.println("" + this.tokens);
         return this.tokens;
     }
 
     public boolean checkOperater(String parse) {
-        if (parse.equals("(") || parse.equals(")") || parse.equals("{") || parse.equals("}") || parse.equals(";")) {
+        if (parse.equals("(") || parse.equals(")") || parse.equals("{") || parse.equals("}") || parse.equals(";")
+                || parse.equals("=")) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public String convType(String _type) {
+        if (_type.equals("wall")) {
+            this.type = "1";
+        } else if (_type.equals("enemy")) {
+            this.type = "2";
+        } else if (_type.equals("bomb")) {
+            this.type = "3";
+        } else if (_type.equals("mushroom_yellow")) {
+            this.type = "5";
+        } else if (_type.equals("portal_red")) {
+            this.type = "6";
+        } else if (_type.equals("portal_green")) {
+            this.type = "7";
+        } else if (_type.equals("portal_blue")) {
+            this.type = "8";
+        } else if (_type.equals("mushroom_red")) {
+            this.type = "A";
+        } else if (_type.equals("treasure_box")) {
+            this.type = "Q";
+        } else if (_type.equals("treasure")) {
+            this.type = "T";
+        }
+        return this.type;
     }
 
     // ========================================================
@@ -411,6 +435,9 @@ class Complier {
             }
             if (token.get(i).equals("attack")) {
                 player.attack();
+            }
+            if (token.get(i).equals("search")) {
+                player.search(token.get(i + 2));
             }
             if (token.get(i).equals("while")) { // function for find while
                 // old while

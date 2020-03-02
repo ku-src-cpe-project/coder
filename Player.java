@@ -173,7 +173,7 @@ class Player {
             this.mushroom = "chun-li";
         } else if (checkNextStep(dir, 'T')) {
             for (int i = 0; i < Coder.treasures.size(); i++) {
-                if (Coder.treasures.get(i).checkNextStep(1, '9')) {
+                if (Coder.treasures.get(i).checkNextStep(invDir(dir), '9')) {
                     this.tmpPosition[0] = this.nextPosition[0];
                     this.tmpPosition[1] = this.nextPosition[1];
                     this.map.setMap(this.tmpPosition[0], this.tmpPosition[1], '0');
@@ -184,6 +184,20 @@ class Player {
                 }
             }
         }
+    }
+
+    public String invDir(String dir) {
+        String invDir = "";
+        if (dir.equals("left")) {
+            invDir = "right";
+        } else if (dir.equals("right")) {
+            invDir = "left";
+        } else if (dir.equals("up")) {
+            invDir = "down";
+        } else if (dir.equals("down")) {
+            invDir = "up";
+        }
+        return invDir;
     }
 
     public boolean checkNextStep(String dir, char a) {
@@ -234,10 +248,19 @@ class Player {
         }
     }
 
-    public void check() {
+    public void search(String dir) {
         Coder.creating = true;
-        if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == 'Q') {
-            this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, 'T');
+        if (checkNextStep(dir, 'Q')) {
+            System.out.println(dir);
+            if (dir.equals("left")) {
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1] - 1, 'T');
+            } else if (dir.equals("right")) {
+                this.map.setMap(this.selfPosition[0], this.selfPosition[1] + 1, 'T');
+            } else if (dir.equals("up")) {
+                this.map.setMap(this.selfPosition[0] - 1, this.selfPosition[1], 'T');
+            } else if (dir.equals("down")) {
+                this.map.setMap(this.selfPosition[0] + 1, this.selfPosition[1], 'T');
+            }
         } else {
             System.out.println("Not treasure right there");
         }

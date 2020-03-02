@@ -27,21 +27,21 @@ class Treasure {
                 (this.selfPosition[0] * this.scale) + locationY - (padY * this.selfPosition[0]) - 143 + 50, null);
     }
 
-    public boolean checkNextStep(int dir, char a) {
+    public boolean checkNextStep(String dir, char a) {
         boolean bool = false;
-        if (dir == 1) {
+        if (dir.equals("left")) {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) == a) {
                 bool = true;
             }
-        } else if (dir == 2) {
+        } else if (dir.equals("right")) {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] + 1) == a) {
                 bool = true;
             }
-        } else if (dir == 3) {
+        } else if (dir.equals("up")) {
             if (this.map.checkMap(this.selfPosition[0] - 1, this.selfPosition[1]) == a) {
                 bool = true;
             }
-        } else if (dir == 4) {
+        } else if (dir.equals("down")) {
             if (this.map.checkMap(this.selfPosition[0] + 1, this.selfPosition[1]) == a) {
                 bool = true;
             }

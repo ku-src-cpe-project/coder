@@ -26,11 +26,23 @@ class Map {
     // 9=player
     // A=mush.Chun 5=mush.Ken
     // D=dummy
+    // Q=treasure box
+    // T=treasure
 
     public Map(JTextArea objectiveText, JLabel tutorialText, String mapNow) {
         this.mapNow = mapNow;
         System.out.println("> Map Create");
-        if (mapNow.equals("0000")) { // walk(dir)
+        if (mapNow.equals("0000")) {
+            setRow(7);
+            objectiveText.setText("Test.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1000000001".toCharArray();
+            this.map[2] = "1000002001".toCharArray();
+            this.map[3] = "1900000001".toCharArray();
+            this.map[4] = "1500002001".toCharArray();
+            this.map[5] = "1000000001".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0001")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Easy walk go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
@@ -43,7 +55,7 @@ class Map {
             setTutorial(true);
             setTutorialText("walk(direct)");
             tutorialText.setText(getTutorialText());
-        } else if (mapNow.equals("0001")) { // walk(dir)
+        } else if (mapNow.equals("0002")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Now. Try harder escape from maze.");
             this.map[0] = "1111111111".toCharArray();
@@ -53,7 +65,7 @@ class Map {
             this.map[4] = "1110101111".toCharArray();
             this.map[5] = "1000100091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0002")) { // walk(dir)
+        } else if (mapNow.equals("0003")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Escape from maze.");
             this.map[0] = "1111111111".toCharArray();
@@ -63,7 +75,7 @@ class Map {
             this.map[4] = "1110A11101".toCharArray();
             this.map[5] = "180000T151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0003")) { // attack()
+        } else if (mapNow.equals("0004")) { // attack()
             setRow(7);
             objectiveText.setText("Attack dummy 2 time.");
             this.map[0] = "1111111111".toCharArray();
@@ -75,7 +87,7 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             setCountDummy(2);
-        } else if (mapNow.equals("0004")) { // while(check(dir))
+        } else if (mapNow.equals("0005")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 4 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -90,7 +102,7 @@ class Map {
             // W(R)
             // W(U)
             // }
-        } else if (mapNow.equals("0005")) { // while(check(dir))
+        } else if (mapNow.equals("0006")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 10 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -111,7 +123,7 @@ class Map {
             // W(L)
             // W(L)
             // }
-        } else if (mapNow.equals("0006")) { // while(check(dir))
+        } else if (mapNow.equals("0007")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 7 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -129,7 +141,7 @@ class Map {
             // }
             // W(R)
             // W(D)
-        } else if (mapNow.equals("0007")) { // if
+        } else if (mapNow.equals("0008")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
             this.map[0] = "1111111111".toCharArray();
@@ -140,7 +152,7 @@ class Map {
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-        } else if (mapNow.equals("0008")) { // if
+        } else if (mapNow.equals("0009")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
             this.map[0] = "1111111111".toCharArray();
@@ -151,7 +163,7 @@ class Map {
             this.map[5] = "1900Q11111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-        } else if (mapNow.equals("0009")) { // if else
+        } else if (mapNow.equals("0010")) { // if else
             setRow(7);
             objectiveText.setText("Choose path you should go.");
             this.map[0] = "1111111111".toCharArray();
@@ -169,7 +181,7 @@ class Map {
             // W(D)
             // }
             // }
-        } else if (mapNow.equals("0010")) { // for
+        } else if (mapNow.equals("0011")) { // for
             setRow(7);
             objectiveText.setText("Try write code under 3 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -186,7 +198,7 @@ class Map {
             // ========================================================
             // World 1
             // ========================================================
-        } else if (mapNow.equals("0011")) { // for
+        } else if (mapNow.equals("0012")) { // for
             setRow(7);
             objectiveText.setText("Try write code under 7 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -204,7 +216,7 @@ class Map {
             // For(3){
             // W(R)
             // }
-        } else if (mapNow.equals("0012")) {
+        } else if (mapNow.equals("0013")) {
             setRow(7);
             objectiveText.setText("How many line you can pass this stage.");
             this.map[0] = "1111111111".toCharArray();
@@ -214,7 +226,7 @@ class Map {
             this.map[4] = "1101010101".toCharArray();
             this.map[5] = "1803000391".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0013")) {
+        } else if (mapNow.equals("0014")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
             this.map[0] = "1111111111".toCharArray();
@@ -224,7 +236,7 @@ class Map {
             this.map[4] = "1011110101".toCharArray();
             this.map[5] = "1A00000151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0014")) {
+        } else if (mapNow.equals("0015")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
             this.map[0] = "1111111111".toCharArray();
@@ -234,7 +246,7 @@ class Map {
             this.map[4] = "10A1111101".toCharArray();
             this.map[5] = "1000000091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0015")) {
+        } else if (mapNow.equals("0016")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
             this.map[0] = "1111111111".toCharArray();
@@ -244,7 +256,7 @@ class Map {
             this.map[4] = "1A10111101".toCharArray();
             this.map[5] = "1150000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0016")) {
+        } else if (mapNow.equals("0017")) {
             setRow(7);
             objectiveText.setText("Find way to go blue portal.");
             this.map[0] = "1111111111".toCharArray();
@@ -254,17 +266,17 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1607117071".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0017")) {
+        } else if (mapNow.equals("0018")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1111111111".toCharArray();
             this.map[2] = "1011111111".toCharArray();
-            this.map[3] = "1931111111".toCharArray();
+            this.map[3] = "1951111111".toCharArray();
             this.map[4] = "1011111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0018")) {
+        } else if (mapNow.equals("0019")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
@@ -274,7 +286,7 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-        } else if (mapNow.equals("0019")) {
+        } else if (mapNow.equals("0020")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
@@ -465,7 +477,11 @@ class Map {
     }
 
     public void setMap(int x, int y, char set) {
-        this.map[x][y] = set;
+        try {
+            this.map[x][y] = set;
+        } catch (Exception e) {
+            System.out.println("Error: function setMap()");
+        }
     }
 
     public int[] getPosition() {

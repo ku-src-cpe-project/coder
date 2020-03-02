@@ -31,7 +31,7 @@ class MapStore extends JPanel {
                 readFile.closeFileWrite();
             }
         });
-        this.mapStoreLabel.setBounds(50 + (mapStore * 150), 100, 149, 84);
+        this.mapStoreLabel.setBounds(50 + ((mapStore % 5) * 205), 50 + (100 * (mapStore / 5)), 149, 84);
         panel.add(this.mapStoreLabel);
     }
 

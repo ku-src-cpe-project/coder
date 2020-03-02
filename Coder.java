@@ -108,10 +108,11 @@ public class Coder extends JPanel implements Runnable {
 	private int timing, frameCount = 4;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
-	public static boolean attacking, walking, firing, creating;
-	public static int frameA, frameB;
+	public static boolean attacking, firing, creating, walking;
+	public static int frameA, frameB, frameC;
 
 	// Map
+	private int mapTotal = 20;
 	private String mapNow;
 	private JLabel mapNumberLabel;
 	private JLabel tutorialBackground, tutorialText;
@@ -131,7 +132,7 @@ public class Coder extends JPanel implements Runnable {
 	// ========================================================
 	// Debug
 	// ========================================================
-	private JButton up, down, left, right, fire, print, check;
+	private JButton up, down, left, right, fire, print, checkLeft, checkRight, checkUp, checkDown;
 
 	// ========================================================
 	// Constructure
@@ -223,6 +224,7 @@ public class Coder extends JPanel implements Runnable {
 		// Debug
 		// ========================================================
 		int coreX = 70, coreY = 450;
+		int core2X = 70, core2Y = 300;
 		int sizeX = 50, sizeY = 50;
 		up = new JButton("^");
 		down = new JButton("V");
@@ -230,7 +232,10 @@ public class Coder extends JPanel implements Runnable {
 		right = new JButton(">");
 		fire = new JButton("F");
 		print = new JButton("P");
-		check = new JButton("C");
+		checkLeft = new JButton("CL");
+		checkRight = new JButton("CR");
+		checkUp = new JButton("CU");
+		checkDown = new JButton("CD");
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				player.walk("up");
@@ -261,9 +266,24 @@ public class Coder extends JPanel implements Runnable {
 				map.printMap();
 			}
 		});
-		check.addActionListener(new ActionListener() {
+		checkLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				player.check();
+				player.search("left");
+			}
+		});
+		checkRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.search("right");
+			}
+		});
+		checkUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.search("up");
+			}
+		});
+		checkDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				player.search("down");
 			}
 		});
 		right.setBounds(coreX + sizeX, coreY, sizeX, sizeY);
@@ -272,14 +292,20 @@ public class Coder extends JPanel implements Runnable {
 		left.setBounds(coreX - sizeX, coreY, sizeX, sizeY);
 		fire.setBounds(coreX, coreY, sizeX, sizeY);
 		print.setBounds(coreX + sizeX, coreY + sizeY, sizeX, sizeY);
-		check.setBounds(coreX - sizeX, coreY - sizeY, sizeX, sizeY);
+		checkRight.setBounds(coreX + sizeX, core2Y, sizeX, sizeY);
+		checkUp.setBounds(coreX, core2Y - sizeY, sizeX, sizeY);
+		checkDown.setBounds(coreX, core2Y + sizeY, sizeX, sizeY);
+		checkLeft.setBounds(coreX - sizeX, core2Y, sizeX, sizeY);
 		add(up);
 		add(down);
 		add(left);
 		add(right);
 		add(fire);
 		add(print);
-		add(check);
+		add(checkLeft);
+		add(checkRight);
+		add(checkUp);
+		add(checkDown);
 
 		// ========================================================
 		// Starting
@@ -303,7 +329,7 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Loading
 		// ========================================================
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < mapTotal; i++) {
 			MapStore mapStore = new MapStore(this, i);
 			mapStores.add(mapStore);
 			mapStores.get(i).getMapStoreLabel().setVisible(false);
@@ -344,7 +370,7 @@ public class Coder extends JPanel implements Runnable {
 				// "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
 				// textValue =
 				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
-				textValue = "if(check(right)=3){walk(up);}else{walk(down);}";
+				// textValue = "if(check(right)=mushroom_yellow){walk(down);}else{walk(up);}";
 
 				// else
 				// textValue = "else{walk(down);}";
@@ -469,6 +495,9 @@ public class Coder extends JPanel implements Runnable {
 		processing = false;
 		firstMake = true;
 		walking = false;
+		for (int i = 0; i < enemys.size(); i++) {
+			enemys.get(i).setWalking(false);
+		}
 		attacking = false;
 		firing = false;
 		creating = false;
@@ -553,6 +582,8 @@ public class Coder extends JPanel implements Runnable {
 					Question question = new Question((j * scale) + locationX + (padX * i),
 							(i * scale) + locationY - (padY * i) - 143 + 50, i, j);
 					questions.add(question);
+					Treasure treasure = new Treasure(map, scale, i, j);
+					treasures.add(treasure);
 				} else if (map.getMap()[i][j] == 'T') {
 					Treasure treasure = new Treasure(map, scale, i, j);
 					treasures.add(treasure);
@@ -604,8 +635,25 @@ public class Coder extends JPanel implements Runnable {
 					// blockY);
 				} else if (map.getMap()[i][j] == '2') {
 					for (int k = 0; k < enemys.size(); k++) {
-						if (enemys.get(k).getSelfRow() == i && enemys.get(k).getSelfColumn() == j) {
-							enemys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+						if (!enemys.get(k).getState().equals("dead")) {
+							if (!enemys.get(k).getWalking()) {
+								enemys.get(k).draw(gr, direction, locationX, locationY, padX, padY);
+							} else {
+								multipleFrameX = 15.0f;
+								if (enemys.get(k).getDirection() == 1) {
+									enemys.get(k).draw(gr, direction, (int) (locationX - (frameC * multipleFrameX)),
+											locationY, padX, padY);
+								} else if (enemys.get(k).getDirection() == 2) {
+									enemys.get(k).draw(gr, direction, (int) (locationX + (frameC * multipleFrameX)),
+											locationY, padX, padY);
+								} else if (enemys.get(k).getDirection() == 3) {
+									enemys.get(k).draw(gr, direction, (int) (locationX - (frameC * multipleFrameZ)),
+											locationY - (int) ((frameC * multipleFrameY)), padX, padY);
+								} else if (enemys.get(k).getDirection() == 4) {
+									enemys.get(k).draw(gr, direction, (int) (locationX + (frameC * multipleFrameZ)),
+											locationY + (int) ((frameC * multipleFrameY)), padX, padY);
+								}
+							}
 						}
 					}
 				} else if (map.getMap()[i][j] == '3') {
@@ -705,15 +753,9 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 				} else if (map.getMap()[i][j] == 'T') {
-					if (creating && map.checkMap(i, j - 1) == '9') {
-						Treasure treasure = new Treasure(map, scale, i, j);
-						treasures.add(treasure);
-						creating = false;
-					} else {
-						for (int k = 0; k < treasures.size(); k++) {
-							if (treasures.get(k).getSelfRow() == i && treasures.get(k).getSelfColumn() == j) {
-								treasures.get(k).draw(gr, direction, locationX, locationY, padX, padY);
-							}
+					for (int k = 0; k < treasures.size(); k++) {
+						if (treasures.get(k).getSelfRow() == i && treasures.get(k).getSelfColumn() == j) {
+							treasures.get(k).draw(gr, direction, locationX, locationY, padX, padY);
 						}
 					}
 				} else if (map.getMap()[i][j] == 'W') {
@@ -725,7 +767,9 @@ public class Coder extends JPanel implements Runnable {
 				}
 			}
 		}
-		if (hitting) {
+		if (hitting)
+
+		{
 			gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74, null);
 		}
 		if (mapStateEnd) {
@@ -733,6 +777,11 @@ public class Coder extends JPanel implements Runnable {
 					(screeny / 2) - (starSizeY / 2), null);
 		}
 		map.update(player, portal8s, scale, locationX, locationY, padX, padY);
+	}
+
+	public boolean checkMap(String dir, char a) {
+		boolean bool = false;
+		return bool;
 	}
 
 	// ========================================================
@@ -765,7 +814,7 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(false);
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreLabel().setVisible(true);
 			}
 		} else if (playing) {
@@ -779,7 +828,7 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(true);
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreLabel().setVisible(false);
 			}
 			if (mapStateEnd) {
@@ -938,11 +987,25 @@ public class Coder extends JPanel implements Runnable {
 			} else {
 				frameB++;
 			}
+			if (frameC > frameCount) {
+				frameC = 0;
+				for (int i = 0; i < enemys.size(); i++) {
+					enemys.get(i).setWalking(false);
+					enemys.get(i).update();
+				}
+			} else {
+				frameC++;
+			}
 			if (!walking) {
 				frameA = 0;
 			}
 			if (!firing) {
 				frameB = 0;
+			}
+			for (int i = 0; i < enemys.size(); i++) {
+				if (!enemys.get(i).getWalking()) {
+					frameC = 0;
+				}
 			}
 		}
 	}
