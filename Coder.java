@@ -296,16 +296,16 @@ public class Coder extends JPanel implements Runnable {
 		checkUp.setBounds(coreX, core2Y - sizeY, sizeX, sizeY);
 		checkDown.setBounds(coreX, core2Y + sizeY, sizeX, sizeY);
 		checkLeft.setBounds(coreX - sizeX, core2Y, sizeX, sizeY);
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
-		add(print);
-		add(checkLeft);
-		add(checkRight);
-		add(checkUp);
-		add(checkDown);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
+		// add(print);
+		// add(checkLeft);
+		// add(checkRight);
+		// add(checkUp);
+		// add(checkDown);
 
 		// ========================================================
 		// Starting

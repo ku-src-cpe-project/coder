@@ -479,7 +479,13 @@ class Complier {
                         // System.out.println(">>>>>>>> FALSE");
                         // System.out.println(">>>>>>>>>"+getPointer());
                         // System.out.println(this.getPosWhile());
-                        if (this.getPosWhile().isEmpty()) {
+
+                        if (this.getPosWhile().isEmpty() ) {
+                            this.getPosWhile().add(1000);
+                        }
+                        if( this.getPosWhile().size() == 1)
+                        {
+                            this.getPosWhile().remove(0);
                             this.getPosWhile().add(1000);
                         }
                         if (this.getPosWhile().size() > 1) // [1,2]
