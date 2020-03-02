@@ -314,7 +314,7 @@ class Complier {
                         System.out.println(this.check_braket_for);
                         System.out.println(this.check_braket_forOut);
                         if (this.check_braket_forOut.equals(this.check_braket_for)) {
-                            System.out.println(">>>>>>>>>>");
+                            // System.out.println(">>>>>>>>>>");
                             if (this.forloop.get(1) > 1) {
                                 this.forloop.set(1, this.forloop.get(1) - 1);
                                 this.count_braket_forOut = this.count_braket_forOut_real + 1;
@@ -343,7 +343,7 @@ class Complier {
                         System.out.println(this.check_braket_forIn);
                         if (this.check_braket_forIn.equals(this.check_braket_for)) // check braket for in
                         {
-                            System.out.println("++++++++++");
+                            // System.out.println("++++++++++");
                             if (this.forloop.get(3) > 1) //
                             {
                                 this.forloop.set(3, this.forloop.get(3) - 1);
