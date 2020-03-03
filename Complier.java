@@ -220,7 +220,7 @@ class Complier {
             if ((this.foundelse == true) && this.position_else == 1 && this.check_if_out.equals("out")) {
                 this.position_else = 0;
             }
-            if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) { // found else and
+           else if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("F"))) { // found else and
                                                                                                      // condition if ==
                                                                                                      // False
                                                                                                      // System.out.println("elsccccccc");
@@ -247,7 +247,7 @@ class Complier {
                     this.count++;
                 }
             }
-            if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("T"))) {
+           else if ((this.foundelse == true) && (this.controller.get(this.position_else).equals("T"))) {
                 this.count_braketCL_else = this.find_braketOP_else;
                 this.n = Integer.toString(this.count_braketCL_else);
                 if (token.get(i).equals("{")) {
@@ -277,9 +277,11 @@ class Complier {
                     break;
                 }
             }
-            if ((this.foundif)) { // found IF
+            else if ((this.foundif)) { // found IF
                 this.count_braketCL = this.count_braketOP;
                 this.m = Integer.toString(this.count_braketCL);
+                System.out.println(">>>>>>>>>>>>>>>>>>>"+this.controller);
+                System.out.println(this.position_else+"<<<<<<<<<<<<<<<<<<<<<<<<<");
                 if (this.controller.get(this.position_else).equals("T")) { // condition true for check out or in {}
                     if (token.get(i).equals("{")) {
                         this.count_braketOP += 1;
@@ -289,13 +291,14 @@ class Complier {
                         if (this.check_braket2.equals(this.check_if_out)) {
                             this.check_if_out = "out";
                             this.foundif = false;
+                            System.out.println("<<<<<<<<<<<<<<<<<<");
 
                         } else {
                             this.count_braketOP -= 1;
                         }
                     }
                 }
-                if (this.controller.get(this.position_else).equals("F")) { // condition false (for skip code)
+               if (this.controller.get(this.position_else).equals("F")) { // condition false (for skip code)
                     if (token.get(i).equals("if")) {
                         this.check_token = token.get(i + 7);
                     }
@@ -368,14 +371,15 @@ class Complier {
                         System.out.println(this.check_braket_forIn);
                         if (this.check_braket_forIn.equals(this.check_braket_for)) // check braket for in
                         {
-                            // System.out.println("++++++++++");
+                            
                             if (this.forloop.get(3) > 1) //
                             {
                                 this.forloop.set(3, this.forloop.get(3) - 1);
                                 this.count_braket_forIn = this.count_braket_forIn_real + 1;
                                 setPointer(this.forloop.get(2));
                                 System.out.println(this.forloop);
-                            } else {
+                            }
+                             else {
                                 this.foundfor = true;
                                 this.forloop.remove(3);
                                 this.forloop.remove(2);
@@ -535,8 +539,10 @@ class Complier {
                 // IF, (, CHECK, (, RIGHT, ), ), {
                 // IF, (, CHECK, (, RIGHT, ), =, 3, ), {
                 this.foundif = true;
+                System.out.println("++++++++++++++++++");
                 if (this.check_if_out.equals("out")) { // check if in or out {}
                     if (token.get(i + 2).equals("check")) {
+                        
                         if (player.checkNextStep(token.get(i + 4), token.get(i + 7).charAt(0))) { // condition in if =
                                                                                                   // true
                             this.count_braketOP += 1;
@@ -546,6 +552,8 @@ class Complier {
                             this.check_if_out = "{" + str + "&";
                             this.position_else = 0;
                             this.controller.set(0, "T");
+                            // System.out.println(this.controller);
+                            
                         } else {
                             this.count_braketOP += 1;
                             this.str = Integer.toString(this.count_braketOP);
@@ -554,6 +562,7 @@ class Complier {
                             this.checkif = "1";
                             this.position_else = 0;
                             this.controller.set(0, "F");
+                             
                         }
                     }
                 } else {
