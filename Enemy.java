@@ -37,8 +37,8 @@ class Enemy {
 
     public void walk() {
         if (!this.walking && !this.state.equals("dead")) {
-            // int dir = random.nextInt(5 - 1) + 1; // random 1-4
-            int dir = 1;
+            int dir = random.nextInt(5 - 1) + 1; // random 1-4
+            // int dir = 1;
             this.direction = dir;
             this.walking = true;
             Coder.frameC = 0;

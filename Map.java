@@ -11,12 +11,13 @@ import java.util.ArrayList;
 // import java.io.*;
 
 class Map {
+    private ImageIcon[] images;
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
     private boolean puzzle = false, objectiveText = false;
     private String tutorialText;
-    private int countDummy;
+    private int countDummy, world;
     private String mapNow;
 
     // 1=wall 2=enemy 3=bomb
@@ -30,6 +31,14 @@ class Map {
     // T=treasure
 
     public Map(JTextArea objectiveText, JLabel tutorialText, String mapNow) {
+        this.images = new ImageIcon[6];
+        this.images[0] = new ImageIcon("src/world/a/1.png");
+        this.images[1] = new ImageIcon("src/world/a/2.png");
+        this.images[2] = new ImageIcon("src/world/a/3.png");
+        this.images[3] = new ImageIcon("src/world/a/4.png");
+        this.images[4] = new ImageIcon("src/world/a/5.png");
+        this.images[5] = new ImageIcon("src/world/a/6.png");
+        this.world = 0;
         this.mapNow = mapNow;
         System.out.println("> Map Create");
         if (mapNow.equals("0000")) {
@@ -42,6 +51,7 @@ class Map {
             this.map[4] = "1500002001".toCharArray();
             this.map[5] = "1000000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            // Coder.input.setText("");
         } else if (mapNow.equals("0001")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Easy walk go to portal blue.");
@@ -55,6 +65,7 @@ class Map {
             setTutorial(true);
             setTutorialText("walk(direct)");
             tutorialText.setText(getTutorialText());
+            Coder.input.setText("walk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);");
         } else if (mapNow.equals("0002")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Now. Try harder escape from maze.");
@@ -65,6 +76,7 @@ class Map {
             this.map[4] = "1110101111".toCharArray();
             this.map[5] = "1000100091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("walk(left);\nwalk(left);\nwalk(left);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(left);\nwalk(left);\nwalk(up);");
         } else if (mapNow.equals("0003")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Escape from maze.");
@@ -75,6 +87,7 @@ class Map {
             this.map[4] = "1110A11101".toCharArray();
             this.map[5] = "180000T151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("walk(right);\nwalk(right);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(down);\nwalk(right);\nwalk(right);\nwalk(down);\nwalk(down);\nwalk(left);\nwalk(left);\n");
         } else if (mapNow.equals("0004")) { // attack()
             setRow(7);
             objectiveText.setText("Attack dummy 2 time.");
@@ -164,6 +177,7 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
         } else if (mapNow.equals("0010")) { // if else
+            setWorld(getWorld() + 1);
             setRow(7);
             objectiveText.setText("Choose path you should go.");
             this.map[0] = "1111111111".toCharArray();
@@ -328,7 +342,7 @@ class Map {
         // ========================================================
         //
         // ========================================================
-        if (mapNow.equals("0003")) {
+        if (mapNow.equals("0004")) {
             if (getCountDummy() == 0) {
                 setPuzzle(false);
             }
@@ -341,7 +355,7 @@ class Map {
                 portal8s.add(portal);
             }
         }
-        if (mapNow.equals("0004")) {
+        if (mapNow.equals("0005")) {
             int line = 4;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
@@ -350,7 +364,7 @@ class Map {
                 }
             }
         }
-        if (mapNow.equals("0005")) {
+        if (mapNow.equals("0006")) {
             int line = 10;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
@@ -359,7 +373,7 @@ class Map {
                 }
             }
         }
-        if (mapNow.equals("0006")) {
+        if (mapNow.equals("0007")) {
             int line = 7;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
@@ -368,7 +382,7 @@ class Map {
                 }
             }
         }
-        if (mapNow.equals("0007")) {
+        if (mapNow.equals("0008")) {
             int treasure = 150;
             if (player.getTreasure() > treasure - 1) {
                 setPuzzle(false);
@@ -382,7 +396,7 @@ class Map {
                 portal8s.add(portal);
             }
         }
-        if (mapNow.equals("0008")) {
+        if (mapNow.equals("0009")) {
             int treasure = 100;
             if (player.getTreasure() > treasure - 1) {
                 setPuzzle(false);
@@ -396,7 +410,7 @@ class Map {
                 portal8s.add(portal);
             }
         }
-        if (mapNow.equals("0010")) {
+        if (mapNow.equals("0011")) {
             int line = 3;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
@@ -405,7 +419,7 @@ class Map {
                 }
             }
         }
-        if (mapNow.equals("0011")) {
+        if (mapNow.equals("0012")) {
             int line = 7;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
@@ -524,5 +538,17 @@ class Map {
             System.out.print("\n");
         }
         System.out.print("\n");
+    }
+
+    public ImageIcon getWorldImage() {
+        return this.images[world];
+    }
+
+    public int getWorld() {
+        return this.world;
+    }
+
+    public void setWorld(int a) {
+        this.world = a;
     }
 }

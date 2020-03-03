@@ -17,7 +17,7 @@ class MapStore extends JPanel {
 
     public MapStore(JPanel panel, int mapStore) {
         readFile = new ReadFile();
-        this.mapStore = mapStore;
+        this.mapStore = mapStore + 1;
         this.mapStoreLabel = new JLabel(new ImageIcon("src/button/map_store.png"));
         this.mapStoreLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {

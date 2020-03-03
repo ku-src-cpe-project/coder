@@ -122,10 +122,9 @@ class Complier {
             } else if (!parses.get(i).equals("\n")) {
                 tmp = tmp.concat(tokens.get(i) + "");
             }
-
         }
         this.lines.add("END");
-        // System.out.println(this.lines);
+        System.out.println(this.lines);
         return this.lines;
     }
 
@@ -185,7 +184,9 @@ class Complier {
     }
 
     public String convType(String _type) {
-        if (_type.equals("wall")) {
+        if (_type.equals("path")) {
+            this.type = "0";
+        } else if (_type.equals("wall")) {
             this.type = "1";
         } else if (_type.equals("enemy")) {
             this.type = "2";
@@ -451,7 +452,7 @@ class Complier {
                 // System.out.println(token.get(i + 2));
                 this.foundwhile = true;
                 if (token.get(i + 2).equals("check")) {
-                    String dir = token.get(i + 4);
+                    String dir = token.get(i + 4); // right
                     if (player.collision(dir)) { // condition in while == true
                         // System.out.println(">>>>>>>> TRUE");
                         getPosWhile().add(getPointer() - 1);

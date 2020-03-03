@@ -20,6 +20,7 @@ class Player {
     private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state, stateTmp, mushroom, direction;
+    private boolean walking;
 
     public Player(Map map, int scale) {
         this.images = new ImageIcon[18];
@@ -51,6 +52,7 @@ class Player {
         this.mushroom = "ryu";
         this.selfPosition[0] = this.map.findMap('9')[0];
         this.selfPosition[1] = this.map.findMap('9')[1];
+        this.walking = false;
     }
 
     public void draw(Graphics g, int dir, int locationX, int locationY, int padX, int padY) {
@@ -60,9 +62,9 @@ class Player {
     }
 
     public void walk(String dir) {
-        if (!Coder.walking && !this.state.equals("dead")) {
+        if (!this.walking && !this.state.equals("dead")) {
             this.direction = dir;
-            Coder.walking = true;
+            this.walking = true;
             Coder.frameA = 0;
             if (!this.state.equals("dead")) {
                 this.tmpPosition[0] = this.selfPosition[0];
@@ -306,5 +308,13 @@ class Player {
 
     public void setTreasure(int a) {
         this.treasure = a;
+    }
+
+    public boolean getWalking() {
+        return this.walking;
+    }
+
+    public void setWalking(boolean a) {
+        this.walking = a;
     }
 }

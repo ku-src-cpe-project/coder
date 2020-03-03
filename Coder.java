@@ -73,7 +73,8 @@ public class Coder extends JPanel implements Runnable {
 	public static PlaySound soundMedia;
 
 	// Complier
-	private JTextArea input;
+	// private JTextArea input;
+	public static JTextArea input;
 	private String textValue;
 	private int line;
 	private ArrayList<String> parses, tokens;
@@ -108,7 +109,7 @@ public class Coder extends JPanel implements Runnable {
 	private int timing, frameCount = 4;
 	private int effectBoom, effectBoomLcationX, effectBoomLcationY;
 	private boolean firstMake, hitting, starting, playing, loading;
-	public static boolean attacking, firing, creating, walking;
+	public static boolean attacking, creating;
 	public static int frameA, frameB, frameC;
 
 	// Map
@@ -296,16 +297,16 @@ public class Coder extends JPanel implements Runnable {
 		checkUp.setBounds(coreX, core2Y - sizeY, sizeX, sizeY);
 		checkDown.setBounds(coreX, core2Y + sizeY, sizeX, sizeY);
 		checkLeft.setBounds(coreX - sizeX, core2Y, sizeX, sizeY);
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
-		add(print);
-		add(checkLeft);
-		add(checkRight);
-		add(checkUp);
-		add(checkDown);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
+		// add(print);
+		// add(checkLeft);
+		// add(checkRight);
+		// add(checkUp);
+		// add(checkDown);
 
 		// ========================================================
 		// Starting
@@ -455,10 +456,10 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Shortcut Starting
 		// ========================================================
-		starting = false;
-		loading = false;
-		playing = true;
-		newGame();
+		// starting = false;
+		// loading = false;
+		// playing = true;
+		// newGame();
 	}
 
 	// ========================================================
@@ -494,12 +495,10 @@ public class Coder extends JPanel implements Runnable {
 		runable = false;
 		processing = false;
 		firstMake = true;
-		walking = false;
 		for (int i = 0; i < enemys.size(); i++) {
 			enemys.get(i).setWalking(false);
 		}
 		attacking = false;
-		firing = false;
 		creating = false;
 	}
 
@@ -532,6 +531,9 @@ public class Coder extends JPanel implements Runnable {
 		return mapName;
 	}
 
+	// ========================================================
+	// Create Path Map
+	// ========================================================
 	public void makePath(int i, int j) {
 		Path path = new Path((j * scale) + locationX + (padX * i), (i * scale) + locationY - (padY * i) - 143 + 50, i,
 				j);
@@ -542,6 +544,8 @@ public class Coder extends JPanel implements Runnable {
 	// Create Object Map
 	// ========================================================
 	public void makeObject() {
+		fireball = new FireBall(map, 0, 0, (0 * scale) + locationX + (padX * 0),
+				(0 * scale) + locationY - (padY * 0) - 143 + 50);
 		for (int i = 0; i < map.getRow(); i++) {
 			for (int j = 0; j <= map.getColumn(); j++) {
 				if (map.getMap()[i][j] == '0') {
@@ -663,7 +667,7 @@ public class Coder extends JPanel implements Runnable {
 						}
 					}
 				} else if (map.getMap()[i][j] == '4') {
-					if (!firing) {
+					if (!fireball.getWalking()) {
 						fireball = new FireBall(map, i, j, (j * scale) + locationX + (padX * i),
 								(i * scale) + locationY - (padY * i) - 143 + 50);
 						fireball.draw(gr, direction, scale, locationX, locationY, padX, padY);
@@ -699,7 +703,7 @@ public class Coder extends JPanel implements Runnable {
 					}
 				} else if (map.getMap()[i][j] == '9') {
 					if (!player.getState().equals("dead")) {
-						if (!walking) {
+						if (!player.getWalking()) {
 							if (player.getMushroom().equals("chun-li")) {
 								player.draw(gr, direction + 12, locationX, locationY, padX, padY);
 							} else if (player.getMushroom().equals("ken")) {
@@ -767,9 +771,7 @@ public class Coder extends JPanel implements Runnable {
 				}
 			}
 		}
-		if (hitting)
-
-		{
+		if (hitting) {
 			gr.drawImage(imageBooms[effectBoom].getImage(), effectBoomLcationX - 118, effectBoomLcationY - 74, null);
 		}
 		if (mapStateEnd) {
@@ -777,11 +779,6 @@ public class Coder extends JPanel implements Runnable {
 					(screeny / 2) - (starSizeY / 2), null);
 		}
 		map.update(player, portal8s, scale, locationX, locationY, padX, padY);
-	}
-
-	public boolean checkMap(String dir, char a) {
-		boolean bool = false;
-		return bool;
 	}
 
 	// ========================================================
@@ -818,7 +815,7 @@ public class Coder extends JPanel implements Runnable {
 				mapStores.get(i).getMapStoreLabel().setVisible(true);
 			}
 		} else if (playing) {
-			bg = new ImageIcon("src/background/playing.png");
+			bg = map.getWorldImage();
 			buttonStart.setVisible(false);
 			buttonLoad.setVisible(true);
 			input.setVisible(true);
@@ -832,7 +829,7 @@ public class Coder extends JPanel implements Runnable {
 				mapStores.get(i).getMapStoreLabel().setVisible(false);
 			}
 			if (mapStateEnd) {
-				if (delayMapEnd >= 2) {
+				if (delayMapEnd >= 40) {
 					delayMapEnd = 0;
 					mapStateEnd = false;
 					mapStateFirst = false;
@@ -886,7 +883,7 @@ public class Coder extends JPanel implements Runnable {
 						System.out.println("==============================");
 					}
 					if (complier.getPointer() < lines.size()) { // lines.size()-1
-						if (!walking) {
+						if (!player.getWalking() && !attacking) {
 							System.out.println(
 									"Line: " + complier.getPointer() + "  \t" + lines.get(complier.getPointer()));
 							if (lines.get(complier.getPointer()).equals("END")) {
@@ -938,7 +935,7 @@ public class Coder extends JPanel implements Runnable {
 								soundMedia.playSoundSingle("media/hit.wav");
 							}
 						}
-						if (attacking && !firing) {
+						if (attacking && !fireball.getWalking()) {
 							fireball.walk();
 						}
 					}
@@ -975,14 +972,14 @@ public class Coder extends JPanel implements Runnable {
 			}
 			if (frameA > frameCount) {
 				frameA = 0;
-				walking = false;
+				player.setWalking(false);
 				player.update();
 			} else {
 				frameA++;
 			}
 			if (frameB > frameCount) {
 				frameB = 0;
-				firing = false;
+				fireball.setWalking(false);
 				fireball.update();
 			} else {
 				frameB++;
@@ -996,10 +993,10 @@ public class Coder extends JPanel implements Runnable {
 			} else {
 				frameC++;
 			}
-			if (!walking) {
+			if (!player.getWalking()) {
 				frameA = 0;
 			}
-			if (!firing) {
+			if (!fireball.getWalking()) {
 				frameB = 0;
 			}
 			for (int i = 0; i < enemys.size(); i++) {

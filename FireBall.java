@@ -10,6 +10,7 @@ class FireBall {
     private int[] nextPosition = { 0, 0 };
     private Map map;
     private String state, stateTmp;
+    private boolean walking;
 
     public FireBall(Map map, int mapRow, int mapColumn, int x, int y) {
         this.images = new ImageIcon[6];
@@ -26,6 +27,7 @@ class FireBall {
         this.y = y;
         this.state = "live";
         this.stateTmp = "live";
+        this.walking = false;
     }
 
     // public void draw(Graphics g, int dir) {
@@ -39,7 +41,7 @@ class FireBall {
     }
 
     public void walk() {
-        Coder.firing = true;
+        this.walking = true;
         this.tmpPosition[0] = this.selfPosition[0];
         this.tmpPosition[1] = this.selfPosition[1];
         this.nextPosition[0] = this.selfPosition[0];
@@ -100,5 +102,13 @@ class FireBall {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean getWalking() {
+        return this.walking;
+    }
+
+    public void setWalking(boolean a) {
+        this.walking = a;
     }
 }
