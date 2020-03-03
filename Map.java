@@ -100,6 +100,7 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             setCountDummy(2);
+            Coder.input.setText("walk(down);\nwalk(down);\nattack();\nattack();\nwalk(right);\nwalk(right);\nwalk(right);\n");
         } else if (mapNow.equals("0005")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 4 line.");
@@ -115,6 +116,7 @@ class Map {
             // W(R)
             // W(U)
             // }
+            Coder.input.setText("while(check(right)){\n walk(right);\n walk(up);\n}\nwalk(right);\n");
         } else if (mapNow.equals("0006")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 10 line.");
@@ -136,6 +138,7 @@ class Map {
             // W(L)
             // W(L)
             // }
+            Coder.input.setText("while(check(down)){\n walk(down);\n walk(down);\n walk(left);\n walk(left);\n walk(up);\n walk(up);\n walk(left);\n walk(left);\n}\n");
         } else if (mapNow.equals("0007")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 7 line.");
@@ -147,13 +150,14 @@ class Map {
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-            // While(R){
+            // While(L){
             // W(L)
             // W(L)
             // W(D)
             // }
             // W(R)
             // W(D)
+            Coder.input.setText("while(check(left)){\n walk(left);\n walk(left);\n walk(down);\n}\nwalk(right);\nwalk(down);\n");
         } else if (mapNow.equals("0008")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
@@ -161,10 +165,11 @@ class Map {
             this.map[1] = "1111111111".toCharArray();
             this.map[2] = "1111111111".toCharArray();
             this.map[3] = "190QQQ0001".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
+            this.map[4] = "1000000001".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
+            Coder.input.setText("while(check(down)){\n if(check(right)=treasure_box){\n  search(right);\n  walk(right);\n }\n else{\n  walk(right);\n }\n}\n");
         } else if (mapNow.equals("0009")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
@@ -176,6 +181,7 @@ class Map {
             this.map[5] = "1900Q11111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
+            Coder.input.setText("");
         } else if (mapNow.equals("0010")) { // if else
             setWorld(getWorld() + 1);
             setRow(7);
@@ -195,6 +201,7 @@ class Map {
             // W(D)
             // }
             // }
+            Coder.input.setText("");
         } else if (mapNow.equals("0011")) { // for
             setRow(7);
             objectiveText.setText("Try write code under 3 line.");
@@ -209,6 +216,7 @@ class Map {
             // For(7){
             // W(L)
             // }
+            Coder.input.setText("");
             // ========================================================
             // World 1
             // ========================================================
@@ -230,6 +238,7 @@ class Map {
             // For(3){
             // W(R)
             // }
+            Coder.input.setText("");
         } else if (mapNow.equals("0013")) {
             setRow(7);
             objectiveText.setText("How many line you can pass this stage.");
@@ -240,6 +249,7 @@ class Map {
             this.map[4] = "1101010101".toCharArray();
             this.map[5] = "1803000391".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0014")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -250,6 +260,7 @@ class Map {
             this.map[4] = "1011110101".toCharArray();
             this.map[5] = "1A00000151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0015")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -260,6 +271,7 @@ class Map {
             this.map[4] = "10A1111101".toCharArray();
             this.map[5] = "1000000091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0016")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -270,6 +282,7 @@ class Map {
             this.map[4] = "1A10111101".toCharArray();
             this.map[5] = "1150000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0017")) {
             setRow(7);
             objectiveText.setText("Find way to go blue portal.");
@@ -280,6 +293,7 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1607117071".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0018")) {
             setRow(7);
             objectiveText.setText(".");
@@ -290,6 +304,7 @@ class Map {
             this.map[4] = "1011111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0019")) {
             setRow(7);
             objectiveText.setText(".");
@@ -300,6 +315,7 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         } else if (mapNow.equals("0020")) {
             setRow(7);
             objectiveText.setText(".");
@@ -310,6 +326,7 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            Coder.input.setText("");
         }
     }
 
