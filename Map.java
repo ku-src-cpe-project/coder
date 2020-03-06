@@ -56,11 +56,11 @@ class Map {
             setRow(7);
             objectiveText.setText("Easy walk go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000031".toCharArray();
-            this.map[2] = "1000000001".toCharArray();
-            this.map[3] = "1900500081".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1111000031".toCharArray();
+            this.map[2] = "1111011111".toCharArray();
+            this.map[3] = "1900000081".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
             setTutorialText("walk(direct)");
@@ -165,7 +165,7 @@ class Map {
             this.map[1] = "1111111111".toCharArray();
             this.map[2] = "1111111111".toCharArray();
             this.map[3] = "190QQQ0001".toCharArray();
-            this.map[4] = "1000000001".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);

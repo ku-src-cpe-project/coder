@@ -113,7 +113,7 @@ public class Coder extends JPanel implements Runnable {
 	public static int frameA, frameB, frameC;
 
 	// Map
-	private int mapTotal = 20;
+	private int mapTotal = 30;
 	private String mapNow;
 	private JLabel mapNumberLabel;
 	private JLabel tutorialBackground, tutorialText;
@@ -333,7 +333,8 @@ public class Coder extends JPanel implements Runnable {
 		for (int i = 0; i < mapTotal; i++) {
 			MapStore mapStore = new MapStore(this, i);
 			mapStores.add(mapStore);
-			mapStores.get(i).getMapStoreLabel().setVisible(false);
+			mapStores.get(i).getMapStoreText().setVisible(false);
+			mapStores.get(i).getMapStoreBackground().setVisible(false);
 		}
 
 		// ========================================================
@@ -812,7 +813,8 @@ public class Coder extends JPanel implements Runnable {
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
 			for (int i = 0; i < mapTotal; i++) {
-				mapStores.get(i).getMapStoreLabel().setVisible(true);
+				mapStores.get(i).getMapStoreText().setVisible(true);
+				mapStores.get(i).getMapStoreBackground().setVisible(true);
 			}
 		} else if (playing) {
 			bg = map.getWorldImage();
@@ -826,7 +828,8 @@ public class Coder extends JPanel implements Runnable {
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
 			for (int i = 0; i < mapTotal; i++) {
-				mapStores.get(i).getMapStoreLabel().setVisible(false);
+				mapStores.get(i).getMapStoreText().setVisible(false);
+				mapStores.get(i).getMapStoreBackground().setVisible(false);
 			}
 			if (mapStateEnd) {
 				if (delayMapEnd >= 40) {
@@ -844,6 +847,9 @@ public class Coder extends JPanel implements Runnable {
 					if (mapStateFirst) {
 						mapStateEnd = true;
 					} else {
+						mapStores.get(mapNumber).setStatus(true);
+						mapStores.get(mapNumber).setMapStoreBackground(0);
+
 						mapNumber++;
 						newGame();
 						mapNumberLabel.setText(mapNumber + "");
