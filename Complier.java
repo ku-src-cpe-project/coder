@@ -15,6 +15,14 @@ import java.util.ArrayList;
 // import java.util.Calendar;
 // import java.util.Timer;
 // import java.util.TimerTask;
+import java.awt.EventQueue;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.util.concurrent.TimeUnit;
+
 
 class Complier {
     private ArrayList<String> parses, tokens, lines, controller;
@@ -592,17 +600,25 @@ class Complier {
                             }
                         }
                     }
-                } else if (token.get(i).equals("else")) { // function for find else
-                    if (this.foundif == false) {
-                        System.out.println("Error");
-                        this.breakprogram = true;
-                    }
-                    if (token.get(i + 1).equals("{")) {
-                        // this.state = "else";
-                        this.foundelse = true;
-                        this.find_braketOP_else = 0;
-                        this.statuselse = "{" + "else" + this.find_braketOP_else;
-                    }
+                }
+            } else if (token.get(i).equals("else")) { // function for find else
+                if (this.foundif == false) {
+                    System.out.println("Error");
+                    JFrame frame = new JFrame("FrameDemo");
+                    frame.setSize(500, 300);
+                    JPanel panel1 = new JPanel();
+                    panel1.setBounds(38, 34, 133, 92);
+                    panel1.add(new JButton("Button 3"));
+                    frame.add(panel1);
+                    frame.pack(); 
+                    frame.setVisible(true);
+                }
+                if (token.get(i + 1).equals("{")) {
+                    // this.state = "else";
+                    this.foundelse = true;
+                    this.find_braketOP_else = 0;
+                    this.statuselse = "{" + "else" + this.find_braketOP_else;
+                }
             }
         }
         else
