@@ -13,8 +13,8 @@ public class Main extends JFrame {
     pack();
     setTitle("Game: Tetris");
     // setLocation(15, 5);
-    // setLocation(100, 50);
-    setLocation(1750, 250);
+    setLocation(250, 150);
+    // setLocation(1750, 250);
     // setLocation(1600, 250);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // setLocationRelativeTo(null);

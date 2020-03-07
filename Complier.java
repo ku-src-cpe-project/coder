@@ -470,65 +470,78 @@ class Complier {
                     this.foundwhile = true;
                     if (token.get(i + 2).equals("check")) {
                         String dir = token.get(i + 4); // right
-                        if (player.collision(dir)) { // condition in while == true
-                            // System.out.println(">>>>>>>> TRUE");
-                            getPosWhile().add(getPointer() - 1);
-                            if (this.getPosWhile().size() > 1) // [1]
-                            {
-                                if (this.getPosWhile().get(0) != null && this.getPosWhile().get(0) == getPointer() - 1) // [1,1]
+                        if(player.CheckErrorDir(dir) == "error") //check syntax right left up down
+                        {
+                            ErrorInterrupt();
+                        }
+                        else
+                        {
+                            if (player.collision(dir)) { // condition in while == true
+                                // System.out.println(">>>>>>>> TRUE");
+                                getPosWhile().add(getPointer() - 1);
+                                if (this.getPosWhile().size() > 1) // [1]
+                                {
+                                    if (this.getPosWhile().get(0) != null && this.getPosWhile().get(0) == getPointer() - 1) // [1,1]
+                                    {
+                                        this.getPosWhile().remove(1); // [1]
+                                    }
+                                }
+                                if (this.getPosWhile().size() > 2) // [1,2,2]
+                                {
+                                    if (this.getPosWhile().get(1) == getPointer() - 1) // [1,2,2]
+                                    {
+                                        this.getPosWhile().remove(1); // [1,2]
+                                    }
+                                }
+                                // System.out.println(this.pointer);
+                                // System.out.println(getPosWhile());
+                                this.conditionwhile = true;
+                                // this.find_braketCL_while += 1;
+                                // this.state = "{" + this.find_braketCL_while + "w";
+                                // System.out.println("set-Exp-True");
+                            } 
+                            
+                            else { // condition in while == false
+                                // System.out.println(">>>>>>>> FALSE");
+                                // System.out.println(">>>>>>>>>"+getPointer());
+                                // System.out.println(this.getPosWhile());
+
+                                if (this.getPosWhile().isEmpty() ) {
+                                    this.getPosWhile().add(1000);
+                                }
+                                if( this.getPosWhile().size() == 1)
+                                {
+                                    this.getPosWhile().remove(0);
+                                    this.getPosWhile().add(1000);
+                                }
+                                if (this.getPosWhile().size() > 1) // [1,2]
                                 {
                                     this.getPosWhile().remove(1); // [1]
-                                }
-                            }
-                            if (this.getPosWhile().size() > 2) // [1,2,2]
-                            {
-                                if (this.getPosWhile().get(1) == getPointer() - 1) // [1,2,2]
+                                    this.conditionwhile = false;
+                                } else if (this.getPosWhile().get(0) == getPointer() - 1) // [1]
                                 {
-                                    this.getPosWhile().remove(1); // [1,2]
+                                    // System.out.println("check in");
+                                    this.conditionwhile = false;
+
+                                    this.getPosWhile().remove(0);
+                                    this.getPosWhile().add(99999);
+                                    // System.out.println(getPosWhile());
+                                } else if (this.getPosWhile().size() == 1) {
+                                    this.conditionwhile = false;
+
                                 }
+                                // this.find_braketCL_while += 1;
+                                // this.state = "{" + this.find_braketCL_while + "w";
+                                // this.getPosWhile().remove(1);
+                                // System.out.println("set-Exp-False");
+                                break;
+                                // this.count++;
                             }
-                            // System.out.println(this.pointer);
-                            // System.out.println(getPosWhile());
-                            this.conditionwhile = true;
-                            // this.find_braketCL_while += 1;
-                            // this.state = "{" + this.find_braketCL_while + "w";
-                            // System.out.println("set-Exp-True");
-                        } else { // condition in while == false
-                            // System.out.println(">>>>>>>> FALSE");
-                            // System.out.println(">>>>>>>>>"+getPointer());
-                            // System.out.println(this.getPosWhile());
-
-                            if (this.getPosWhile().isEmpty() ) {
-                                this.getPosWhile().add(1000);
-                            }
-                            if( this.getPosWhile().size() == 1)
-                            {
-                                this.getPosWhile().remove(0);
-                                this.getPosWhile().add(1000);
-                            }
-                            if (this.getPosWhile().size() > 1) // [1,2]
-                            {
-                                this.getPosWhile().remove(1); // [1]
-                                this.conditionwhile = false;
-                            } else if (this.getPosWhile().get(0) == getPointer() - 1) // [1]
-                            {
-                                // System.out.println("check in");
-                                this.conditionwhile = false;
-
-                                this.getPosWhile().remove(0);
-                                this.getPosWhile().add(99999);
-                                // System.out.println(getPosWhile());
-                            } else if (this.getPosWhile().size() == 1) {
-                                this.conditionwhile = false;
-
-                            }
-                            // this.find_braketCL_while += 1;
-                            // this.state = "{" + this.find_braketCL_while + "w";
-                            // this.getPosWhile().remove(1);
-                            // System.out.println("set-Exp-False");
-                            break;
-                            // this.count++;
                         }
+                    }
+                    else
+                    {
+                        ErrorInterrupt();
                     }
                 }
                 if (token.get(i).equals("for")) {// function for find for
@@ -601,17 +614,9 @@ class Complier {
                         }
                     }
                 }
-            } else if (token.get(i).equals("else")) { // function for find else
+             else if (token.get(i).equals("else")) { // function for find else
                 if (this.foundif == false) {
-                    System.out.println("Error");
-                    JFrame frame = new JFrame("FrameDemo");
-                    frame.setSize(500, 300);
-                    JPanel panel1 = new JPanel();
-                    panel1.setBounds(38, 34, 133, 92);
-                    panel1.add(new JButton("Button 3"));
-                    frame.add(panel1);
-                    frame.pack(); 
-                    frame.setVisible(true);
+                   ErrorInterrupt();
                 }
                 if (token.get(i + 1).equals("{")) {
                     // this.state = "else";
@@ -620,20 +625,40 @@ class Complier {
                     this.statuselse = "{" + "else" + this.find_braketOP_else;
                 }
             }
+            else
+            {
+                ErrorInterrupt();
+            }
+        } 
+            else
+            {
+                popStack();
+                this.count++;
+                break;
+            }
         }
-        else
-        {
-            popStack();
-            this.count++;
-            break;
+       
         }
-        }
-    }
+    
 
     public void readLine(Player player, String token) {
         ArrayList<String> parses = textToParses(token);
         ArrayList<String> tokens = parseToTokens(parses);
         checkMethod(player, tokens);
+    }
+
+    public void ErrorInterrupt()
+    {
+        this.breakprogram = true;
+        JFrame frame = new JFrame("FrameDemo");
+        frame.setSize(500, 300);
+        frame.setLocation(250+500, 150+300);
+        JPanel panel1 = new JPanel();
+        panel1.setBounds(38, 34, 133, 92);
+        panel1.add(new JButton("Button 3"));
+        frame.add(panel1);
+        frame.pack(); 
+        frame.setVisible(true);
     }
 
     public void readStack(Player player, String process) {

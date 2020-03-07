@@ -112,6 +112,8 @@ class Player {
 
     public boolean collision(String dir) {
         boolean bool = true;
+        
+        
         if (dir.equals("left")) {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) != '0') {
                 bool = false;
@@ -133,8 +135,45 @@ class Player {
             }
             this.nextPosition[0]++;
         }
+        
+        
         checkStep(dir);
         return bool;
+    }
+
+    public String CheckErrorDir(String dir)
+    {
+        String checkerror = "error";
+        if (dir.equals("left")) 
+        {
+            checkerror = "no error";
+            return checkerror;
+        } 
+
+        else if (dir.equals("right")) 
+        {
+            checkerror = "no error";
+            return checkerror;
+        
+        } 
+
+        else if (dir.equals("up")) 
+        {
+            checkerror = "no error";
+            return checkerror;
+            
+        } 
+
+        else if (dir.equals("down")) 
+        {
+            checkerror = "no error";
+            return checkerror;
+        }
+        
+        else
+        {
+            return checkerror;
+        }
     }
 
     public void checkStep(String dir) {
