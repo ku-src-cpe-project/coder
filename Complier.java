@@ -450,12 +450,15 @@ class Complier {
                 }
                 if (token.get(i).equals("walk")) {
                     player.walk(token.get(i + 2));
+                    break;
                 }
                 if (token.get(i).equals("attack")) {
                     player.attack();
+                    break;
                 }
                 if (token.get(i).equals("search")) {
                     player.search(token.get(i + 2));
+                    break;
                 }
                 if (token.get(i).equals("while")) { // function for find while
                     // old while
@@ -472,7 +475,7 @@ class Complier {
                         String dir = token.get(i + 4); // right
                         if(player.CheckErrorDir(dir) == "error") //check syntax right left up down
                         {
-                            ErrorInterrupt();
+                            ErrorInterrupt(this.pointer);
                         }
                         else
                         {
@@ -541,11 +544,13 @@ class Complier {
                     }
                     else
                     {
-                        ErrorInterrupt();
+                        ErrorInterrupt(this.pointer);
                     }
+                    break;
                 }
                 if (token.get(i).equals("for")) {// function for find for
                     this.foundfor = true;
+                    
                     if (this.forloop.isEmpty()) {
                         this.forloop.add((this.pointer));
                         this.forloop.add(Integer.parseInt(token.get(i + 2)));
@@ -560,6 +565,7 @@ class Complier {
                         this.check_braket_forIn = "for" + this.count_braket_forIn_real + "{";
                     }
                     System.out.println(this.forloop);
+                    break;
                 }
                 if (token.get(i).equals("if")) { // function for find if
                     // IF, (, CHECK, (, RIGHT, ), ), {
@@ -613,10 +619,11 @@ class Complier {
                             }
                         }
                     }
+                break;
                 }
              else if (token.get(i).equals("else")) { // function for find else
                 if (this.foundif == false) {
-                   ErrorInterrupt();
+                   ErrorInterrupt(this.pointer);
                 }
                 if (token.get(i + 1).equals("{")) {
                     // this.state = "else";
@@ -624,21 +631,29 @@ class Complier {
                     this.find_braketOP_else = 0;
                     this.statuselse = "{" + "else" + this.find_braketOP_else;
                 }
+            break;
             }
             else
             {
-                ErrorInterrupt();
+                if(this.pointer == 0)
+                {
+                   
+                }
+                else
+                {
+                    ErrorInterrupt(this.pointer);
+                }
+                
             }
         } 
-            else
-            {
-                popStack();
-                this.count++;
-                break;
-            }
+        else
+        {
+            popStack();
+            this.count++;
+            break;
         }
-       
-        }
+    }
+    }
     
 
     public void readLine(Player player, String token) {
@@ -647,18 +662,27 @@ class Complier {
         checkMethod(player, tokens);
     }
 
-    public void ErrorInterrupt()
+    public void ErrorInterrupt(int line)
     {
         this.breakprogram = true;
-        JFrame frame = new JFrame("FrameDemo");
-        frame.setSize(500, 300);
-        frame.setLocation(250+500, 150+300);
+        JFrame frame = new JFrame("Error!!!");
+        JLabel label1 = new JLabel("Some thing wrong In line"+line);
         JPanel panel1 = new JPanel();
-        panel1.setBounds(38, 34, 133, 92);
-        panel1.add(new JButton("Button 3"));
+        JPanel panel2 = new JPanel();
+
+        label1.setBounds(100,100, 100,30); 
+        panel1.setBounds(50, 50, 133, 92);
+        panel1.add(new JButton("Restart"));
+        panel2.setBounds(100,100,133,92);
+        panel2.add(label1);
+        frame.setLocation(250+450, 150+200); 
         frame.add(panel1);
+        frame.add(panel2);
         frame.pack(); 
+        frame.setSize(300,150);  
+        frame.setResizable(false);
         frame.setVisible(true);
+          
     }
 
     public void readStack(Player player, String process) {
