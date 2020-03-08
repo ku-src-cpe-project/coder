@@ -11,14 +11,14 @@ import java.util.ArrayList;
 // import java.io.*;
 
 class Map {
-    private ImageIcon[] images;
+    private ImageIcon[] images, tutorials;
     private int row = 5;
     private int column = 9;
     private char map[][] = new char[column][row];
     private boolean puzzle = false, objectiveText = false;
-    private String tutorialText;
     private int countDummy, world;
     private String mapNow;
+    private JLabel tutorialBackground;
 
     // 1=wall 2=enemy 3=bomb
     // 4=fire ball
@@ -30,7 +30,7 @@ class Map {
     // Q=treasure box
     // T=treasure
 
-    public Map(JTextArea objectiveText, JLabel tutorialText, String mapNow) {
+    public Map(JTextArea objectiveText, JLabel tutorialBackground, String mapNow) {
         this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("src/world/a/1.png");
         this.images[1] = new ImageIcon("src/world/a/2.png");
@@ -38,6 +38,14 @@ class Map {
         this.images[3] = new ImageIcon("src/world/a/4.png");
         this.images[4] = new ImageIcon("src/world/a/5.png");
         this.images[5] = new ImageIcon("src/world/a/6.png");
+        this.tutorials = new ImageIcon[11];
+        this.tutorials[0] = new ImageIcon("src/etc/tutorial/1.png");
+        this.tutorials[3] = new ImageIcon("src/etc/tutorial/4.png");
+        this.tutorials[4] = new ImageIcon("src/etc/tutorial/5.png");
+        this.tutorials[7] = new ImageIcon("src/etc/tutorial/8.png");
+        this.tutorials[9] = new ImageIcon("src/etc/tutorial/10.png");
+        this.tutorials[10] = new ImageIcon("src/etc/tutorial/11.png");
+        this.tutorialBackground = tutorialBackground;
         this.world = 0;
         this.mapNow = mapNow;
         System.out.println("> Map Create");
@@ -45,11 +53,11 @@ class Map {
             setRow(7);
             objectiveText.setText("Test.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1000000001".toCharArray();
-            this.map[2] = "1000002001".toCharArray();
-            this.map[3] = "1900000001".toCharArray();
-            this.map[4] = "1500002001".toCharArray();
-            this.map[5] = "1000000001".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "190Q000111".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             // Coder.input.setText("");
         } else if (mapNow.equals("0001")) { // walk(dir)
@@ -63,9 +71,9 @@ class Map {
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setTutorial(true);
-            setTutorialText("walk(direct)");
-            tutorialText.setText(getTutorialText());
-            Coder.input.setText("walk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);");
+            setTutorialBackground(1);
+            // Coder.input.setText(
+            // "walk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);\nwalk(right);");
         } else if (mapNow.equals("0002")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Now. Try harder escape from maze.");
@@ -76,7 +84,8 @@ class Map {
             this.map[4] = "1110101111".toCharArray();
             this.map[5] = "1000100091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("walk(left);\nwalk(left);\nwalk(left);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(left);\nwalk(left);\nwalk(up);");
+            // Coder.input.setText(
+            // "walk(left);\nwalk(left);\nwalk(left);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(left);\nwalk(left);\nwalk(up);");
         } else if (mapNow.equals("0003")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Escape from maze.");
@@ -87,7 +96,8 @@ class Map {
             this.map[4] = "1110A11101".toCharArray();
             this.map[5] = "180000T151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("walk(right);\nwalk(right);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(down);\nwalk(right);\nwalk(right);\nwalk(down);\nwalk(down);\nwalk(left);\nwalk(left);\n");
+            // Coder.input.setText(
+            // "walk(right);\nwalk(right);\nwalk(up);\nwalk(up);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(left);\nwalk(down);\nwalk(down);\nwalk(right);\nwalk(right);\nwalk(down);\nwalk(down);\nwalk(left);\nwalk(left);\n");
         } else if (mapNow.equals("0004")) { // attack()
             setRow(7);
             objectiveText.setText("Attack dummy 2 time.");
@@ -100,7 +110,10 @@ class Map {
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
             setCountDummy(2);
-            Coder.input.setText("walk(down);\nwalk(down);\nattack();\nattack();\nwalk(right);\nwalk(right);\nwalk(right);\n");
+            setTutorial(true);
+            setTutorialBackground(4);
+            // Coder.input.setText(
+            // "walk(down);\nwalk(down);\nattack();\nattack();\nwalk(right);\nwalk(right);\nwalk(right);\n");
         } else if (mapNow.equals("0005")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 4 line.");
@@ -112,11 +125,14 @@ class Map {
             this.map[5] = "1190111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
+            setTutorial(true);
+            setTutorialBackground(5);
             // While(R){
             // W(R)
             // W(U)
             // }
-            Coder.input.setText("while(check(right)){\n walk(right);\n walk(up);\n}\nwalk(right);\n");
+            // Coder.input.setText("while(check(right)){\n walk(right);\n
+            // walk(up);\n}\nwalk(right);\n");
         } else if (mapNow.equals("0006")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 10 line.");
@@ -138,7 +154,9 @@ class Map {
             // W(L)
             // W(L)
             // }
-            Coder.input.setText("while(check(down)){\n walk(down);\n walk(down);\n walk(left);\n walk(left);\n walk(up);\n walk(up);\n walk(left);\n walk(left);\n}\n");
+            // Coder.input.setText(
+            // "while(check(down)){\n walk(down);\n walk(down);\n walk(left);\n
+            // walk(left);\n walk(up);\n walk(up);\n walk(left);\n walk(left);\n}\n");
         } else if (mapNow.equals("0007")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 7 line.");
@@ -157,7 +175,9 @@ class Map {
             // }
             // W(R)
             // W(D)
-            Coder.input.setText("while(check(left)){\n walk(left);\n walk(left);\n walk(down);\n}\nwalk(right);\nwalk(down);\n");
+            // Coder.input.setText(
+            // "while(check(left)){\n walk(left);\n walk(left);\n
+            // walk(down);\n}\nwalk(right);\nwalk(down);\n");
         } else if (mapNow.equals("0008")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
@@ -169,7 +189,11 @@ class Map {
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
-            Coder.input.setText("while(check(down)){\n if(check(right)=treasure_box){\n  search(right);\n  walk(right);\n }\n else{\n  walk(right);\n }\n}\n");
+            setTutorial(true);
+            setTutorialBackground(8);
+            // Coder.input.setText(
+            // "while(check(down)){\n if(check(right)=treasure_box){\n search(right);\n
+            // walk(right);\n }\n else{\n walk(right);\n }\n}\n");
         } else if (mapNow.equals("0009")) { // if
             setRow(7);
             objectiveText.setText("Get a treasure after you search treasure box.");
@@ -193,6 +217,8 @@ class Map {
             this.map[4] = "1011111111".toCharArray();
             this.map[5] = "1311111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
+            setTutorial(true);
+            setTutorialBackground(10);
             // While(D){
             // IF(R){
             // W(R)
@@ -213,6 +239,8 @@ class Map {
             this.map[5] = "1111111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
             setPuzzle(true);
+            setTutorial(true);
+            setTutorialBackground(11);
             // For(7){
             // W(L)
             // }
@@ -471,14 +499,6 @@ class Map {
         this.objectiveText = a;
     }
 
-    public String getTutorialText() {
-        return this.tutorialText;
-    }
-
-    public void setTutorialText(String a) {
-        this.tutorialText = a;
-    }
-
     public int getCountDummy() {
         return this.countDummy;
     }
@@ -493,6 +513,10 @@ class Map {
 
     public void setPuzzle(boolean a) {
         this.puzzle = a;
+    }
+
+    public void setTutorialBackground(int a) {
+        this.tutorialBackground.setIcon(this.tutorials[a - 1]);
     }
 
     public char checkMap(int x, int y) {

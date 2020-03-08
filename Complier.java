@@ -567,35 +567,32 @@ class Complier {
                     System.out.println(this.forloop);
                     break;
                 }
-                if (token.get(i).equals("if")) { // function for find if
-                    // IF, (, CHECK, (, RIGHT, ), ), {
-                    // IF, (, CHECK, (, RIGHT, ), =, 3, ), {
-                    this.foundif = true;
-                    System.out.println("++++++++++++++++++");
-                    if (this.check_if_out.equals("out")) { // check if in or out {}
-                        if (token.get(i + 2).equals("check")) {
-                            
-                            if (player.checkNextStep(token.get(i + 4), token.get(i + 7).charAt(0))) { // condition in if =
-                                                                                                    // true
-                                this.count_braketOP += 1;
-                                this.conditionofif = true;
-                                this.checkif = "0";
-                                this.str = Integer.toString(this.count_braketOP);
-                                this.check_if_out = "{" + str + "&";
-                                this.position_else = 0;
-                                this.controller.set(0, "T");
-                                // System.out.println(this.controller);
-                                
-                            } else {
-                                this.count_braketOP += 1;
-                                this.str = Integer.toString(this.count_braketOP);
-                                this.statusif = "{" + str + "!";
-                                this.conditionofif = false;
-                                this.checkif = "1";
-                                this.position_else = 0;
-                                this.controller.set(0, "F");
-                                
-                            }
+                System.out.println(this.forloop);
+            }
+            if (token.get(i).equals("if")) { // function for find if
+                // IF, (, CHECK, (, RIGHT, ), ), {
+                // IF, (, CHECK, (, RIGHT, ), =, BOMB, ), {
+                this.foundif = true;
+                System.out.println("++++++++++++++++++");
+                if (this.check_if_out.equals("out")) { // check if in or out {}
+                    if (token.get(i + 2).equals("check")) {
+                        if (player.checkNextStep(token.get(i + 4), token.get(i + 7).charAt(0))) { // condition in if =
+                            this.count_braketOP += 1;
+                            this.conditionofif = true;
+                            this.checkif = "0";
+                            this.str = Integer.toString(this.count_braketOP);
+                            this.check_if_out = "{" + str + "&";
+                            this.position_else = 0;
+                            this.controller.set(0, "T");
+                            // System.out.println(this.controller);
+                        } else {
+                            this.count_braketOP += 1;
+                            this.str = Integer.toString(this.count_braketOP);
+                            this.statusif = "{" + str + "!";
+                            this.conditionofif = false;
+                            this.checkif = "1";
+                            this.position_else = 0;
+                            this.controller.set(0, "F");
                         }
                     } else {
                         if (token.get(i + 2).equals("check")) {

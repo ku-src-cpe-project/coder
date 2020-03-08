@@ -23,6 +23,7 @@ class MapStore extends JPanel {
         this.images[1] = new ImageIcon("src/button/map_store_disable.png");
         // readFile = new ReadFile();
         Font f1 = new Font("SansSerif", Font.BOLD, 30);
+        // this.mapStore = mapStore + 0;
         this.mapStore = mapStore + 1;
         this.mapStoreText = new JLabel(this.mapStore + "");
         this.mapStoreText.setFont(f1);
