@@ -82,11 +82,18 @@ public class Coder extends JPanel implements Runnable {
 	public static boolean runable, processing;
 
 	// Button
-	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad;
+	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad, buttonExit,
+			buttonTutorialWalk, buttonTutorialAttack, buttonTutorialFor, buttonTutorialWhile, buttonTutorialIf,
+			buttonTutorialSearch;
 	private int buttonLocationX = 250, buttonLocationY = 8;
 	private int buttonSizeX = 250, buttonSizeY = 83;
 	private int buttonStartSizeX = 400, buttonStartSizeY = 133;
 	private int buttonSubmitSizeX = 120, buttonSubmitSizeY = 120;
+	private int buttonTutorialLocationX = 20, buttonTutorialLocationY = 376;
+	private int buttonTutorialSizeX = 90, buttonTutorialSizeY = 30, buttonTutorialPadX = buttonTutorialSizeX + 20,
+			buttonTutorialPadY = buttonTutorialSizeY + 14;
+	private JLabel tutorialBackgroundWalk, tutorialBackgroundAttack, tutorialBackgroundFor, tutorialBackgroundWhile,
+			tutorialBackgroundIf, tutorialBackgroundSearch;
 
 	// Store
 	private ArrayList<MapStore> mapStores;
@@ -116,7 +123,7 @@ public class Coder extends JPanel implements Runnable {
 	private int mapTotal = 30;
 	private String mapNow;
 	private JLabel mapNumberLabel;
-	private JLabel tutorialBackground, tutorialText;
+	private JLabel tutorialBackground;
 	private JTextArea objectiveLabel;
 	private boolean mapStateEnd = false;
 	private boolean mapStateFirst = true;
@@ -186,9 +193,6 @@ public class Coder extends JPanel implements Runnable {
 		objectiveLabel.setFont(f1);
 		objectiveLabel.setEditable(false);
 		objectiveLabel.setLineWrap(true);
-		tutorialText = new JLabel("");
-		tutorialText.setBackground(new Color(70, 220, 90));
-		tutorialText.setFont(f1);
 
 		imageBooms = new ImageIcon[6];
 		imageSmokes = new ImageIcon[6];
@@ -210,6 +214,19 @@ public class Coder extends JPanel implements Runnable {
 		buttonClear = new JLabel(new ImageIcon("src/button/button_clear.png"));
 		buttonNext = new JLabel(new ImageIcon("src/button/button_next.png"));
 		buttonRestart = new JLabel(new ImageIcon("src/button/button_restart.png"));
+		buttonExit = new JLabel(new ImageIcon("src/button/button_exit.png"));
+		buttonTutorialWalk = new JLabel(new ImageIcon("src/button/button_tutorial_walk.png"));
+		buttonTutorialAttack = new JLabel(new ImageIcon("src/button/button_tutorial_attack.png"));
+		buttonTutorialFor = new JLabel(new ImageIcon("src/button/button_tutorial_for.png"));
+		buttonTutorialWhile = new JLabel(new ImageIcon("src/button/button_tutorial_while.png"));
+		buttonTutorialIf = new JLabel(new ImageIcon("src/button/button_tutorial_if.png"));
+		buttonTutorialSearch = new JLabel(new ImageIcon("src/button/button_tutorial_search.png"));
+		tutorialBackgroundWalk = new JLabel(new ImageIcon("src/tutorial/tutorial_walk.gif"));
+		tutorialBackgroundAttack = new JLabel(new ImageIcon("src/tutorial/tutorial_attack.gif"));
+		tutorialBackgroundFor = new JLabel(new ImageIcon("src/tutorial/tutorial_for.gif"));
+		tutorialBackgroundWhile = new JLabel(new ImageIcon("src/tutorial/tutorial_while.gif"));
+		tutorialBackgroundIf = new JLabel(new ImageIcon("src/tutorial/tutorial_if.gif"));
+		tutorialBackgroundSearch = new JLabel(new ImageIcon("src/tutorial/tutorial_search.gif"));
 
 		// ========================================================
 		// Save file
@@ -343,6 +360,10 @@ public class Coder extends JPanel implements Runnable {
 		buttonSubmit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				// Restart
+				newGame();
+				tutorialBackground.setVisible(false);
+				map.setTutorial(false);
+				complier = new Complier();
 				complier.setPointer(0);
 				runable = false;
 				line = complier.getPointer();
@@ -388,9 +409,8 @@ public class Coder extends JPanel implements Runnable {
 			}
 		});
 		buttonClear.addMouseListener(new MouseAdapter() {
-
 			public void mouseClicked(MouseEvent me) {
-				map = new Map(objectiveLabel, tutorialText, mapNow);
+				// map = new Map(objectiveLabel, tutorialBackground, mapNow);
 				newGame();
 				// complier.setPointer(0);
 				complier = new Complier();
@@ -410,7 +430,7 @@ public class Coder extends JPanel implements Runnable {
 				readFile.closeFileWrite();
 				mapNumber = 0;
 				mapNummberSave = "0";
-				map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
+				map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
 				mapNumberLabel.setText(mapNummberSave);
 				newGame();
 				complier.setPointer(0);
@@ -419,11 +439,77 @@ public class Coder extends JPanel implements Runnable {
 				timing = 0;
 			}
 		});
+		buttonExit.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				starting = true;
+				loading = false;
+				playing = false;
+			}
+		});
 		tutorialBackground.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				tutorialBackground.setVisible(false);
-				tutorialText.setVisible(false);
 				map.setTutorial(false);
+			}
+		});
+		buttonTutorialWalk.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundWalk.setVisible(true);
+			}
+		});
+		buttonTutorialAttack.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundAttack.setVisible(true);
+			}
+		});
+		buttonTutorialFor.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundFor.setVisible(true);
+			}
+		});
+		buttonTutorialWhile.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundWhile.setVisible(true);
+			}
+		});
+		buttonTutorialIf.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundIf.setVisible(true);
+			}
+		});
+		buttonTutorialSearch.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundSearch.setVisible(true);
+			}
+		});
+		tutorialBackgroundWalk.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundWalk.setVisible(false);
+			}
+		});
+		tutorialBackgroundAttack.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundAttack.setVisible(false);
+			}
+		});
+		tutorialBackgroundFor.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundFor.setVisible(false);
+			}
+		});
+		tutorialBackgroundWhile.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundWhile.setVisible(false);
+			}
+		});
+		tutorialBackgroundIf.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundIf.setVisible(false);
+			}
+		});
+		tutorialBackgroundSearch.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				tutorialBackgroundSearch.setVisible(false);
 			}
 		});
 
@@ -432,18 +518,46 @@ public class Coder extends JPanel implements Runnable {
 		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonSubmit.setBounds(screenx - buttonSubmitSizeX - 10, 85, buttonSubmitSizeX, buttonSubmitSizeY);
 		buttonClear.setBounds(buttonLocationX + buttonSizeX * 0, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
+		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY + buttonSizeY, buttonSizeX,
+				buttonSizeY);
 		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
-		tutorialText.setBounds(100, -200, screenx, screeny);
+		buttonExit.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
 		tutorialBackground.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx, screeny);
 		input.setBounds(18, 12, 207, 332);
 		mapNumberLabel.setBounds(235, 110, 120, 120);
 		mapNumberLabel.setHorizontalAlignment(JLabel.CENTER);
 		objectiveLabel.setBounds(380, 105, 275, 135);
 		objectiveLabel.setOpaque(false);
+		buttonTutorialWalk.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 0),
+				buttonTutorialLocationY + (buttonTutorialPadY * 0), buttonTutorialSizeX, buttonTutorialSizeY);
+		buttonTutorialAttack.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 0),
+				buttonTutorialLocationY + (buttonTutorialPadY * 1), buttonTutorialSizeX, buttonTutorialSizeY);
+		buttonTutorialFor.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 0),
+				buttonTutorialLocationY + (buttonTutorialPadY * 2), buttonTutorialSizeX, buttonTutorialSizeY);
+		buttonTutorialWhile.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 0),
+				buttonTutorialLocationY + (buttonTutorialPadY * 3), buttonTutorialSizeX, buttonTutorialSizeY);
+		buttonTutorialIf.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 0),
+				buttonTutorialLocationY + (buttonTutorialPadY * 4), buttonTutorialSizeX, buttonTutorialSizeY);
+		buttonTutorialSearch.setBounds(buttonTutorialLocationX + (buttonTutorialPadX * 1),
+				buttonTutorialLocationY + (buttonTutorialPadY * 0), buttonTutorialSizeX, buttonTutorialSizeY);
+		tutorialBackgroundWalk.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx,
+				screeny);
+		tutorialBackgroundAttack.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx,
+				screeny);
+		tutorialBackgroundFor.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx, screeny);
+		tutorialBackgroundWhile.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx,
+				screeny);
+		tutorialBackgroundIf.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx, screeny);
+		tutorialBackgroundSearch.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx,
+				screeny);
 
-		add(tutorialText);
 		add(tutorialBackground);
+		add(tutorialBackgroundWalk);
+		add(tutorialBackgroundAttack);
+		add(tutorialBackgroundFor);
+		add(tutorialBackgroundWhile);
+		add(tutorialBackgroundIf);
+		add(tutorialBackgroundSearch);
 		add(buttonStart);
 		add(buttonLoad);
 		add(input);
@@ -451,8 +565,15 @@ public class Coder extends JPanel implements Runnable {
 		add(objectiveLabel);
 		add(buttonRestart);
 		add(buttonNext);
+		add(buttonExit);
 		add(buttonClear);
 		add(buttonSubmit);
+		add(buttonTutorialWalk);
+		add(buttonTutorialAttack);
+		add(buttonTutorialFor);
+		add(buttonTutorialWhile);
+		add(buttonTutorialIf);
+		add(buttonTutorialSearch);
 
 		// ========================================================
 		// Shortcut Starting
@@ -475,8 +596,8 @@ public class Coder extends JPanel implements Runnable {
 		// screeny = (map.getRow()) * blockY + locationY;
 		// mapNumber = 3;
 		setPreferredSize(new Dimension(screenx, screeny));
-		map = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
-		mapTmp = new Map(objectiveLabel, tutorialText, convMap(mapNumber));
+		map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
+		mapTmp = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
 		mapNumberLabel.setText(mapNumber + "");
 		map.printMap();
 		player = new Player(map, scale);
@@ -791,7 +912,6 @@ public class Coder extends JPanel implements Runnable {
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(true);
 			tutorialBackground.setVisible(false);
-			tutorialText.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
 			objectiveLabel.setVisible(false);
@@ -799,12 +919,24 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(false);
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
+			buttonExit.setVisible(false);
+			buttonTutorialWalk.setVisible(false);
+			buttonTutorialAttack.setVisible(false);
+			buttonTutorialFor.setVisible(false);
+			buttonTutorialWhile.setVisible(false);
+			buttonTutorialIf.setVisible(false);
+			buttonTutorialSearch.setVisible(false);
+			tutorialBackgroundWalk.setVisible(false);
+			tutorialBackgroundAttack.setVisible(false);
+			tutorialBackgroundFor.setVisible(false);
+			tutorialBackgroundWhile.setVisible(false);
+			tutorialBackgroundIf.setVisible(false);
+			tutorialBackgroundSearch.setVisible(false);
 		} else if (loading) {
 			bg = new ImageIcon("src/background/loading.png");
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(false);
 			tutorialBackground.setVisible(false);
-			tutorialText.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
 			objectiveLabel.setVisible(false);
@@ -812,6 +944,13 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(false);
 			buttonClear.setVisible(false);
 			buttonSubmit.setVisible(false);
+			buttonExit.setVisible(false);
+			buttonTutorialWalk.setVisible(false);
+			buttonTutorialAttack.setVisible(false);
+			buttonTutorialFor.setVisible(false);
+			buttonTutorialWhile.setVisible(false);
+			buttonTutorialIf.setVisible(false);
+			buttonTutorialSearch.setVisible(false);
 			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreText().setVisible(true);
 				mapStores.get(i).getMapStoreBackground().setVisible(true);
@@ -820,6 +959,7 @@ public class Coder extends JPanel implements Runnable {
 			bg = map.getWorldImage();
 			buttonStart.setVisible(false);
 			buttonLoad.setVisible(true);
+			tutorialBackground.setVisible(false);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
 			objectiveLabel.setVisible(true);
@@ -827,6 +967,13 @@ public class Coder extends JPanel implements Runnable {
 			buttonNext.setVisible(true);
 			buttonClear.setVisible(true);
 			buttonSubmit.setVisible(true);
+			buttonExit.setVisible(true);
+			buttonTutorialWalk.setVisible(true);
+			buttonTutorialAttack.setVisible(true);
+			buttonTutorialFor.setVisible(true);
+			buttonTutorialWhile.setVisible(true);
+			buttonTutorialIf.setVisible(true);
+			buttonTutorialSearch.setVisible(true);
 			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreText().setVisible(false);
 				mapStores.get(i).getMapStoreBackground().setVisible(false);
@@ -971,10 +1118,8 @@ public class Coder extends JPanel implements Runnable {
 			}
 			if (map.getTutorial()) {
 				tutorialBackground.setVisible(true);
-				tutorialText.setVisible(true);
 			} else {
 				tutorialBackground.setVisible(false);
-				tutorialText.setVisible(false);
 			}
 			if (frameA > frameCount) {
 				frameA = 0;

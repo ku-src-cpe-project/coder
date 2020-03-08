@@ -545,14 +545,12 @@ class Complier {
             }
             if (token.get(i).equals("if")) { // function for find if
                 // IF, (, CHECK, (, RIGHT, ), ), {
-                // IF, (, CHECK, (, RIGHT, ), =, 3, ), {
+                // IF, (, CHECK, (, RIGHT, ), =, BOMB, ), {
                 this.foundif = true;
                 System.out.println("++++++++++++++++++");
                 if (this.check_if_out.equals("out")) { // check if in or out {}
                     if (token.get(i + 2).equals("check")) {
-                        
                         if (player.checkNextStep(token.get(i + 4), token.get(i + 7).charAt(0))) { // condition in if =
-                                                                                                  // true
                             this.count_braketOP += 1;
                             this.conditionofif = true;
                             this.checkif = "0";
@@ -561,7 +559,6 @@ class Complier {
                             this.position_else = 0;
                             this.controller.set(0, "T");
                             // System.out.println(this.controller);
-                            
                         } else {
                             this.count_braketOP += 1;
                             this.str = Integer.toString(this.count_braketOP);
@@ -570,7 +567,6 @@ class Complier {
                             this.checkif = "1";
                             this.position_else = 0;
                             this.controller.set(0, "F");
-                             
                         }
                     }
                 } else {
@@ -600,10 +596,11 @@ class Complier {
                     System.out.println("Error");
                     JFrame frame = new JFrame("FrameDemo");
                     frame.setSize(500, 300);
-                    JPanel panel1 = new JPanel();
-                    panel1.setBounds(38, 34, 133, 92);
-                    panel1.add(new JButton("Button 3"));
-                    frame.add(panel1);
+                    frame.setLocation(1750 + 500, 250 + 300);
+                    JPanel panel = new JPanel();
+                    panel.setBounds(38, 34, 133, 92);
+                    panel.add(new JButton("Button 3"));
+                    frame.add(panel);
                     frame.pack(); 
                     frame.setVisible(true);
                 }
