@@ -23,7 +23,7 @@ class Player {
     private boolean walking;
 
     public Player(Map map, int scale) {
-        this.images = new ImageIcon[18];
+        this.images = new ImageIcon[22];
         this.images[0] = new ImageIcon("src/hero/a/1.png");
         this.images[1] = new ImageIcon("src/hero/a/2.png");
         this.images[2] = new ImageIcon("src/hero/a/3.png");
@@ -44,6 +44,12 @@ class Player {
         this.images[15] = new ImageIcon("src/hero/c/4.png");
         this.images[16] = new ImageIcon("src/hero/c/5.png");
         this.images[17] = new ImageIcon("src/hero/c/6.png");
+
+        this.images[18] = new ImageIcon("src/hero/a/left.png");
+        this.images[19] = new ImageIcon("src/hero/a/right.png");
+        this.images[20] = new ImageIcon("src/hero/a/up.png");
+        this.images[21] = new ImageIcon("src/hero/a/down.png");
+
         this.map = map;
         this.scale = scale;
         this.treasure = 0;
@@ -112,8 +118,7 @@ class Player {
 
     public boolean collision(String dir) {
         boolean bool = true;
-        
-        
+
         if (dir.equals("left")) {
             if (this.map.checkMap(this.selfPosition[0], this.selfPosition[1] - 1) != '0') {
                 bool = false;
@@ -135,43 +140,35 @@ class Player {
             }
             this.nextPosition[0]++;
         }
-        
-        
         checkStep(dir);
         return bool;
     }
 
-    public String CheckErrorDir(String dir)
-    {
+    public String CheckErrorDir(String dir) {
         String checkerror = "error";
-        if (dir.equals("left")) 
-        {
-            checkerror = "no error";
-            return checkerror;
-        } 
-
-        else if (dir.equals("right")) 
-        {
-            checkerror = "no error";
-            return checkerror;
-        
-        } 
-
-        else if (dir.equals("up")) 
-        {
-            checkerror = "no error";
-            return checkerror;
-            
-        } 
-
-        else if (dir.equals("down")) 
-        {
+        if (dir.equals("left")) {
             checkerror = "no error";
             return checkerror;
         }
-        
-        else
-        {
+
+        else if (dir.equals("right")) {
+            checkerror = "no error";
+            return checkerror;
+
+        }
+
+        else if (dir.equals("up")) {
+            checkerror = "no error";
+            return checkerror;
+
+        }
+
+        else if (dir.equals("down")) {
+            checkerror = "no error";
+            return checkerror;
+        }
+
+        else {
             return checkerror;
         }
     }

@@ -314,16 +314,16 @@ public class Coder extends JPanel implements Runnable {
 		checkUp.setBounds(coreX, core2Y - sizeY, sizeX, sizeY);
 		checkDown.setBounds(coreX, core2Y + sizeY, sizeX, sizeY);
 		checkLeft.setBounds(coreX - sizeX, core2Y, sizeX, sizeY);
-		// add(up);
-		// add(down);
-		// add(left);
-		// add(right);
-		// add(fire);
-		// add(print);
-		// add(checkLeft);
-		// add(checkRight);
-		// add(checkUp);
-		// add(checkDown);
+		add(up);
+		add(down);
+		add(left);
+		add(right);
+		add(fire);
+		add(print);
+		add(checkLeft);
+		add(checkRight);
+		add(checkUp);
+		add(checkDown);
 
 		// ========================================================
 		// Starting
@@ -430,7 +430,7 @@ public class Coder extends JPanel implements Runnable {
 				readFile.closeFileWrite();
 				mapNumber = 0;
 				mapNummberSave = "0";
-				map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
+				map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber), enemys);
 				mapNumberLabel.setText(mapNummberSave);
 				newGame();
 				complier.setPointer(0);
@@ -596,8 +596,8 @@ public class Coder extends JPanel implements Runnable {
 		// screeny = (map.getRow()) * blockY + locationY;
 		// mapNumber = 3;
 		setPreferredSize(new Dimension(screenx, screeny));
-		map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
-		mapTmp = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber));
+		map = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber), enemys);
+		mapTmp = new Map(objectiveLabel, tutorialBackground, convMap(mapNumber), enemys);
 		mapNumberLabel.setText(mapNumber + "");
 		map.printMap();
 		player = new Player(map, scale);
@@ -846,16 +846,16 @@ public class Coder extends JPanel implements Runnable {
 								hero = direction;
 							}
 							if (player.getDirection().equals("left")) {
-								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameX)), locationY, padX,
+								player.draw(gr, 18, (int) (locationX - (frameA * multipleFrameX)), locationY, padX,
 										padY);
 							} else if (player.getDirection().equals("right")) {
-								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameX)), locationY, padX,
+								player.draw(gr, 19, (int) (locationX + (frameA * multipleFrameX)), locationY, padX,
 										padY);
 							} else if (player.getDirection().equals("up")) {
-								player.draw(gr, hero, (int) (locationX - (frameA * multipleFrameZ)),
+								player.draw(gr, 20, (int) (locationX - (frameA * multipleFrameZ)),
 										locationY - (int) ((frameA * multipleFrameY)), padX, padY);
 							} else if (player.getDirection().equals("down")) {
-								player.draw(gr, hero, (int) (locationX + (frameA * multipleFrameZ)),
+								player.draw(gr, 21, (int) (locationX + (frameA * multipleFrameZ)),
 										locationY + (int) ((frameA * multipleFrameY)), padX, padY);
 							}
 						}
@@ -900,7 +900,7 @@ public class Coder extends JPanel implements Runnable {
 			gr.drawImage(imageStars[chooseStart].getImage(), (screenx / 2) - (starSizeX / 2),
 					(screeny / 2) - (starSizeY / 2), null);
 		}
-		map.update(player, portal8s, scale, locationX, locationY, padX, padY);
+		map.update(player, enemys, portal8s, scale, locationX, locationY, padX, padY);
 	}
 
 	// ========================================================

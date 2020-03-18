@@ -30,7 +30,7 @@ class Map {
     // Q=treasure box
     // T=treasure
 
-    public Map(JTextArea objectiveText, JLabel tutorialBackground, String mapNow) {
+    public Map(JTextArea objectiveText, JLabel tutorialBackground, String mapNow, ArrayList<Enemy> enemys) {
         this.images = new ImageIcon[6];
         this.images[0] = new ImageIcon("src/world/a/1.png");
         this.images[1] = new ImageIcon("src/world/a/2.png");
@@ -53,14 +53,18 @@ class Map {
             setRow(7);
             objectiveText.setText("Test.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "190Q000111".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
+            this.map[1] = "1110000111".toCharArray();
+            this.map[2] = "1100000011".toCharArray();
+            this.map[3] = "1100900011".toCharArray();
+            this.map[4] = "1100000011".toCharArray();
+            this.map[5] = "1110000111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            // Coder.input.setText("");
-        } else if (mapNow.equals("0001")) { // walk(dir)
+            //
+        }
+        // ========================================================
+        // World 0
+        // ========================================================
+        else if (mapNow.equals("0001")) { // walk(dir)
             setRow(7);
             objectiveText.setText("Easy walk go to portal blue.");
             this.map[0] = "1111111111".toCharArray();
@@ -114,7 +118,90 @@ class Map {
             setTutorialBackground(4);
             // Coder.input.setText(
             // "walk(down);\nwalk(down);\nattack();\nattack();\nwalk(right);\nwalk(right);\nwalk(right);\n");
-        } else if (mapNow.equals("0005")) { // while(check(dir))
+        } else if (mapNow.equals("0005")) { // for
+            setRow(7);
+            objectiveText.setText("Try write code under 7 line.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1901111111".toCharArray();
+            this.map[2] = "1100111111".toCharArray();
+            this.map[3] = "1110011111".toCharArray();
+            this.map[4] = "1111001111".toCharArray();
+            this.map[5] = "1111100081".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            // For(4){
+            // W(R)
+            // W(D)
+            // }
+            // For(3){
+            // W(R)
+            // }
+
+        } else if (mapNow.equals("0006")) { // for
+            setRow(7);
+            objectiveText.setText("Try write code under 3 line.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1800000091".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            setTutorial(true);
+            setTutorialBackground(11);
+            // For(7){
+            // W(L)
+            // }
+        } else if (mapNow.equals("0007")) { // if
+            setRow(7);
+            objectiveText.setText("Get a treasure after you search treasure box.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "190QQQ0001".toCharArray();
+            this.map[4] = "1111111111".toCharArray();
+            this.map[5] = "1111111111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+            setTutorial(true);
+            setTutorialBackground(8);
+            // Coder.input.setText(
+            // "while(check(down)){\n if(check(right)=treasure_box){\n search(right);\n
+            // walk(right);\n }\n else{\n walk(right);\n }\n}\n");
+        } else if (mapNow.equals("0008")) { // if
+            setRow(7);
+            objectiveText.setText("Get a treasure after you search treasure box.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "1111111111".toCharArray();
+            this.map[3] = "1111111001".toCharArray();
+            this.map[4] = "1111000Q11".toCharArray();
+            this.map[5] = "1900Q11111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+        } else if (mapNow.equals("0009")) { // if else
+            setRow(7);
+            objectiveText.setText("Choose path you should go.");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1911111111".toCharArray();
+            this.map[2] = "1011111111".toCharArray();
+            this.map[3] = "1000000081".toCharArray();
+            this.map[4] = "1011111111".toCharArray();
+            this.map[5] = "1311111111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setTutorial(true);
+            setTutorialBackground(10);
+            // While(D){
+            // IF(R){
+            // W(R)
+            // }
+            // ELSE{
+            // W(D)
+            // }
+            // }
+
+        } else if (mapNow.equals("0010")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 4 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -133,7 +220,7 @@ class Map {
             // }
             // Coder.input.setText("while(check(right)){\n walk(right);\n
             // walk(up);\n}\nwalk(right);\n");
-        } else if (mapNow.equals("0006")) { // while(check(dir))
+        } else if (mapNow.equals("0011")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 10 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -157,7 +244,7 @@ class Map {
             // Coder.input.setText(
             // "while(check(down)){\n walk(down);\n walk(down);\n walk(left);\n
             // walk(left);\n walk(up);\n walk(up);\n walk(left);\n walk(left);\n}\n");
-        } else if (mapNow.equals("0007")) { // while(check(dir))
+        } else if (mapNow.equals("0012")) { // while(check(dir))
             setRow(7);
             objectiveText.setText("Try write code under 7 line.");
             this.map[0] = "1111111111".toCharArray();
@@ -178,96 +265,12 @@ class Map {
             // Coder.input.setText(
             // "while(check(left)){\n walk(left);\n walk(left);\n
             // walk(down);\n}\nwalk(right);\nwalk(down);\n");
-        } else if (mapNow.equals("0008")) { // if
-            setRow(7);
-            objectiveText.setText("Get a treasure after you search treasure box.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "190QQQ0001".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-            setPuzzle(true);
-            setTutorial(true);
-            setTutorialBackground(8);
-            // Coder.input.setText(
-            // "while(check(down)){\n if(check(right)=treasure_box){\n search(right);\n
-            // walk(right);\n }\n else{\n walk(right);\n }\n}\n");
-        } else if (mapNow.equals("0009")) { // if
-            setRow(7);
-            objectiveText.setText("Get a treasure after you search treasure box.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "1111111001".toCharArray();
-            this.map[4] = "1111000Q11".toCharArray();
-            this.map[5] = "1900Q11111".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-            setPuzzle(true);
-            Coder.input.setText("");
-        } else if (mapNow.equals("0010")) { // if else
+        }
+        // ========================================================
+        // World 1
+        // ========================================================
+        else if (mapNow.equals("0013")) {
             setWorld(getWorld() + 1);
-            setRow(7);
-            objectiveText.setText("Choose path you should go.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1911111111".toCharArray();
-            this.map[2] = "1011111111".toCharArray();
-            this.map[3] = "1000000081".toCharArray();
-            this.map[4] = "1011111111".toCharArray();
-            this.map[5] = "1311111111".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-            setTutorial(true);
-            setTutorialBackground(10);
-            // While(D){
-            // IF(R){
-            // W(R)
-            // }
-            // ELSE{
-            // W(D)
-            // }
-            // }
-            Coder.input.setText("");
-        } else if (mapNow.equals("0011")) { // for
-            setRow(7);
-            objectiveText.setText("Try write code under 3 line.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "1800000091".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-            setPuzzle(true);
-            setTutorial(true);
-            setTutorialBackground(11);
-            // For(7){
-            // W(L)
-            // }
-            Coder.input.setText("");
-            // ========================================================
-            // World 1
-            // ========================================================
-        } else if (mapNow.equals("0012")) { // for
-            setRow(7);
-            objectiveText.setText("Try write code under 7 line.");
-            this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1901111111".toCharArray();
-            this.map[2] = "1100111111".toCharArray();
-            this.map[3] = "1110011111".toCharArray();
-            this.map[4] = "1111001111".toCharArray();
-            this.map[5] = "1111100081".toCharArray();
-            this.map[6] = "1111111111".toCharArray();
-            setPuzzle(true);
-            // For(4){
-            // W(R)
-            // W(D)
-            // }
-            // For(3){
-            // W(R)
-            // }
-            Coder.input.setText("");
-        } else if (mapNow.equals("0013")) {
             setRow(7);
             objectiveText.setText("How many line you can pass this stage.");
             this.map[0] = "1111111111".toCharArray();
@@ -277,7 +280,6 @@ class Map {
             this.map[4] = "1101010101".toCharArray();
             this.map[5] = "1803000391".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
         } else if (mapNow.equals("0014")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -288,7 +290,6 @@ class Map {
             this.map[4] = "1011110101".toCharArray();
             this.map[5] = "1A00000151".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
         } else if (mapNow.equals("0015")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -299,7 +300,6 @@ class Map {
             this.map[4] = "10A1111101".toCharArray();
             this.map[5] = "1000000091".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
         } else if (mapNow.equals("0016")) {
             setRow(7);
             objectiveText.setText("Destroy bomb to pass stage.");
@@ -310,7 +310,6 @@ class Map {
             this.map[4] = "1A10111101".toCharArray();
             this.map[5] = "1150000001".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
         } else if (mapNow.equals("0017")) {
             setRow(7);
             objectiveText.setText("Find way to go blue portal.");
@@ -321,45 +320,154 @@ class Map {
             this.map[4] = "1111111111".toCharArray();
             this.map[5] = "1607117071".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
         } else if (mapNow.equals("0018")) {
             setRow(7);
-            objectiveText.setText(".");
+            objectiveText.setText("Destroy the enemy if you can.");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1011111111".toCharArray();
-            this.map[3] = "1951111111".toCharArray();
-            this.map[4] = "1011111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
+            this.map[1] = "1101110011".toCharArray();
+            this.map[2] = "1000000001".toCharArray();
+            this.map[3] = "1900000281".toCharArray();
+            this.map[4] = "1000000001".toCharArray();
+            this.map[5] = "11A1000011".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
-        } else if (mapNow.equals("0019")) {
+        }
+        // ========================================================
+        // World 2
+        // ========================================================
+        else if (mapNow.equals("0019")) {
+            setWorld(getWorld() + 1);
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "1111111111".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
+            this.map[1] = "1100D11171".toCharArray();
+            this.map[2] = "1110111001".toCharArray();
+            this.map[3] = "1110000011".toCharArray();
+            this.map[4] = "1110011911".toCharArray();
+            this.map[5] = "1600111111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
+            setPuzzle(true);
         } else if (mapNow.equals("0020")) {
             setRow(7);
             objectiveText.setText(".");
             this.map[0] = "1111111111".toCharArray();
-            this.map[1] = "1111111111".toCharArray();
-            this.map[2] = "1111111111".toCharArray();
-            this.map[3] = "1111111111".toCharArray();
-            this.map[4] = "1111111111".toCharArray();
-            this.map[5] = "1111111111".toCharArray();
+            this.map[1] = "1910011111".toCharArray();
+            this.map[2] = "10000000D1".toCharArray();
+            this.map[3] = "1011011011".toCharArray();
+            this.map[4] = "1011011011".toCharArray();
+            this.map[5] = "10000000D1".toCharArray();
             this.map[6] = "1111111111".toCharArray();
-            Coder.input.setText("");
+        } else if (mapNow.equals("0021")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1100819001".toCharArray();
+            this.map[2] = "1131110111".toCharArray();
+            this.map[3] = "1001110111".toCharArray();
+            this.map[4] = "1A00000011".toCharArray();
+            this.map[5] = "1111100511".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0022")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1180000111".toCharArray();
+            this.map[2] = "1111110071".toCharArray();
+            this.map[3] = "1111611111".toCharArray();
+            this.map[4] = "1111000Q11".toCharArray();
+            this.map[5] = "1111911111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0023")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1811111111".toCharArray();
+            this.map[2] = "1011111111".toCharArray();
+            this.map[3] = "1Q00000091".toCharArray();
+            this.map[4] = "10010A0051".toCharArray();
+            this.map[5] = "1111113111".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0024")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1100000031".toCharArray();
+            this.map[2] = "1900011101".toCharArray();
+            this.map[3] = "1011111821".toCharArray();
+            this.map[4] = "1A00020101".toCharArray();
+            this.map[5] = "1111110001".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        }
+        // ========================================================
+        // World 3
+        // ========================================================
+        else if (mapNow.equals("0025")) {
+            setWorld(getWorld() + 1);
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111111111".toCharArray();
+            this.map[2] = "11Q0000011".toCharArray();
+            this.map[3] = "1111011011".toCharArray();
+            this.map[4] = "1D0000A001".toCharArray();
+            this.map[5] = "1111191101".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0026")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1901111161".toCharArray();
+            this.map[2] = "1100111001".toCharArray();
+            this.map[3] = "1110010011".toCharArray();
+            this.map[4] = "11Q1000111".toCharArray();
+            this.map[5] = "1701111081".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+        } else if (mapNow.equals("0027")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1101191111".toCharArray();
+            this.map[2] = "11Q0100051".toCharArray();
+            this.map[3] = "1110301001".toCharArray();
+            this.map[4] = "1111010101".toCharArray();
+            this.map[5] = "111000D1A1".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+            setPuzzle(true);
+        } else if (mapNow.equals("0028")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "170Q111161".toCharArray();
+            this.map[2] = "1101000001".toCharArray();
+            this.map[3] = "1501191111".toCharArray();
+            this.map[4] = "1110000001".toCharArray();
+            this.map[5] = "11103111A1".toCharArray();
+            this.map[6] = "1111811111".toCharArray();
+        } else if (mapNow.equals("0029")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1806111901".toCharArray();
+            this.map[2] = "1111200101".toCharArray();
+            this.map[3] = "1111100001".toCharArray();
+            this.map[4] = "1113000101".toCharArray();
+            this.map[5] = "17001111A1".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
+        } else if (mapNow.equals("0030")) {
+            setRow(7);
+            objectiveText.setText(".");
+            this.map[0] = "1111111111".toCharArray();
+            this.map[1] = "1111570001".toCharArray();
+            this.map[2] = "1901000001".toCharArray();
+            this.map[3] = "1011000021".toCharArray();
+            this.map[4] = "1010110001".toCharArray();
+            this.map[5] = "1601100001".toCharArray();
+            this.map[6] = "1111111111".toCharArray();
         }
     }
 
-    public void update(Player player, ArrayList<Portal> portal8s, int scale, int locationX, int locationY, int padX,
-            int padY) {
+    public void update(Player player, ArrayList<Enemy> enemys, ArrayList<Portal> portal8s, int scale, int locationX,
+            int locationY, int padX, int padY) {
         // ========================================================
         // Example Setting Map Puzzle
         // ========================================================
@@ -401,7 +509,7 @@ class Map {
             }
         }
         if (mapNow.equals("0005")) {
-            int line = 4;
+            int line = 7;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
                     Coder.runable = false;
@@ -410,7 +518,7 @@ class Map {
             }
         }
         if (mapNow.equals("0006")) {
-            int line = 10;
+            int line = 3;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
                     Coder.runable = false;
@@ -419,12 +527,17 @@ class Map {
             }
         }
         if (mapNow.equals("0007")) {
-            int line = 7;
-            if (Coder.runable) {
-                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
-                    Coder.runable = false;
-                    setPuzzle(false);
-                }
+            int treasure = 100;
+            if (player.getTreasure() > treasure - 1) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 3;
+                int col = 8;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
             }
         }
         if (mapNow.equals("0008")) {
@@ -441,22 +554,17 @@ class Map {
                 portal8s.add(portal);
             }
         }
-        if (mapNow.equals("0009")) {
-            int treasure = 100;
-            if (player.getTreasure() > treasure - 1) {
-                setPuzzle(false);
-            }
-            if (!getPuzzle()) {
-                int row = 3;
-                int col = 8;
-                this.map[row][col] = '8';
-                Portal portal = new Portal((col * scale) + locationX + (padX * row),
-                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
-                portal8s.add(portal);
+        if (mapNow.equals("0010")) {
+            int line = 4;
+            if (Coder.runable) {
+                if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
+                    Coder.runable = false;
+                    setPuzzle(false);
+                }
             }
         }
         if (mapNow.equals("0011")) {
-            int line = 3;
+            int line = 10;
             if (Coder.runable) {
                 if (getPuzzle() && ((Coder.lines.size() - 2) > line)) {
                     Coder.runable = false;
@@ -471,6 +579,79 @@ class Map {
                     Coder.runable = false;
                     setPuzzle(false);
                 }
+            }
+        }
+        // ========================================================
+        // World 2
+        // ========================================================
+        if (mapNow.equals("0019")) {
+            if (getCountDummy() == 0) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 7;
+                int col = 4;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0020")) {
+            if (getCountDummy() == 0) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 1;
+                int col = 1;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        // ========================================================
+        // World 3
+        // ========================================================
+        if (mapNow.equals("0025")) {
+            int treasure = 150;
+            if (player.getTreasure() > treasure - 1) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 5;
+                int col = 8;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0026")) {
+            int treasure = 50;
+            if (player.getTreasure() > treasure - 1) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 5;
+                int col = 3;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
+            }
+        }
+        if (mapNow.equals("0027")) {
+            if (getCountDummy() == 0) {
+                setPuzzle(false);
+            }
+            if (!getPuzzle()) {
+                int row = 1;
+                int col = 2;
+                this.map[row][col] = '8';
+                Portal portal = new Portal((col * scale) + locationX + (padX * row),
+                        (row * scale) + locationY - (padY * row) - 143 + 50, row, col);
+                portal8s.add(portal);
             }
         }
     }

@@ -1,5 +1,7 @@
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 class Enemy {
@@ -11,6 +13,7 @@ class Enemy {
     private Map map;
     private String state;
     private boolean walking;
+    private int[] dirs = { 1, 2, 3, 4 };
 
     public Enemy(Map map, int scale, int mapRow, int mapColumn) {
         this.images = new ImageIcon[6];
@@ -37,7 +40,8 @@ class Enemy {
 
     public void walk() {
         if (!this.walking && !this.state.equals("dead")) {
-            int dir = random.nextInt(5 - 1) + 1; // random 1-4
+            // int dir = random.nextInt(5 - 1) + 1; // random 1-4
+            int dir = getRandom(this.dirs);
             // int dir = 1;
             this.direction = dir;
             this.walking = true;
@@ -122,8 +126,17 @@ class Enemy {
         this.selfPosition[0] = -99;
         this.state = "dead";
     }
-    
-    public String getState(){
+
+    public void setEnemyDir(int[] a) {
+        this.dirs = a;
+    }
+
+    public static int getRandom(int[] a) {
+        int b = new Random().nextInt(a.length);
+        return a[b];
+    }
+
+    public String getState() {
         return this.state;
     }
 
@@ -149,5 +162,9 @@ class Enemy {
 
     public void setWalking(boolean a) {
         this.walking = a;
+    }
+
+    public int[] getDirs() {
+        return this.dirs;
     }
 }
