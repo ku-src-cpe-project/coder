@@ -38,13 +38,22 @@ class Map {
         this.images[3] = new ImageIcon("src/world/a/4.png");
         this.images[4] = new ImageIcon("src/world/a/5.png");
         this.images[5] = new ImageIcon("src/world/a/6.png");
-        this.tutorials = new ImageIcon[11];
-        this.tutorials[0] = new ImageIcon("src/etc/tutorial/1.png");
-        this.tutorials[3] = new ImageIcon("src/etc/tutorial/4.png");
-        this.tutorials[4] = new ImageIcon("src/etc/tutorial/5.png");
-        this.tutorials[7] = new ImageIcon("src/etc/tutorial/8.png");
-        this.tutorials[9] = new ImageIcon("src/etc/tutorial/10.png");
-        this.tutorials[10] = new ImageIcon("src/etc/tutorial/11.png");
+        this.tutorials = new ImageIcon[10];
+        if (Coder.language.equals("TH")) {
+            this.tutorials[0] = new ImageIcon("src/etc/tutorial/walk_th.png");
+            this.tutorials[3] = new ImageIcon("src/etc/tutorial/attack_th.png");
+            this.tutorials[4] = new ImageIcon("src/etc/tutorial/for_th.png");
+            this.tutorials[6] = new ImageIcon("src/etc/tutorial/if_th.png");
+            this.tutorials[8] = new ImageIcon("src/etc/tutorial/if_else_th.png");
+            this.tutorials[9] = new ImageIcon("src/etc/tutorial/while_th.png");
+        } else {
+            this.tutorials[0] = new ImageIcon("src/etc/tutorial/walk.png");
+            this.tutorials[3] = new ImageIcon("src/etc/tutorial/attack.png");
+            this.tutorials[4] = new ImageIcon("src/etc/tutorial/for.png");
+            this.tutorials[6] = new ImageIcon("src/etc/tutorial/if.png");
+            this.tutorials[8] = new ImageIcon("src/etc/tutorial/if_else.png");
+            this.tutorials[9] = new ImageIcon("src/etc/tutorial/while.png");
+        }
         this.tutorialBackground = tutorialBackground;
         this.world = 0;
         this.mapNow = mapNow;
@@ -54,8 +63,8 @@ class Map {
             objectiveText.setText("Test.");
             this.map[0] = "1111111111".toCharArray();
             this.map[1] = "1110000111".toCharArray();
-            this.map[2] = "1100000011".toCharArray();
-            this.map[3] = "1100900011".toCharArray();
+            this.map[2] = "1150000D11".toCharArray();
+            this.map[3] = "1190000011".toCharArray();
             this.map[4] = "1100000011".toCharArray();
             this.map[5] = "1110000111".toCharArray();
             this.map[6] = "1111111111".toCharArray();
@@ -328,7 +337,7 @@ class Map {
             this.map[2] = "1000000001".toCharArray();
             this.map[3] = "1900000281".toCharArray();
             this.map[4] = "1000000001".toCharArray();
-            this.map[5] = "11A1000011".toCharArray();
+            this.map[5] = "1151000011".toCharArray();
             this.map[6] = "1111111111".toCharArray();
         }
         // ========================================================

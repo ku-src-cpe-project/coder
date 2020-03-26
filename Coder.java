@@ -1,9 +1,11 @@
 // Version 0.0.1
 
 import javax.swing.*;
+import javax.swing.event.*;
+
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.event.*;
+import java.awt.Graphics;
 // import java.applet.*;
 // import java.util.*;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class Coder extends JPanel implements Runnable {
 	private float multipleFrameX = 15.0f;
 	private float multipleFrameY = 9.0f;
 	private float multipleFrameZ = 2.5f;
+	private int volumeMin = 0, volumeMax = 100, volumeInit = 50;
+	public static String language;
 
 	// Function
 	private Random random;
@@ -84,16 +88,18 @@ public class Coder extends JPanel implements Runnable {
 	// Button
 	private JLabel buttonSubmit, buttonClear, buttonRestart, buttonNext, buttonStart, buttonLoad, buttonExit,
 			buttonTutorialWalk, buttonTutorialAttack, buttonTutorialFor, buttonTutorialWhile, buttonTutorialIf,
-			buttonTutorialSearch;
+			buttonTutorialSearch, buttonLanguageEN, buttonLanguageTH;
 	private int buttonLocationX = 250, buttonLocationY = 8;
 	private int buttonSizeX = 250, buttonSizeY = 83;
 	private int buttonStartSizeX = 400, buttonStartSizeY = 133;
 	private int buttonSubmitSizeX = 120, buttonSubmitSizeY = 120;
+	private int buttonSizeLanguage = 50;
 	private int buttonTutorialLocationX = 20, buttonTutorialLocationY = 376;
 	private int buttonTutorialSizeX = 90, buttonTutorialSizeY = 30, buttonTutorialPadX = buttonTutorialSizeX + 20,
 			buttonTutorialPadY = buttonTutorialSizeY + 14;
 	private JLabel tutorialBackgroundWalk, tutorialBackgroundAttack, tutorialBackgroundFor, tutorialBackgroundWhile,
 			tutorialBackgroundIf, tutorialBackgroundSearch;
+	private JSlider volume;
 
 	// Store
 	private ArrayList<MapStore> mapStores;
@@ -168,7 +174,8 @@ public class Coder extends JPanel implements Runnable {
 		runable = false;
 		line = 0;
 		soundMedia = new PlaySound();
-		soundMedia.playSoundLoop("media/bgm.wav", 999);
+		soundMedia.playSoundLoop("media/bgm.wav");
+		language = "EN";
 
 		// ========================================================
 		// init
@@ -193,6 +200,9 @@ public class Coder extends JPanel implements Runnable {
 		objectiveLabel.setFont(f1);
 		objectiveLabel.setEditable(false);
 		objectiveLabel.setLineWrap(true);
+
+		// Sound Volume Bar
+		volume = new JSlider(JSlider.VERTICAL, volumeMin, volumeMax, volumeInit);
 
 		imageBooms = new ImageIcon[6];
 		imageSmokes = new ImageIcon[6];
@@ -227,6 +237,10 @@ public class Coder extends JPanel implements Runnable {
 		tutorialBackgroundWhile = new JLabel(new ImageIcon("src/tutorial/tutorial_while.gif"));
 		tutorialBackgroundIf = new JLabel(new ImageIcon("src/tutorial/tutorial_if.gif"));
 		tutorialBackgroundSearch = new JLabel(new ImageIcon("src/tutorial/tutorial_search.gif"));
+
+		// Button Change Language
+		buttonLanguageEN = new JLabel(new ImageIcon("src/button/button_language_EN.png"));
+		buttonLanguageTH = new JLabel(new ImageIcon("src/button/button_language_TH.png"));
 
 		// ========================================================
 		// Save file
@@ -314,16 +328,16 @@ public class Coder extends JPanel implements Runnable {
 		checkUp.setBounds(coreX, core2Y - sizeY, sizeX, sizeY);
 		checkDown.setBounds(coreX, core2Y + sizeY, sizeX, sizeY);
 		checkLeft.setBounds(coreX - sizeX, core2Y, sizeX, sizeY);
-		add(up);
-		add(down);
-		add(left);
-		add(right);
-		add(fire);
-		add(print);
-		add(checkLeft);
-		add(checkRight);
-		add(checkUp);
-		add(checkDown);
+		// add(up);
+		// add(down);
+		// add(left);
+		// add(right);
+		// add(fire);
+		// add(print);
+		// add(checkLeft);
+		// add(checkRight);
+		// add(checkUp);
+		// add(checkDown);
 
 		// ========================================================
 		// Starting
@@ -368,36 +382,6 @@ public class Coder extends JPanel implements Runnable {
 				runable = false;
 				line = complier.getPointer();
 				textValue = input.getText();
-
-				// normal
-				// textValue = "walk(right);walk(down);walk(right);";
-				// textValue = "walk(right);walk(right);walk(right);walk(right);walk(right);";
-				// textValue =
-				// "walk(right);walk(right);walk(right);walk(down);walk(right);walk(right);walk(right);walk(right);";
-				// textValue = "walk(right);check(right);";
-				// textValue = "check(right);walk(right);";
-				// textValue = "walk(down);attack();walk(down);attack();walk(down);attack();";
-
-				// while
-				// textValue = "walk(down);while(2){walk(right);walk(right);}";
-				// textValue =
-				// "walk(right);\nwhile(2){\nwalk(down);\n}walk(right);walk(right);";
-				// textValue =
-				// "walk(right);while(1){walk(down);}while(3){walk(right);}walk(up);while(3){walk(right);}";
-				// textValue = "while(2){walk(down);while(3){walk(right);}};";
-				// textValue = "while(check(down)){walk(right);};";
-
-				// if
-				// textValue = "if(check(right)){walk(down);}";
-				// textValue =
-				// "walk(right);if(check(right)){walk(right);walk(right);}walk(down);";
-				// textValue =
-				// "walk(right);if(check(right)){while(2){walk(right);}walk(right);}walk(down);";
-				// textValue = "if(check(right)=mushroom_yellow){walk(down);}else{walk(up);}";
-
-				// else
-				// textValue = "else{walk(down);}";
-
 				textValue = textValue.replace(" ", "");
 				textValue = textValue.replace("\n", "");
 				textValue = textValue.replace("\t", "");
@@ -512,13 +496,36 @@ public class Coder extends JPanel implements Runnable {
 				tutorialBackgroundSearch.setVisible(false);
 			}
 		});
+		volume.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int value = volume.getValue();
+				soundMedia.update(value);
+			}
+		});
+		buttonLanguageEN.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				buttonStart.setIcon(new ImageIcon("src/button/button_start.png"));
+				buttonLoad.setIcon(new ImageIcon("src/button/button_load.png"));
+				buttonClear.setIcon(new ImageIcon("src/button/button_clear.png"));
+				buttonExit.setIcon(new ImageIcon("src/button/button_exit.png"));
+			}
+		});
+		buttonLanguageTH.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				buttonStart.setIcon(new ImageIcon("src/button/button_start_th.png"));
+				buttonLoad.setIcon(new ImageIcon("src/button/button_load_th.png"));
+				buttonClear.setIcon(new ImageIcon("src/button/button_clear_th.png"));
+				buttonExit.setIcon(new ImageIcon("src/button/button_exit_th.png"));
+				language = "TH";
+			}
+		});
 
 		buttonStart.setBounds((screenx / 2) - (buttonStartSizeX / 2), (screeny / 2) - (buttonStartSizeY / 2) + 200,
 				buttonStartSizeX, buttonStartSizeY);
 		buttonLoad.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonSubmit.setBounds(screenx - buttonSubmitSizeX - 10, 85, buttonSubmitSizeX, buttonSubmitSizeY);
 		buttonClear.setBounds(buttonLocationX + buttonSizeX * 0, buttonLocationY, buttonSizeX, buttonSizeY);
-		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY + buttonSizeY, buttonSizeX,
+		buttonNext.setBounds(buttonLocationX + buttonSizeX * 2 - 100, buttonLocationY + buttonSizeY, buttonSizeX,
 				buttonSizeY);
 		buttonRestart.setBounds(buttonLocationX + buttonSizeX * 1, buttonLocationY, buttonSizeX, buttonSizeY);
 		buttonExit.setBounds(buttonLocationX + buttonSizeX * 2, buttonLocationY, buttonSizeX, buttonSizeY);
@@ -550,6 +557,11 @@ public class Coder extends JPanel implements Runnable {
 		tutorialBackgroundIf.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx, screeny);
 		tutorialBackgroundSearch.setBounds((screenx / 2) - (screenx / 2), (screeny / 2) - (screeny / 2), screenx,
 				screeny);
+		volume.setBounds(0, screeny - 100, 20, 100);
+		buttonLanguageEN.setBounds(screenx - buttonSizeLanguage, screeny - buttonSizeLanguage, buttonSizeLanguage,
+				buttonSizeLanguage);
+		buttonLanguageTH.setBounds(screenx - (buttonSizeLanguage * 2), screeny - buttonSizeLanguage, buttonSizeLanguage,
+				buttonSizeLanguage);
 
 		add(tutorialBackground);
 		add(tutorialBackgroundWalk);
@@ -560,6 +572,9 @@ public class Coder extends JPanel implements Runnable {
 		add(tutorialBackgroundSearch);
 		add(buttonStart);
 		add(buttonLoad);
+		add(volume);
+		add(buttonLanguageEN);
+		add(buttonLanguageTH);
 		add(input);
 		add(mapNumberLabel);
 		add(objectiveLabel);
@@ -578,10 +593,10 @@ public class Coder extends JPanel implements Runnable {
 		// ========================================================
 		// Shortcut Starting
 		// ========================================================
-		// starting = false;
-		// loading = false;
-		// playing = true;
-		// newGame();
+		starting = false;
+		loading = false;
+		playing = true;
+		newGame();
 	}
 
 	// ========================================================
@@ -911,6 +926,9 @@ public class Coder extends JPanel implements Runnable {
 			bg = new ImageIcon("src/background/starting.png");
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(true);
+			volume.setVisible(true);
+			buttonLanguageEN.setVisible(true);
+			buttonLanguageTH.setVisible(true);
 			tutorialBackground.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
@@ -936,6 +954,9 @@ public class Coder extends JPanel implements Runnable {
 			bg = new ImageIcon("src/background/loading.png");
 			buttonStart.setVisible(true);
 			buttonLoad.setVisible(false);
+			volume.setVisible(false);
+			buttonLanguageEN.setVisible(false);
+			buttonLanguageTH.setVisible(false);
 			tutorialBackground.setVisible(false);
 			input.setVisible(false);
 			mapNumberLabel.setVisible(false);
@@ -951,6 +972,12 @@ public class Coder extends JPanel implements Runnable {
 			buttonTutorialWhile.setVisible(false);
 			buttonTutorialIf.setVisible(false);
 			buttonTutorialSearch.setVisible(false);
+			tutorialBackgroundWalk.setVisible(false);
+			tutorialBackgroundAttack.setVisible(false);
+			tutorialBackgroundFor.setVisible(false);
+			tutorialBackgroundWhile.setVisible(false);
+			tutorialBackgroundIf.setVisible(false);
+			tutorialBackgroundSearch.setVisible(false);
 			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreText().setVisible(true);
 				mapStores.get(i).getMapStoreBackground().setVisible(true);
@@ -959,6 +986,9 @@ public class Coder extends JPanel implements Runnable {
 			bg = map.getWorldImage();
 			buttonStart.setVisible(false);
 			buttonLoad.setVisible(true);
+			volume.setVisible(false);
+			buttonLanguageEN.setVisible(false);
+			buttonLanguageTH.setVisible(false);
 			tutorialBackground.setVisible(false);
 			input.setVisible(true);
 			mapNumberLabel.setVisible(true);
@@ -974,6 +1004,12 @@ public class Coder extends JPanel implements Runnable {
 			buttonTutorialWhile.setVisible(true);
 			buttonTutorialIf.setVisible(true);
 			buttonTutorialSearch.setVisible(true);
+			tutorialBackgroundWalk.setVisible(false);
+			tutorialBackgroundAttack.setVisible(false);
+			tutorialBackgroundFor.setVisible(false);
+			tutorialBackgroundWhile.setVisible(false);
+			tutorialBackgroundIf.setVisible(false);
+			tutorialBackgroundSearch.setVisible(false);
 			for (int i = 0; i < mapTotal; i++) {
 				mapStores.get(i).getMapStoreText().setVisible(false);
 				mapStores.get(i).getMapStoreBackground().setVisible(false);
@@ -1001,9 +1037,6 @@ public class Coder extends JPanel implements Runnable {
 						newGame();
 						mapNumberLabel.setText(mapNumber + "");
 						complier.setPointer(0);
-						complier.setExp(true);
-						complier.setIf(false);
-						complier.setState("null");
 
 						// ========================================================
 						// Save file

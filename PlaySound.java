@@ -18,63 +18,28 @@ import javax.sound.sampled.*;
 // import javafx.scene.media.Media;
 // import javafx.scene.media.MediaPlayer;
 class PlaySound {
-  Clip clip;
+  Clip clipBGM;
+  Clip clipSFX;
+  private int volume;
 
-  // public void playSound_MP3(){
-  // String bip = "sound/click_mp3.mp3";
-  // Media hit = new Media(new File(bip).toURI().toString());
-  // MediaPlayer mediaPlayer = new MediaPlayer(hit);
-  // mediaPlayer.play();
-  // }
-  // public void playSound_wav(String fn){
-  // try {
-  // AudioData data=new AudioStream(new FileInputStream(fn)).getData();
-  // ContinuousAudioDataStream sound=new ContinuousAudioDataStream(data);
-  // AudioPlayer.player.start(sound);
-  // AudioPlayer.player.stop(sound);
-  //
-  // } catch(Exception e) {
-  // System.out.println("Error");
-  // }
-  // // AudioInputStream audioIn = AudioSystem.getAudioInputStream(fn);
-  // // Clip clip = AudioSystem.getClip();
-  // // clip.open(audioIn);
-  // // clip.start();
-  // }
-  public void playSoundLoop(String fn, int loop) // Loop
-  {
-    try {
-      if (loop > 0) {
-        File yourFile = new File(fn);
-        AudioInputStream stream;
-        AudioFormat format;
-        DataLine.Info info;
-        // Clip clip;
-
-        stream = AudioSystem.getAudioInputStream(yourFile);
-        format = stream.getFormat();
-        info = new DataLine.Info(Clip.class, format);
-        clip = (Clip) AudioSystem.getLine(info);
-        clip.open(stream);
-        // Set Volume
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        // gainControl.setValue(-20.0f);
-        // gainControl.setValue(-4.0f);
-        gainControl.setValue(-60.0f);
-        // Set Volume End
-        clip.loop(loop - 1);
-        clip.start();
-      } else {
-        clip.stop();
-      }
-    } catch (Exception ex) {
-      System.out.println(ex.toString());
-    }
+  public PlaySound() {
+    this.volume = 50;
   }
 
-  public void stopSound() {
+  public void playSoundLoop(String b) // Loop
+  {
     try {
-      clip.stop();
+      File yourFile = new File(b);
+      AudioInputStream stream = AudioSystem.getAudioInputStream(yourFile);
+      AudioFormat format = stream.getFormat();
+      DataLine.Info info = new DataLine.Info(Clip.class, format);
+      clipBGM = (Clip) AudioSystem.getLine(info);
+      clipBGM.open(stream);
+      // Set Volume
+      FloatControl gainControl = (FloatControl) clipBGM.getControl(FloatControl.Type.MASTER_GAIN);
+      gainControl.setValue(convVolume(this.volume));
+      clipBGM.loop(9999);
+      clipBGM.start();
     } catch (Exception ex) {
       System.out.println(ex.toString());
     }
@@ -87,22 +52,37 @@ class PlaySound {
       AudioInputStream stream;
       AudioFormat format;
       DataLine.Info info;
-      Clip clip;
-
       stream = AudioSystem.getAudioInputStream(yourFile);
       format = stream.getFormat();
       info = new DataLine.Info(Clip.class, format);
-      clip = (Clip) AudioSystem.getLine(info);
-      clip.open(stream);
+      clipSFX = (Clip) AudioSystem.getLine(info);
+      clipSFX.open(stream);
       // Set Volume
-      FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-      // gainControl.setValue(6.0f); // max 6.0f
-      // gainControl.setValue(-20.0f);
-      gainControl.setValue(-60.0f);
-      // Set Volume End
-      clip.start();
+      FloatControl gainControl = (FloatControl) clipSFX.getControl(FloatControl.Type.MASTER_GAIN);
+      gainControl.setValue(convVolume(this.volume)); // max 6.0f
+      clipSFX.start();
     } catch (Exception ex) {
       System.out.println(ex.toString());
     }
+  }
+
+  public void stopSound(int a) {
+    try {
+      clipBGM.stop();
+    } catch (Exception ex) {
+      System.out.println(ex.toString());
+    }
+  }
+
+  public int convVolume(int a) {
+    int b;
+    b = (int) (((a * (6.0f + 60.0f)) / 100) - 60.0f);
+    return b;
+  }
+
+  public void update(int b) {
+    this.volume = b;
+    FloatControl gainControl = (FloatControl) clipBGM.getControl(FloatControl.Type.MASTER_GAIN);
+    gainControl.setValue(convVolume(b));
   }
 }
